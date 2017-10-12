@@ -1,4 +1,4 @@
-package com.sirnommington.squid.services;
+package com.sirnommington.squid.services.squid;
 
 /**
  * Result codes for SquidService.AddDevice()

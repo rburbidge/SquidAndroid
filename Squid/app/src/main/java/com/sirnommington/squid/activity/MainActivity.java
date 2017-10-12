@@ -14,9 +14,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
-import com.sirnommington.squid.services.AddDeviceResult;
-import com.sirnommington.squid.services.SquidService;
+import com.sirnommington.squid.services.squid.AddDeviceResult;
+import com.sirnommington.squid.services.squid.SquidService;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
+import com.sirnommington.squid.services.Preferences;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final String idToken = this.getIntent().getStringExtra(IntentExtras.GOOGLE_ID_TOKEN);
-
+        final Preferences preferences = new Preferences(this);
         final Activity thiz = this;
 
         // When retrieving GCM token completes, register the device with the Squid service
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected String doInBackground(String... params) {
                         try {
-                            final SquidService squid = new SquidService(getResources().getString(R.string.squid_endpoint));
+                            final SquidService squid = new SquidService(preferences.getSquidEndpoint());
                             final String deviceName = Build.MODEL;
 
                             // Determine the result message

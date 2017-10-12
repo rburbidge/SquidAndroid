@@ -2,8 +2,6 @@ package com.sirnommington.squid.services.gcm;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -12,7 +10,7 @@ import com.google.android.gms.iid.InstanceID;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.Actions;
-import com.sirnommington.squid.services.settings.Preferences;
+import com.sirnommington.squid.services.Preferences;
 
 public class SquidRegistrationIntentService extends IntentService {
 
@@ -24,7 +22,7 @@ public class SquidRegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final Preferences preferences = new Preferences(this);
 
         String token;
         try {
@@ -33,13 +31,13 @@ public class SquidRegistrationIntentService extends IntentService {
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             Log.i(TAG, "GCM Registration Token: " + token);
 
-            sharedPreferences.edit().putBoolean(Preferences.SENT_GCM_TOKEN_TO_SERVER, true).apply();
+            preferences.setGcmTokenSentToServer(true);
         } catch (Exception e) {
             token = null;
             Log.d(TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
-            sharedPreferences.edit().putBoolean(Preferences.SENT_GCM_TOKEN_TO_SERVER, false).apply();
+            preferences.setGcmTokenSentToServer(false);
         }
 
         // Notify UI that registration has completed, so the progress indicator can be hidden

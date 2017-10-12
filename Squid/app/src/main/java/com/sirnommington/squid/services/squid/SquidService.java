@@ -1,4 +1,4 @@
-package com.sirnommington.squid.services;
+package com.sirnommington.squid.services.squid;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +40,7 @@ public class SquidService {
 
         final int statusCode = this.sendRequest(idToken, "POST", "/api/devices", body);
         switch(statusCode) {
-            case 304:
+            case 302:
                 return AddDeviceResult.AlreadyExists;
             case 200:
                 return AddDeviceResult.Added;
