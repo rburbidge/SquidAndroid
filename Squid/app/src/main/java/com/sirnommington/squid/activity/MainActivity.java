@@ -1,6 +1,5 @@
 package com.sirnommington.squid.activity;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,57 +20,32 @@ import com.sirnommington.squid.services.Preferences;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
 
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private final MainActivity thiz = this;
+
+    private String idToken;
+    private Preferences preferences;
+    private SquidService squidService;
     private boolean isReceiverRegistered;
+    private BroadcastReceiver registrationBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final String idToken = this.getIntent().getStringExtra(IntentExtras.GOOGLE_ID_TOKEN);
-        final Preferences preferences = new Preferences(this);
-        final Activity thiz = this;
+        this.preferences = new Preferences(this);
+        this.squidService = new SquidService(preferences.getSquidEndpoint());
+        this.idToken = this.getIntent().getStringExtra(IntentExtras.GOOGLE_ID_TOKEN);
 
         // When retrieving GCM token completes, register the device with the Squid service
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+        registrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // GCM token is available from BroadcastReceiver intent, NOT MainActivity intent
                 final String gcmToken = intent.getStringExtra(IntentExtras.GCM_TOKEN);
-
-                new AsyncTask<String, Void, String>() {
-                    @Override
-                    protected String doInBackground(String... params) {
-                        try {
-                            final SquidService squid = new SquidService(preferences.getSquidEndpoint());
-                            final String deviceName = Build.MODEL;
-
-                            // Determine the result message
-                            AddDeviceResult result = squid.addDevice(idToken, deviceName, gcmToken);
-                            switch(result) {
-                                case AlreadyExists:
-                                    return getResources().getString(R.string.add_device_already_added);
-                                case Added:
-                                    return getResources().getString(R.string.add_device_added, deviceName);
-                                default:
-                                    return getResources().getString(R.string.add_device_error);
-                            }
-                        } catch(Exception e) {
-                            Log.e(TAG, "Exception thrown while adding device: " + e.toString());
-                            return getResources().getString(R.string.add_device_error);
-                        }
-                    }
-
-                    @Override
-                    protected void onPostExecute(String message) {
-                        super.onPostExecute(message);
-                        Toast.makeText(thiz, message, Toast.LENGTH_LONG).show();
-                    }
-                }.execute();
+                thiz.addThisDevice(gcmToken);
             }
         };
 
@@ -82,6 +56,41 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
+    /**
+     * Adds this device to the Squid service.
+     * @param gcmToken The device's GCM token on which it will be messaged.
+     */
+    private void addThisDevice(final String gcmToken) {
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                try {
+                    final String deviceName = Build.MODEL;
+                    final AddDeviceResult result = squidService.addDevice(thiz.idToken, deviceName, gcmToken);
+
+                    // Determine the result message
+                    switch(result) {
+                        case AlreadyExists:
+                            return getResources().getString(R.string.add_device_already_added);
+                        case Added:
+                            return getResources().getString(R.string.add_device_added, deviceName);
+                        default:
+                            return getResources().getString(R.string.add_device_error);
+                    }
+                } catch(Exception e) {
+                    Log.e(TAG, "Exception thrown while adding device: " + e.toString());
+                    return getResources().getString(R.string.add_device_error);
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String message) {
+                super.onPostExecute(message);
+                Toast.makeText(thiz, message, Toast.LENGTH_LONG).show();
+            }
+        }.execute();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,14 +99,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(registrationBroadcastReceiver);
         isReceiverRegistered = false;
         super.onPause();
     }
 
     private void registerReceiver(){
         if(!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+            LocalBroadcastManager.getInstance(this).registerReceiver(registrationBroadcastReceiver,
                     new IntentFilter(Actions.GCM_REGISTRATION_COMPLETE));
             isReceiverRegistered = true;
         }
