@@ -37,6 +37,8 @@ dependencies {
     compile "com.google.firebase:firebase-auth:$GOOGLE_LIB_VER"
     compile "com.google.firebase:firebase-messaging:$GOOGLE_LIB_VER"
 
+    compile 'com.google.code.gson:gson:2.8.2'
+
     testCompile 'junit:junit:4.12'
 }
 

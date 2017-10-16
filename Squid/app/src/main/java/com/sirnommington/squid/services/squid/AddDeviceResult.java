@@ -3,19 +3,19 @@ package com.sirnommington.squid.services.squid;
 /**
  * Result codes for SquidService.AddDevice()
  */
-public enum AddDeviceResult {
+public class AddDeviceResult {
     /**
-     * A device with the same GCM token already exists.
+     * The device.
      */
-    AlreadyExists,
+    public final DeviceModel device;
 
     /**
-     * The new device was added.
+     * True if the device was created, false if it already existed.
      */
-    Added,
+    public final boolean deviceCreated;
 
-    /**
-     * An error occurred.
-     */
-    Error
+    public AddDeviceResult(DeviceModel device, boolean deviceAdded) {
+        this.device = device;
+        this.deviceCreated = deviceAdded;
+    }
 }
