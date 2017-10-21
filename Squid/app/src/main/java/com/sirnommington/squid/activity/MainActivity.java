@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             protected String doInBackground(String... params) {
                 try {
                     final String deviceName = Build.MODEL;
-                    final AddDeviceResult result = squidService.addDevice(thiz.idToken, deviceName, gcmToken);
+                    final AddDeviceResult result = thiz.squidService.addDevice(thiz.idToken, deviceName, gcmToken);
 
                     if(result.deviceCreated) {
                         return getResources().getString(R.string.add_device_added, deviceName);
@@ -116,20 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.execute();
-    }
-
-    /**
-     * The response of an asynchronous API call.
-     * @param <TPayload> The type of payload returned if there was no error.
-     */
-    private static class AsyncResponse<TPayload> {
-        public final TPayload payload;
-        public final Object error;
-
-        public AsyncResponse(TPayload payload, Object error) {
-            this.payload = payload;
-            this.error = error;
-        }
     }
 
     /**

@@ -59,11 +59,10 @@ public class DevicesFragment extends ListFragment {
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View deviceView = inflater.inflate(DevicesAdapter.layoutName, parent, false);
-            TextView deviceName = deviceView.findViewById(R.id.device_name);
+            final View deviceView = inflater.inflate(DevicesAdapter.layoutName, parent, false);
+            final TextView deviceName = deviceView.findViewById(R.id.device_name);
             deviceName.setText(this.getItem(position).name);
             return deviceView;
-
         }
     }
 }

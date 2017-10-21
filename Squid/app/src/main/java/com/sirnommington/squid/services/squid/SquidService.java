@@ -102,7 +102,7 @@ public class SquidService {
      * An HTTP Response.
      * @param <TBody> The body type.
      */
-    private class HttpResponse<TBody> {
+    private static class HttpResponse<TBody> {
         public final int statusCode;
         public final TBody body;
 
@@ -117,11 +117,16 @@ public class SquidService {
      * @param idToken The Google OAuth ID token to send.
      * @param requestMethod GET, PUT, etc.
      * @param relativePath The relative path. Must be preceded with a forward slash.
-     * @param body The JSON body, if any.
+     * @param requestBody The JSON request body, if any.
      * @throws IOException If there is an issue sending the request.
-     * @return The HTTP status code.
+     * @return The HTTP response.
      */
-    private HttpResponse sendRequest(String idToken, String requestMethod, String relativePath, JSONObject body, JsonParser responseParser) throws IOException, JSONException {
+    private HttpResponse sendRequest(
+            final String idToken,
+            final String requestMethod,
+            final String relativePath,
+            final JSONObject requestBody,
+            final JsonParser responseParser) throws IOException, JSONException {
         URL url = new URL(this.endpoint + relativePath);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(requestMethod);
@@ -133,15 +138,15 @@ public class SquidService {
         // details on Google access vs. ID tokens
         conn.setRequestProperty("Authorization", "Bearer Google OAuth ID Token=" + idToken);
 
-        if(body != null) {
+        if(requestBody != null) {
             conn.setRequestProperty("Content-Type", "application/json");
         }
 
         conn.connect();
 
-        if(body != null) {
+        if(requestBody != null) {
             DataOutputStream output = new DataOutputStream(conn.getOutputStream());
-            output.writeBytes(body.toString());
+            output.writeBytes(requestBody.toString());
             output.flush ();
             output.close ();
         }
@@ -176,7 +181,7 @@ public class SquidService {
      * Interface for parsing a JSON string
      * @param <T> The type that will be parsed.
      */
-    interface JsonParser<T> {
+    private interface JsonParser<T> {
         T parse(String jsonString) throws JSONException;
     }
 }

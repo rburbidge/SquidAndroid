@@ -1,7 +1,8 @@
 package com.sirnommington.squid.services.squid;
 
 /**
- * Result codes for SquidService.AddDevice()
+ * Response from adding a device.
+ * @see SquidService#addDevice(String, String, String)
  */
 public class AddDeviceResult {
     /**
