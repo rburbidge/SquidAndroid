@@ -4,7 +4,14 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/device_padding_horizontal"
+    android:paddingRight="@dimen/device_padding_horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_phone_android_white_24dp"/>
 
     <TextView
         android:id="@+id/device_name"
@@ -12,5 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:text="Nexus 5X"/>
+        android:text="Nexus 5X"
+        android:textColor="@color/textPrimary"
+        android:paddingLeft="@dimen/device_padding"/>
 </LinearLayout>
