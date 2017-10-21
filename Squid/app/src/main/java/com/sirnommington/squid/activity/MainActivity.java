@@ -127,41 +127,6 @@ public class MainActivity extends AppCompatActivity {
         devicesFragment.setDevices(devices);
     }
 
-    /**
-     * Adds this device to the Squid service.
-     * @param gcmToken The device's GCM token on which it will be messaged.
-     */
-    private void addThisDevice(final String gcmToken) {
-        new AsyncTask<String, Void, String>() {
-            @Override
-            protected String doInBackground(String... params) {
-                try {
-                    final String deviceName = Build.MODEL;
-                    final AddDeviceResult result = squidService.addDevice(thiz.idToken, deviceName, gcmToken);
-
-                    // Determine the result message
-                    switch(result) {
-                        case AlreadyExists:
-                            return getResources().getString(R.string.add_device_already_added);
-                        case Added:
-                            return getResources().getString(R.string.add_device_added, deviceName);
-                        default:
-                            return getResources().getString(R.string.add_device_error);
-                    }
-                } catch(Exception e) {
-                    Log.e(TAG, "Exception thrown while adding device: " + e.toString());
-                    return getResources().getString(R.string.add_device_error);
-                }
-            }
-
-            @Override
-            protected void onPostExecute(String message) {
-                super.onPostExecute(message);
-                Toast.makeText(thiz, message, Toast.LENGTH_LONG).show();
-            }
-        }.execute();
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
