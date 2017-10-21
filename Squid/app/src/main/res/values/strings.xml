@@ -11,4 +11,6 @@
     <string name="add_device_already_added">Welcome back!</string>
     <string name="add_device_added">Your device \'%s\' has been added!</string>
     <string name="add_device_error">A problem occurred while adding your device :(</string>
+    <string name="get_devices_error">A problem occurred while retrieving your devices :(</string>
+    <string name="select_a_device">Select a device</string>
 </resources>

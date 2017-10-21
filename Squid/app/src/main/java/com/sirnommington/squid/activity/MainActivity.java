@@ -14,9 +14,12 @@ import android.widget.Toast;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.services.squid.AddDeviceResult;
+import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
 import com.sirnommington.squid.services.Preferences;
+
+import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +57,74 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, SquidRegistrationIntentService.class);
         startService(intent);
+
+        this.refreshDevices();
+    }
+
+    /**
+     * Adds this device to the Squid service.
+     * @param gcmToken The device's GCM token on which it will be messaged.
+     */
+    private void addThisDevice(final String gcmToken) {
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                try {
+                    final String deviceName = Build.MODEL;
+                    final AddDeviceResult result = thiz.squidService.addDevice(thiz.idToken, deviceName, gcmToken);
+
+                    if(result.deviceCreated) {
+                        return getResources().getString(R.string.add_device_added, deviceName);
+                    } else {
+                        return getResources().getString(R.string.add_device_already_added);
+                    }
+                } catch(Exception e) {
+                    Log.e(TAG, "Exception thrown while adding device: " + e.toString());
+                    return getResources().getString(R.string.add_device_error);
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String message) {
+                super.onPostExecute(message);
+                Toast.makeText(thiz, message, Toast.LENGTH_LONG).show();
+            }
+        }.execute();
+    }
+
+    /**
+     * Refreshes the list of devices.
+     */
+    private void refreshDevices() {
+        new AsyncTask<Void, Void, AsyncResponse<Collection<DeviceModel>>>() {
+            @Override
+            protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
+                try {
+                    return new AsyncResponse(thiz.squidService.getDevices(thiz.idToken), null);
+                } catch(Exception e) {
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
+                super.onPostExecute(response);
+                if(response.error != null) {
+                    Toast.makeText(thiz, getResources().getString(R.string.get_devices_error), Toast.LENGTH_LONG);
+                } else {
+                    showDevices(response.payload);
+                }
+            }
+        }.execute();
+    }
+
+    /**
+     * Displays the list of devices.
+     * @param devices The devices.
+     */
+    private void showDevices(Collection<DeviceModel> devices) {
+        DevicesFragment devicesFragment = (DevicesFragment) this.getFragmentManager().findFragmentById(R.id.devices);
+        devicesFragment.setDevices(devices);
     }
 
     /**
