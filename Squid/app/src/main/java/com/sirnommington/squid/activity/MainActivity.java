@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, SquidRegistrationIntentService.class);
         startService(intent);
+
         this.refreshDevices();
     }
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
                 super.onPostExecute(response);
-                if(response.error == null) {
+                if(response.error != null) {
                     Toast.makeText(thiz, getResources().getString(R.string.get_devices_error), Toast.LENGTH_LONG);
                 } else {
                     showDevices(response.payload);
@@ -136,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
      * @param devices The devices.
      */
     private void showDevices(Collection<DeviceModel> devices) {
-        // TODO
+        DevicesFragment devicesFragment = (DevicesFragment) this.getFragmentManager().findFragmentById(R.id.devices);
+        devicesFragment.setDevices(devices);
     }
 
     @Override
