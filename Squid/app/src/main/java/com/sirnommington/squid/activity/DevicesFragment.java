@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sirnommington.squid.R;
@@ -33,6 +34,14 @@ public class DevicesFragment extends ListFragment {
         this.setListAdapter(adapter);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        final ListView listView = this.getListView();
+        // Must use inflater from activity, not from this.getLayoutInflater()
+        final LayoutInflater inflater = this.getActivity().getLayoutInflater();
+        listView.addHeaderView(inflater.inflate(R.layout.list_header_select_device, listView, false));
+    }
+
     /**
      * Sets the devices displayed. Clears any existing devices.
      * @param devices The devices.
@@ -49,7 +58,7 @@ public class DevicesFragment extends ListFragment {
      * @see ArrayAdapter#addAll(Collection) to set devices.
      */
     private static class DevicesAdapter extends ArrayAdapter<DeviceModel> {
-        private static final int layoutName = R.layout.device;
+        private static final int layoutName = R.layout.list_item_device;
 
         public DevicesAdapter(Context context) {
             super(context, DevicesAdapter.layoutName, 0, new ArrayList<DeviceModel>());
