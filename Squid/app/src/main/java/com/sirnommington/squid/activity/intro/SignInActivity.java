@@ -1,25 +1,24 @@
-package com.sirnommington.squid.activity;
+package com.sirnommington.squid.activity.intro;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.IntentExtras;
+import com.sirnommington.squid.activity.MainActivity;
+import com.sirnommington.squid.services.google.GoogleSignIn;
 
+/**
+ * Lets the user sign into the application using their Google account.
+ */
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "SignInActivity";
     private static int SIGN_IN_REQUEST_CODE = 1;
 
     private GoogleApiClient mGoogleApiClient;
@@ -30,29 +29,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_sign_in);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getResources().getString(R.string.outh_client_id))
-                .build();
-        this.mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e(TAG, "Google Sign-in connection failure: " + connectionResult.getErrorMessage());
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        // Execute background task to determine if the user is already signed in
-        new AsyncTask<String, Void, String> () {
-            @Override
-            protected String doInBackground(String... params) {
-                OptionalPendingResult<GoogleSignInResult> pendingResult = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-                handleSignInResult(pendingResult.await());
-                return null;
-            }
-        }.execute();
+        this.mGoogleApiClient = GoogleSignIn.Create(this);
     }
 
     @Override
@@ -75,16 +52,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (!result.isSuccess()) {
-            Log.e(TAG, "Sign in failure");
             return;
         }
-
-        Log.i(TAG, "Sign in success!");
 
         // Start the main activity, and close the current one
         // Pass the user's server token to the main activity
         GoogleSignInAccount account = result.getSignInAccount();
         Intent signedIn = new Intent(this, MainActivity.class);
+        signedIn.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
         signedIn.putExtra(IntentExtras.GOOGLE_ID_TOKEN, account.getIdToken());
         this.startActivity(signedIn);
         this.finish();

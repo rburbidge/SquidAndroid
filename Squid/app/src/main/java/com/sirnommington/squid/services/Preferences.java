@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+/**
+ * Application preferences. A simple wrapper around Android SharedPreferences.
+ */
 public class Preferences {
+    private static final String IS_INITIALIZED = "isInitialized";
     private static final String SENT_GCM_TOKEN_TO_SERVER = "sentGcmTokenToServer";
     private static final String SQUID_ENDPOINT = "squidEndpoint";
 
@@ -14,6 +18,14 @@ public class Preferences {
 
     public Preferences(Context context) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public boolean getIsInitialized() {
+        return this.sharedPreferences.getBoolean(IS_INITIALIZED, false);
+    }
+
+    public void setInitialized() {
+        this.sharedPreferences.edit().putBoolean(IS_INITIALIZED, true).apply();
     }
 
     public void setGcmTokenSentToServer(boolean wasSentToServer) {

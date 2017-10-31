@@ -38,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set the app as initialized once we get to this activity
         this.preferences = new Preferences(this);
+        this.preferences.setInitialized();
+
         this.squidService = new SquidService(preferences.getSquidEndpoint());
         this.idToken = this.getIntent().getStringExtra(IntentExtras.GOOGLE_ID_TOKEN);
 
