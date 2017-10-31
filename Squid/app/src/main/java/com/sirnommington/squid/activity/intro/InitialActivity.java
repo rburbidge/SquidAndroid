@@ -18,7 +18,7 @@ import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**
  * Shows the Squid logo. If the user is signed in and the application has been initialized, sends the user to the
- * MainActivity. Otherwise, sends the user to the SquidDescription.
+ * MainActivity. Otherwise, sends the user to the SquidDescriptionActivity.
  */
 public class InitialActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class InitialActivity extends AppCompatActivity {
 
         mGoogleApiClient = GoogleSignIn.Create(this);
 
-        // Execute background task to determine if the user is already signed in
+        // Execute background task to determine if the app is initialized and the user is already signed in
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
@@ -52,7 +52,6 @@ public class InitialActivity extends AppCompatActivity {
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-
         if (!result.isSuccess()) {
             Intent signIn = new Intent(this, SignInActivity.class);
             signIn.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);

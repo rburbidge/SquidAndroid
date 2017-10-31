@@ -15,7 +15,7 @@ import com.sirnommington.squid.R;
  */
 public class GoogleSignIn {
 
-    private static final String TAG = "GoogleSignIn";
+    private static final String TAG = GoogleSignIn.class.getSimpleName();
 
     /**
      * Creates a GoogleApiClient for signing in.

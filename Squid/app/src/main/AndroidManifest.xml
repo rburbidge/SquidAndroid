@@ -24,7 +24,6 @@
         <activity android:name=".activity.intro.SignInActivity" />
         <activity android:name=".activity.intro.SquidDescriptionActivity" />
 
-
         <!-- GCM settings -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
