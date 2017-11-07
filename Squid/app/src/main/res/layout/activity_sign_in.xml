@@ -3,11 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in_description"
-        android:layout_centerInParent="true"/>
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:src="@drawable/squid_head"
+            style="@style/IntroImage"/>
+
+        <TextView
+            style="@style/IntroTextPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/sign_in_description"
+            android:textAppearance="@style/IntroTextPrimary"/>
+    </LinearLayout>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"

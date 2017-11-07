@@ -7,16 +7,27 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerInParent="true">
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:src="@drawable/squid_head"
+            style="@style/IntroImage"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/welcome_to_squid_title"/>
+            android:gravity="center"
+            android:text="@string/welcome_to_squid_title"
+            style="@style/IntroTextPrimary"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/welcome_to_squid_subtitle"/>
+            android:gravity="center"
+            android:text="@string/welcome_to_squid_subtitle"
+            style="@style/IntroTextSecondary"/>
     </LinearLayout>
 
     <Button
