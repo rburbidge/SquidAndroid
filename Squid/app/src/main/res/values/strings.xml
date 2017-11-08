@@ -6,7 +6,8 @@
     <string name="get_devices_error">A problem occurred while retrieving your devices :(</string>
     <string name="next">Next</string>
     <string name="select_a_device">Select a device</string>
-    <string name="sign_in_description">Sign in to your Google Account!</string>
+    <string name="sign_in_title">Sign in to your Google account!</string>
+    <string name="sign_in_subtitle">Squid provides a secure experience using Google authentication.</string>
     <string name="welcome_to_squid_title">Welcome to Squid!</string>
     <string name="welcome_to_squid_subtitle">Squid lets you send web pages between your devices!</string>
 </resources>
