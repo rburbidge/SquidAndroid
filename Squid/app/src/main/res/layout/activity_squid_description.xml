@@ -28,7 +28,7 @@
         <Button
             android:id="@+id/next_button"
             android:text="@string/next"
-            style="@style/IntroButtonStyle"/>
+            style="@style/IntroButton"/>
     </RelativeLayout>
 
 </LinearLayout>
