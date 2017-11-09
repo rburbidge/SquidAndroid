@@ -18,4 +18,39 @@
         <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="IntroActivity">
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="IntroImage">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+    <style name="IntroTextPrimary">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+    <style name="IntroTextSecondary" parent="@style/IntroTextPrimary">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+    <style name="IntroButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">200dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
