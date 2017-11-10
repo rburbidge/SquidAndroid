@@ -1,8 +1,9 @@
-package com.sirnommington.squid.activity;
+package com.sirnommington.squid.activity.prefs;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
@@ -11,20 +12,20 @@ import com.sirnommington.squid.services.Preferences;
 /**
  * Developer-specific settings that are hidden from normal users.
  */
-public class DevSettingsActivity extends PreferenceActivity {
+public class DevPreferencesFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.layout.activity_dev_settings);
+        addPreferencesFromResource(R.xml.dev_preferences);
 
-        final PreferenceActivity thiz = this;
+        final Context context = getActivity();
 
         this.findPreference(this.getString(R.string.pref_reset)).setOnPreferenceClickListener(
             new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    new Preferences(thiz).reset();
-                    Toast.makeText(thiz, R.string.dev_settings_reset_complete, Toast.LENGTH_LONG).show();
+                    new Preferences(context).reset();
+                    Toast.makeText(context, R.string.dev_settings_reset_complete, Toast.LENGTH_LONG).show();
                     return true;
                 }
             });
