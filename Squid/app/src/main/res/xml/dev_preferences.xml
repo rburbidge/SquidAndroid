@@ -5,15 +5,19 @@
         android:title="@string/preferences_about">
         <intent android:action="com.sirnommington.squid.activity.prefs.AboutActivity"/>
     </Preference>
-    <ListPreference
-        android:key="@string/pref_squid_endpoint"
-        android:title="@string/dev_settings_squid_endpoint"
-        android:summary="@string/dev_settings_squid_endpoint_summary"
-        android:entries="@array/squid_endpoints"
-        android:entryValues="@array/squid_endpoints"
-        android:defaultValue="@string/default_squid_endpoint"/>
-    <Preference
-        android:key="@string/pref_reset"
-        android:title="@string/dev_settings_reset"
-        android:summary="@string/dev_settings_reset_summary"/>
+    <PreferenceScreen
+        android:title="@string/dev_settings">
+        <ListPreference
+            android:key="@string/pref_squid_endpoint"
+            android:title="@string/dev_settings_squid_endpoint"
+            android:summary="@string/dev_settings_squid_endpoint_summary"
+            android:entries="@array/squid_endpoints"
+            android:entryValues="@array/squid_endpoints"
+            android:defaultValue="@string/default_squid_endpoint"/>
+        <Preference
+            android:key="@string/pref_reset"
+            android:title="@string/dev_settings_reset"
+            android:summary="@string/dev_settings_reset_summary"/>
+    </PreferenceScreen>
+
 </PreferenceScreen>

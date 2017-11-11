@@ -5,12 +5,12 @@ import android.app.Activity;
 
 import com.sirnommington.squid.R;
 
-public class DevPreferencesActivity extends Activity {
+public class PreferencesActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dev_preferences);
+        setContentView(R.layout.activity_preferences);
     }
 
 }

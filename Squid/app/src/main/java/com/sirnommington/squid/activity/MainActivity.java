@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
-import com.sirnommington.squid.activity.prefs.DevPreferencesActivity;
+import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 import com.sirnommington.squid.services.squid.AddDeviceResult;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.dev_options:
-                this.startActivity(new Intent(this, DevPreferencesActivity.class));
+                this.startActivity(new Intent(this, PreferencesActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
