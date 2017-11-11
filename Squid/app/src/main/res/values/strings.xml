@@ -11,6 +11,10 @@
     <string name="dev_settings_squid_endpoint">Squid endpoint</string>
     <string name="dev_settings_squid_endpoint_summary">Change the service endpoint of the app.</string>
 
+    <string name="preferences_about">About</string>
+    <string name="preferences_about_title">Thank you for using Squid!</string>
+    <string name="preferences_about_icons">The app icon was provided by http://game-icons.net under the Creative Commons 3.0 BY license.</string>
+
     <string name="get_devices_error">A problem occurred while retrieving your devices :(</string>
     <string name="next">Next</string>
     <string name="reset_description">Reset app settings. Brings the app back to an uninitialized state.</string>
