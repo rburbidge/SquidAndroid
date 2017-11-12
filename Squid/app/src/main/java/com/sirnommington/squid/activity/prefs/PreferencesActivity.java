@@ -5,6 +5,9 @@ import android.app.Activity;
 
 import com.sirnommington.squid.R;
 
+/**
+ * Shows app settings.
+ */
 public class PreferencesActivity extends Activity {
 
     @Override
