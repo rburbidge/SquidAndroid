@@ -9,6 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".activity.prefs.AboutActivity"
+            android:label="@string/preferences_about">
+            <intent-filter>
+                <action android:name="com.sirnommington.squid.activity.prefs.AboutActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.prefs.PreferencesActivity"/>
         <activity
             android:name=".activity.intro.InitialActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -20,13 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainActivity"/>
         <activity
             android:name=".activity.intro.SignInActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".activity.intro.SquidDescriptionActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <!-- GCM settings -->
         <receiver

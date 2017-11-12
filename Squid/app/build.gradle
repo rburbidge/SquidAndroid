@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.sirnommington.squid"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -28,8 +28,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile "com.google.android.gms:play-services-auth:$GOOGLE_LIB_VER"
     compile "com.google.android.gms:play-services:$GOOGLE_LIB_VER"
@@ -37,8 +35,9 @@ dependencies {
     compile "com.google.firebase:firebase-auth:$GOOGLE_LIB_VER"
     compile "com.google.firebase:firebase-messaging:$GOOGLE_LIB_VER"
 
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.code.gson:gson:2.8.2'
-
     testCompile 'junit:junit:4.12'
 }
 

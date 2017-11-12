@@ -18,6 +18,13 @@
         <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="About">
+        <item name="android:layout_margin">5dp</item>
+    </style>
+    <style name="AboutText">
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
     <style name="IntroActivity">
         <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:layout_width">match_parent</item>
@@ -52,5 +59,4 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:gravity">center</item>
     </style>
-
 </resources>
