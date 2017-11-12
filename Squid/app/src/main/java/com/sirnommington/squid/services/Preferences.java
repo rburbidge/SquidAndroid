@@ -28,7 +28,11 @@ public class Preferences {
         this.sharedPreferences.edit().clear().apply();
     }
 
-    public boolean getIsInitialized() {
+    public boolean blockNotifications() {
+        return this.sharedPreferences.getBoolean(this.context.getString(R.string.pref_block_notifications), false);
+    }
+
+    public boolean isInitialized() {
         return this.sharedPreferences.getBoolean(IS_INITIALIZED, false);
     }
 
@@ -45,7 +49,7 @@ public class Preferences {
     }
 
     /**
-     * Helper for getting preferences using string resource IDs.
+     * Helper for getting string preferences using string resource IDs.
      */
     private String getPreference(int key, int defaultValue) {
         return this.sharedPreferences.getString(

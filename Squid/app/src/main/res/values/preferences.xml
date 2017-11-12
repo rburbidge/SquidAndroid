@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_block_notifications">blockNotifications</string>
     <string name="pref_squid_endpoint">squidEndpoint</string>
     <string name="pref_reset">reset</string>
 </resources>
