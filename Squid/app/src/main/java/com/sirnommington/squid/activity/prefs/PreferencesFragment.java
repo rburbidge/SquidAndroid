@@ -1,7 +1,6 @@
 package com.sirnommington.squid.activity.prefs;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
