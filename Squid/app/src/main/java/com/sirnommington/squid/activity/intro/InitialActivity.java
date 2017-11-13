@@ -37,7 +37,7 @@ public class InitialActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(String... params) {
                 Preferences preferences = new Preferences(thiz);
-                if(!preferences.getIsInitialized()) {
+                if(!preferences.isInitialized()) {
                     Intent squidDescription = new Intent(thiz, SquidDescriptionActivity.class);
                     squidDescription.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
                     thiz.startActivity(squidDescription);
