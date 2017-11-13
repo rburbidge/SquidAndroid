@@ -28,6 +28,10 @@ public class Preferences {
         this.sharedPreferences.edit().clear().apply();
     }
 
+    /**
+     * Whether or not the user has blocked received commands/data from being acted upon.
+     * Used in the case where the user is being spammed be someone on another device that is logged into their account.
+     */
     public boolean blockNotifications() {
         return this.sharedPreferences.getBoolean(this.context.getString(R.string.pref_block_notifications), false);
     }
