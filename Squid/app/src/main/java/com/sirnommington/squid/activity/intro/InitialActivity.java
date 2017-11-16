@@ -5,13 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.sirnommington.squid.R;
-import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.MainActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
@@ -23,20 +17,19 @@ import com.sirnommington.squid.services.google.GoogleSignIn;
 public class InitialActivity extends AppCompatActivity {
 
     private final InitialActivity thiz = this;
-    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
 
-        mGoogleApiClient = GoogleSignIn.Create(this);
-
         // Execute background task to determine if the app is initialized and the user is already signed in
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
-                Preferences preferences = new Preferences(thiz);
+                final Preferences preferences = new Preferences(thiz);
+
+                // 1. If the app has never been opened, then start the description activity
                 if(!preferences.isInitialized()) {
                     Intent squidDescription = new Intent(thiz, SquidDescriptionActivity.class);
                     squidDescription.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
@@ -44,27 +37,21 @@ public class InitialActivity extends AppCompatActivity {
                     return null;
                 }
 
-                OptionalPendingResult<GoogleSignInResult> pendingResult = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-                handleSignInResult(pendingResult.await());
+                // 2. The user has started the app, but hasn't completed sign-in before. Open the sign-in activity
+                final String idToken = GoogleSignIn.silentSignIn(thiz);
+                if(idToken == null) {
+                    final Intent signIn = new Intent(thiz, SignInActivity.class);
+                    signIn.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
+                    thiz.startActivity(signIn);
+                    return null;
+                }
+
+                // 3. The user has signed-in and initialized the app before. Send them to the main activity
+                final Intent main = new Intent(thiz, MainActivity.class);
+                main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
+                thiz.startActivity(main);
                 return null;
             }
         }.execute();
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        if (!result.isSuccess()) {
-            Intent signIn = new Intent(this, SignInActivity.class);
-            signIn.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
-            this.startActivity(signIn);
-            return;
-        }
-
-        // Start the main activity, and close the current one
-        // Pass the user's server token to the main activity
-        GoogleSignInAccount account = result.getSignInAccount();
-        Intent main = new Intent(this, MainActivity.class);
-        main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
-        main.putExtra(IntentExtras.GOOGLE_ID_TOKEN, account.getIdToken());
-        this.startActivity(main);
     }
 }

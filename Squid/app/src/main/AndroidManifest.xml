@@ -9,13 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".activity.intro.AddDeviceActivity">
+        </activity>
         <activity
             android:name=".activity.prefs.AboutActivity"
             android:label="@string/preferences_about">
             <intent-filter>
-                <action android:name="com.sirnommington.squid.activity.prefs.AboutActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.sirnommington.squid.activity.prefs.AboutActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity android:name=".activity.prefs.PreferencesActivity"/>

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.android.gms.fitness.data.Device;
+import com.google.gson.Gson;
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.services.squid.DeviceModel;
 
 /**
  * Application preferences. A simple wrapper around Android SharedPreferences.
@@ -12,6 +15,7 @@ import com.sirnommington.squid.R;
 public class Preferences {
     private static final String IS_INITIALIZED = "isInitialized";
     private static final String SENT_GCM_TOKEN_TO_SERVER = "sentGcmTokenToServer";
+    private static final String THIS_DEVICE= "thisDevice";
 
     private final Context context;
     private final SharedPreferences sharedPreferences;
@@ -50,6 +54,19 @@ public class Preferences {
 
     public String getSquidEndpoint() {
         return getPreference(R.string.pref_squid_endpoint, R.string.default_squid_endpoint);
+    }
+
+    public DeviceModel getThisDevice() {
+        final String jsonString = this.sharedPreferences.getString(THIS_DEVICE, null);
+        if(jsonString == null) return null;
+
+        final Gson gson = new Gson();
+        return gson.fromJson(jsonString, DeviceModel.class);
+    }
+
+    public void setThisDevice(DeviceModel device) {
+        final Gson gson = new Gson();
+        this.sharedPreferences.edit().putString(THIS_DEVICE, gson.toJson(device, DeviceModel.class)).apply();
     }
 
     /**
