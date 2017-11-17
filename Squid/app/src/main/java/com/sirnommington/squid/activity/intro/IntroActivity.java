@@ -2,10 +2,12 @@ package com.sirnommington.squid.activity.intro;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.MainActivity;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**
@@ -34,6 +36,12 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
 
     public void signInComplete() {
         this.replaceBottomFragment(new AddDeviceFragment());
+    }
+
+    public void addDeviceComplete() {
+        final Intent main = new Intent(this, MainActivity.class);
+        main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
+        this.startActivity(main);
     }
 
     private void replaceBottomFragment(Fragment fragment) {

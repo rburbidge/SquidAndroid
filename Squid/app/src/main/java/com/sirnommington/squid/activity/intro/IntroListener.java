@@ -13,4 +13,9 @@ public interface IntroListener {
      * User has completed signing-in on sign-in fragment.
      */
     void signInComplete();
+
+    /**
+     * User has completed adding their device.
+     */
+    void addDeviceComplete();
 }

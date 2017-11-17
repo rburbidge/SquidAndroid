@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.Actions;
 import com.sirnommington.squid.activity.IntentExtras;
-import com.sirnommington.squid.activity.MainActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
 import com.sirnommington.squid.services.google.GoogleSignIn;
@@ -93,9 +92,7 @@ public class AddDeviceFragment extends Fragment {
                 Toast.makeText(thiz.getActivity(), message, Toast.LENGTH_LONG).show();
 
                 if(result != null) {
-                    final Intent main = new Intent(thiz.getActivity(), MainActivity.class);
-                    main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
-                    thiz.startActivity(main);
+                    ((IntroListener) getActivity()).addDeviceComplete();
                 }
             }
         }.execute();
