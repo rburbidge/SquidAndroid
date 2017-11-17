@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private final MainActivity thiz = this;
 
     private Preferences preferences;
+    private GoogleSignIn googleSignIn;
     private SquidService squidService;
 
     @Override
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         this.preferences = new Preferences(this);
         this.preferences.setInitialized();
 
+        this.googleSignIn = new GoogleSignIn(this);
         this.squidService = new SquidService(preferences.getSquidEndpoint());
 
         this.refreshDevices();
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
                 try {
-                    final String idToken = GoogleSignIn.silentSignIn(thiz);
+                    final String idToken = googleSignIn.silentSignIn();
                     return new AsyncResponse(thiz.squidService.getDevices(idToken), null);
                 } catch(Exception e) {
                     return null;

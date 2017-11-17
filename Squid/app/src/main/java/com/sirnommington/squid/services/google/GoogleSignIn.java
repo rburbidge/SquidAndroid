@@ -1,5 +1,7 @@
 package com.sirnommington.squid.services.google;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -18,13 +20,25 @@ import com.sirnommington.squid.R;
  */
 public class GoogleSignIn {
 
+    public static int SIGN_IN_REQUEST_CODE = 1;
+
     private static final String TAG = GoogleSignIn.class.getSimpleName();
+
+    private final GoogleApiClient googleApiClient;
+
+    /**
+     * Constructor.
+     * @param activity The activity from which the user is being silently signed-in.
+     */
+    public GoogleSignIn(FragmentActivity activity) {
+        this.googleApiClient = create(activity);
+    }
 
     /**
      * Creates a GoogleApiClient for signing in.
      * @param activity The activity in which to sign-in.
      */
-    public static GoogleApiClient Create(FragmentActivity activity) {
+    private static GoogleApiClient create(FragmentActivity activity) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(activity.getResources().getString(R.string.outh_client_id))
                 .build();
@@ -40,13 +54,20 @@ public class GoogleSignIn {
     }
 
     /**
+     * Signs the user in. The calling fragment must implement onActivityResult()
+     * @param fragment
+     */
+    public void signIn(Fragment fragment) {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        fragment.startActivityForResult(signInIntent, SIGN_IN_REQUEST_CODE);
+    }
+
+    /**
      * Silently signs the user in, returning the ID token; null if the user has not already signed in.
-     * @param activity The activity from which the user is being silently signed-in.
      * @return The ID token, or null.
      */
-    public static String silentSignIn(FragmentActivity activity) {
-        final GoogleApiClient googleApiClient = Create(activity);
-        final OptionalPendingResult<GoogleSignInResult> pendingResult = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+    public String silentSignIn() {
+        final OptionalPendingResult<GoogleSignInResult> pendingResult = Auth.GoogleSignInApi.silentSignIn(this.googleApiClient);
         final GoogleSignInResult result = pendingResult.await();
 
         // Silent sign-in was not successful

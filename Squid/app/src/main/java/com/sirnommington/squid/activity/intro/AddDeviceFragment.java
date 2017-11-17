@@ -8,9 +8,7 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,16 +29,16 @@ import org.json.JSONException;
 import java.io.IOException;
 
 public class AddDeviceFragment extends Fragment {
-    private static final String TAG = AddDeviceFragment.class.getSimpleName();
-
     private final AddDeviceFragment thiz = this;
 
+    private GoogleSignIn googleSignIn;
     private boolean isReceiverRegistered;
     private BroadcastReceiver registrationBroadcastReceiver;
     private SquidService squidService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.googleSignIn = ((GoogleSignInProvider) this.getActivity()).getGoogleSignIn();
         final Preferences prefs = new Preferences(this.getActivity());
         this.squidService = new SquidService(prefs.getSquidEndpoint());
 
@@ -69,7 +67,7 @@ public class AddDeviceFragment extends Fragment {
         new AsyncTask<String, Void, AddDeviceResult>() {
             @Override
             protected AddDeviceResult doInBackground(String... params) {
-                final String idToken = GoogleSignIn.silentSignIn((FragmentActivity) thiz.getActivity());
+                final String idToken = googleSignIn.silentSignIn();
                 try {
                     return thiz.squidService.addDevice(idToken, Build.MODEL, gcmToken);
                 } catch(IOException e) {

@@ -2,21 +2,22 @@ package com.sirnommington.squid.activity.intro;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sirnommington.squid.R;
-import com.sirnommington.squid.services.Preferences;
+import com.sirnommington.squid.services.google.GoogleSignIn;
 
-public class IntroActivity extends AppCompatActivity implements IntroListener {
-    Preferences preferences;
+public class IntroActivity extends AppCompatActivity implements IntroListener, GoogleSignInProvider {
+
+    private GoogleSignIn googleSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        this.preferences = new Preferences(this);
+
+        this.googleSignIn = new GoogleSignIn(this);
 
         final DescriptionFragment fragment = new DescriptionFragment();
         final FragmentTransaction tx = getFragmentManager().beginTransaction();
@@ -36,5 +37,9 @@ public class IntroActivity extends AppCompatActivity implements IntroListener {
         final FragmentTransaction tx = getFragmentManager().beginTransaction();
         tx.replace(R.id.intro_content, fragment, fragment.getClass().getSimpleName());
         tx.commit();
+    }
+
+    public GoogleSignIn getGoogleSignIn() {
+        return this.googleSignIn;
     }
 }

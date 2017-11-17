@@ -17,11 +17,13 @@ import com.sirnommington.squid.services.google.GoogleSignIn;
 public class InitialActivity extends AppCompatActivity {
 
     private final InitialActivity thiz = this;
+    private GoogleSignIn googleSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
+        this.googleSignIn = new GoogleSignIn(this);
 
         // Execute background task to determine if the app is initialized and the user is already signed in
         new AsyncTask<String, Void, String>() {
@@ -30,7 +32,7 @@ public class InitialActivity extends AppCompatActivity {
                 final Preferences preferences = new Preferences(thiz);
 
                 // If the app has never been opened or the user is not signed in, then start the intro activity
-                if(!preferences.isInitialized() || GoogleSignIn.silentSignIn(thiz) == null) {
+                if(!preferences.isInitialized() || googleSignIn.silentSignIn() == null) {
                     Intent squidDescription = new Intent(thiz, IntroActivity.class);
                     squidDescription.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
                     thiz.startActivity(squidDescription);
