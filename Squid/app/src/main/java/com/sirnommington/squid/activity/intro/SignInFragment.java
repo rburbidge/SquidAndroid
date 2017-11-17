@@ -1,9 +1,12 @@
 package com.sirnommington.squid.activity.intro;
 
+import android.app.Fragment;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -11,23 +14,24 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
-/**
- * Lets the user sign into the application using their Google account.
- */
-public class SignInActivity extends AppCompatActivity {
+public class SignInFragment extends Fragment {
 
     private static int SIGN_IN_REQUEST_CODE = 1;
 
     private GoogleApiClient googleApiClient;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+    }
 
-        this.googleApiClient = GoogleSignIn.Create(this);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+        final FragmentActivity activity = (FragmentActivity) this.getActivity();
+        this.googleApiClient = GoogleSignIn.Create(activity);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(view.getId() == R.id.sign_in_button) {
@@ -36,6 +40,8 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
+
+        return view;
     }
 
     @Override
@@ -53,11 +59,6 @@ public class SignInActivity extends AppCompatActivity {
             return;
         }
 
-        // Start the main activity, and close the current one
-        // Pass the user's ID token to the main activity
-        final Intent signedIn = new Intent(this, AddDeviceActivity.class);
-        signedIn.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
-        this.startActivity(signedIn);
-        this.finish();
+        ((IntroListener)this.getActivity()).signInComplete();
     }
 }

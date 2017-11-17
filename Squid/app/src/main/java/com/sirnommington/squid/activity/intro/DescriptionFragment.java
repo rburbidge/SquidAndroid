@@ -1,0 +1,28 @@
+package com.sirnommington.squid.activity.intro;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.sirnommington.squid.R;
+
+public class DescriptionFragment extends Fragment {
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_description, container, false);
+
+        view.findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.getId() == R.id.next_button) {
+                    ((IntroListener)getActivity()).descriptionComplete();
+                }
+            }
+        });
+
+        return view;
+    }
+
+}

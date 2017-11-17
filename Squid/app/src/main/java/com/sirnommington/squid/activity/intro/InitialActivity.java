@@ -12,7 +12,7 @@ import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**
  * Shows the Squid logo. If the user is signed in and the application has been initialized, sends the user to the
- * MainActivity. Otherwise, sends the user to the SquidDescriptionActivity.
+ * MainActivity. Otherwise, sends the user to the IntroActivity.
  */
 public class InitialActivity extends AppCompatActivity {
 
@@ -29,24 +29,15 @@ public class InitialActivity extends AppCompatActivity {
             protected String doInBackground(String... params) {
                 final Preferences preferences = new Preferences(thiz);
 
-                // 1. If the app has never been opened, then start the description activity
-                if(!preferences.isInitialized()) {
-                    Intent squidDescription = new Intent(thiz, SquidDescriptionActivity.class);
+                // If the app has never been opened or the user is not signed in, then start the intro activity
+                if(!preferences.isInitialized() || GoogleSignIn.silentSignIn(thiz) == null) {
+                    Intent squidDescription = new Intent(thiz, IntroActivity.class);
                     squidDescription.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
                     thiz.startActivity(squidDescription);
                     return null;
                 }
 
-                // 2. The user has started the app, but hasn't completed sign-in before. Open the sign-in activity
-                final String idToken = GoogleSignIn.silentSignIn(thiz);
-                if(idToken == null) {
-                    final Intent signIn = new Intent(thiz, SignInActivity.class);
-                    signIn.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
-                    thiz.startActivity(signIn);
-                    return null;
-                }
-
-                // 3. The user has signed-in and initialized the app before. Send them to the main activity
+                // The user has signed-in and initialized the app before. Start the main activity
                 final Intent main = new Intent(thiz, MainActivity.class);
                 main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
                 thiz.startActivity(main);
