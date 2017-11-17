@@ -25,19 +25,6 @@
         <item name="android:layout_marginTop">10dp</item>
     </style>
 
-    <style name="IntroActivity">
-        <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-    <style name="IntroImage">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-    </style>
     <style name="IntroTextPrimary">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

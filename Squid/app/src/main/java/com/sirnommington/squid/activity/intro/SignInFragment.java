@@ -12,6 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
+/**
+ * Signs the user in with Google sign-in.
+ */
 public class SignInFragment extends Fragment implements View.OnClickListener {
 
     private GoogleSignIn googleSignIn;

@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
+/**
+ * Shows an intro flow to the user, include sign-in, device registration, etc.
+ */
 public class IntroActivity extends AppCompatActivity implements IntroListener, GoogleSignInProvider {
 
     private GoogleSignIn googleSignIn;

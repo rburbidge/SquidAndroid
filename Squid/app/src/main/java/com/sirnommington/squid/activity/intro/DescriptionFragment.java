@@ -8,21 +8,21 @@ import android.view.ViewGroup;
 
 import com.sirnommington.squid.R;
 
-public class DescriptionFragment extends Fragment {
+/**
+ * Describes the app.
+ */
+public class DescriptionFragment extends Fragment implements View.OnClickListener {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_description, container, false);
-
-        view.findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(view.getId() == R.id.next_button) {
-                    ((IntroListener)getActivity()).descriptionComplete();
-                }
-            }
-        });
-
+        view.findViewById(R.id.next_button).setOnClickListener(this);
         return view;
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.next_button) {
+            ((IntroListener)getActivity()).descriptionComplete();
+        }
+    }
 }

@@ -14,7 +14,6 @@
             android:label="@string/preferences_about">
             <intent-filter>
                 <action android:name="com.sirnommington.squid.activity.prefs.AboutActivity"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

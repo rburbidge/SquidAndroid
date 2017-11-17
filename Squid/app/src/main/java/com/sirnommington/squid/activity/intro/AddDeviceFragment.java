@@ -28,6 +28,9 @@ import org.json.JSONException;
 
 import java.io.IOException;
 
+/**
+ * Retrieves the GCM token for the user and registers their device with the service.
+ */
 public class AddDeviceFragment extends Fragment {
     private final AddDeviceFragment thiz = this;
 
