@@ -46,6 +46,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
 
     private void replaceBottomFragment(Fragment fragment) {
         final FragmentTransaction tx = getFragmentManager().beginTransaction();
+        tx.setCustomAnimations(R.animator.intro_enter, R.animator.intro_exit);
         tx.replace(R.id.intro_content, fragment, fragment.getClass().getSimpleName());
         tx.commit();
     }
