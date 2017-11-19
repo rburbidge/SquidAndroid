@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.Actions;
 import com.sirnommington.squid.activity.IntentExtras;
+import com.sirnommington.squid.activity.common.Delay;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
 import com.sirnommington.squid.services.google.GoogleSignIn;
@@ -69,14 +70,22 @@ public class AddDeviceFragment extends Fragment {
         new AsyncTask<String, Void, AddDeviceResult>() {
             @Override
             protected AddDeviceResult doInBackground(String... params) {
-                final String idToken = googleSignIn.silentSignIn();
-                try {
-                    return thiz.squidService.addDevice(idToken, Build.MODEL, gcmToken);
-                } catch(IOException e) {
-                    return null;
-                } catch(JSONException e) {
-                    return null;
-                }
+                // Delay the add device operation to a minimum of 3s so that the fragment doesn't disappear too quickly
+                final int minMillisToAddDevice = 3000;
+                return Delay.delay(new Delay.Run<AddDeviceResult>() {
+                    @Override
+                    public AddDeviceResult run() {
+                        // TODO Re-examine how exceptions are handled. Currently just return null to indicate error
+                        final String idToken = googleSignIn.silentSignIn();
+                        try {
+                            return thiz.squidService.addDevice(idToken, Build.MODEL, gcmToken);
+                        } catch (IOException e) {
+                            return null;
+                        } catch (JSONException e) {
+                            return null;
+                        }
+                    }
+                }, minMillisToAddDevice);
             }
 
             @Override
