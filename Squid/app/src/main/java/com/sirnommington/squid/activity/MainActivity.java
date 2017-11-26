@@ -63,17 +63,7 @@ public class MainActivity extends AppCompatActivity {
      * Refreshes the list of devices.
      */
     private void refreshDevices() {
-        new AsyncTask<Void, Void, AsyncResponse<Collection<DeviceModel>>>() {
-            @Override
-            protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
-                try {
-                    final String idToken = googleSignIn.silentSignIn();
-                    return new AsyncResponse(thiz.squidService.getDevices(idToken), null);
-                } catch(Exception e) {
-                    return null;
-                }
-            }
-
+        new GetDevicesTask(this.googleSignIn, this.squidService) {
             @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
                 super.onPostExecute(response);
