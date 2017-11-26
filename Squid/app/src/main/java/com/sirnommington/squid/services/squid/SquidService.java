@@ -98,6 +98,13 @@ public class SquidService {
         return null;
     }
 
+    public void sendUrl(String idToken, String deviceId, String url) throws JSONException, IOException {
+        final JSONObject body = new JSONObject();
+        body.put("url", url);
+
+        this.sendRequest(idToken, "POST", "/api/devices/" + deviceId + "/commands", body, null);
+    }
+
     /**
      * An HTTP Response.
      * @param <TBody> The body type.
