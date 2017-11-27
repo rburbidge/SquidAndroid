@@ -77,8 +77,6 @@ public class ShareLinkActivity extends AppCompatActivity {
                     squidService.sendUrl(accessToken, device.id, url);
 
                 } catch (Exception e) {
-                    int i = 0;
-                    i++;
                     // TODO Show error
                 }
                 return null;

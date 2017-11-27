@@ -39,7 +39,7 @@ public class DevicesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final View deviceView = inflater.inflate(R.layout.list_item_device, parent, false);
+        final View deviceView = inflater.inflate(R.layout.grid_item_device, parent, false);
         final TextView deviceName = deviceView.findViewById(R.id.device_name);
         deviceName.setText(this.devices.get(position).name);
         return deviceView;
