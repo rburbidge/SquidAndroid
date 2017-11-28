@@ -2,4 +2,6 @@
 <resources>
     <dimen name="device_padding">10dp</dimen>
     <dimen name="device_padding_horizontal">20dp</dimen>
+    <dimen name="grid_device_image_size">100dp</dimen>
+    <dimen name="grid_device_title_padding">20dp</dimen>
 </resources>
