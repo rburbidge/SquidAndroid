@@ -4,15 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/select_a_device"/>
-
     <GridView
         android:id="@+id/devices"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:numColumns="2">
+        android:layout_height="wrap_content"
+        android:numColumns="2"
+        android:background="@color/colorPrimaryDark">
     </GridView>
 </LinearLayout>

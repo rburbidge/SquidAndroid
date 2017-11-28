@@ -33,7 +33,8 @@
         </activity>
         <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.prefs.PreferencesActivity"/>
-        <activity android:name=".activity.ShareLinkActivity">
+        <activity android:name=".activity.ShareLinkActivity"
+            android:label="@string/select_a_device">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

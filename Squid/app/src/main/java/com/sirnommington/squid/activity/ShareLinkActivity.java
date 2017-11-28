@@ -44,8 +44,19 @@ public class ShareLinkActivity extends AppCompatActivity {
         devices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final DeviceModel device = (DeviceModel) devicesAdapter.getItem(position);
-                sendLink(device);
+                final int viewType = devicesAdapter.getItemViewType(position);
+                switch(viewType) {
+                    case DevicesAdapter.VIEW_TYPE_DEVICE:
+                        final DeviceModel device = (DeviceModel) devicesAdapter.getItem(position);
+                        sendLink(device);
+                        break;
+                    case DevicesAdapter.VIEW_TYPE_ADD_DEVICE:
+                        // Show AddOtherDevice activity
+                        break;
+                    default:
+
+                }
+
             }
         });
 
