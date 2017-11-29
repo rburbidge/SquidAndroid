@@ -21,6 +21,8 @@
     <string name="preferences_block_notifications">Block received web pages</string>
     <string name="preferences_block_notifications_summary">Prevent the app from launching the browser when a page is received from another device.</string>
 
+    <string name="share_link_error">A problem occurred while sending to %1$s. Please try again.</string>
+
     <!-- TODO Unorganized strings-->
     <string name="app_name">Squid</string>
     <string name="add_a_device">Add a device</string>

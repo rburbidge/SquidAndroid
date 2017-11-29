@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -21,6 +22,10 @@ import java.util.Collection;
  * Handles the share link command from Chrome browser.
  */
 public class ShareLinkActivity extends AppCompatActivity {
+    private static final String TAG = ShareLinkActivity.class.getSimpleName();
+
+    final ShareLinkActivity thiz = this;
+
     private GoogleSignIn googleSignIn;
     private SquidService squidService;
     private DevicesAdapter devicesAdapter;
@@ -54,24 +59,26 @@ public class ShareLinkActivity extends AppCompatActivity {
                         // Show AddOtherDevice activity
                         break;
                     default:
-
+                        // TODO Log this error in telemetry
+                        Log.e(TAG, "OnItemClickListener cannot handle view type: " + viewType);
                 }
-
             }
         });
 
         this.getDevices();
     }
 
+    /**
+     * Retrieves the user's devices from the server.
+     * TODO Cache the user's devices on the device so that they show up faster.
+     */
     private void getDevices() {
-        final ShareLinkActivity thiz = this;
-
         new GetDevicesTask(this.googleSignIn, this.squidService) {
             @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
                 super.onPostExecute(response);
                 if(response.error != null) {
-                    Toast.makeText(thiz, getResources().getString(R.string.get_devices_error), Toast.LENGTH_LONG);
+                    showError(getResources().getString(R.string.get_devices_error));
                 } else {
                     thiz.devicesAdapter.setDevices(response.payload);
                 }
@@ -79,6 +86,9 @@ public class ShareLinkActivity extends AppCompatActivity {
         }.execute();
     }
 
+    /**
+     * Sends the URL to the device specified, and then closes the activity.
+     */
     private void sendLink(final DeviceModel device) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -86,12 +96,19 @@ public class ShareLinkActivity extends AppCompatActivity {
                 final String accessToken = googleSignIn.silentSignIn();
                 try {
                     squidService.sendUrl(accessToken, device.id, url);
-
+                    finish();
                 } catch (Exception e) {
-                    // TODO Show error
+                    showError(getResources().getString(R.string.share_link_error, device.name));
                 }
                 return null;
             }
         }.execute();
+    }
+
+    /**
+     * Shows an error message to the user.
+     */
+    private void showError(String error) {
+        Toast.makeText(thiz, error, Toast.LENGTH_LONG).show();
     }
 }
