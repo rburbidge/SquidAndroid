@@ -80,7 +80,7 @@ public class DevicesAdapter extends BaseAdapter {
         switch(viewType) {
             case VIEW_TYPE_DEVICE:
                 title = this.devices.get(position).name;
-                imageResourceId = R.drawable.ic_phone_android_black_24dp;
+                imageResourceId = R.drawable.ic_phone_android_black_100dp;
                 break;
             case VIEW_TYPE_ADD_DEVICE:
                 title = this.addDeviceTitle;

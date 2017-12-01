@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_phone_android_black_24dp"
+        android:src="@drawable/ic_phone_android_black_100dp"
         android:tint="@color/textPrimary"/>
 
     <TextView
