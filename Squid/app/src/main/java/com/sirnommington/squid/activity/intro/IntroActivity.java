@@ -42,6 +42,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
         final Intent main = new Intent(this, MainActivity.class);
         main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
         this.startActivity(main);
+        this.finish();
     }
 
     private void replaceBottomFragment(Fragment fragment) {
