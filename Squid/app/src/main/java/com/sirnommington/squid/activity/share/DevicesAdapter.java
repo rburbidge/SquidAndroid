@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity;
+package com.sirnommington.squid.activity.share;
 
 import android.content.Context;
 import android.view.LayoutInflater;

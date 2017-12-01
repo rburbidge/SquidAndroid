@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.common.AsyncResponse;
+import com.sirnommington.squid.activity.common.GetDevicesTask;
 import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;

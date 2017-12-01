@@ -1,9 +1,12 @@
-package com.sirnommington.squid.activity;
+package com.sirnommington.squid.activity.common;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+/**
+ * A linear layout that will maintain a 1:1 HxW ratio.
+ */
 public class SquareLinearLayout extends LinearLayout {
     public SquareLinearLayout(Context context) {
         super(context);

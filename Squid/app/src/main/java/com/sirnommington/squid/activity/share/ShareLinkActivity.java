@@ -1,6 +1,5 @@
-package com.sirnommington.squid.activity;
+package com.sirnommington.squid.activity.share;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,10 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.IntentExtras;
+import com.sirnommington.squid.activity.common.AsyncResponse;
+import com.sirnommington.squid.activity.common.GetDevicesTask;
+import com.sirnommington.squid.activity.common.ActivityHelper;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;
@@ -19,7 +22,7 @@ import com.sirnommington.squid.services.squid.SquidService;
 import java.util.Collection;
 
 /**
- * Handles the share link command from Chrome browser.
+ * Allows the user to send a URL to another device.
  */
 public class ShareLinkActivity extends AppCompatActivity {
     private static final String TAG = ShareLinkActivity.class.getSimpleName();
@@ -35,7 +38,7 @@ public class ShareLinkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.url = this.getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        this.url = ActivityHelper.getStringExtra(this, TAG, IntentExtras.URL);
 
         final Preferences preferences = new Preferences(this);
         this.googleSignIn = new GoogleSignIn(this);

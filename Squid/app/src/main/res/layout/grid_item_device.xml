@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sirnommington.squid.activity.SquareLinearLayout
+<com.sirnommington.squid.activity.common.SquareLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/border_device"
-    tools:context=".activity.ShareLinkActivity">
+    tools:context=".activity.share.ShareLinkActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,4 +30,4 @@
             android:textColor="@color/textPrimary"
             tools:text="Nexus 5X"/>
     </RelativeLayout>
-</com.sirnommington.squid.activity.SquareLinearLayout>
+</com.sirnommington.squid.activity.common.SquareLinearLayout>

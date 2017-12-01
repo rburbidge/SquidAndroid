@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity;
+package com.sirnommington.squid.activity.common;
 
 import android.os.AsyncTask;
 
