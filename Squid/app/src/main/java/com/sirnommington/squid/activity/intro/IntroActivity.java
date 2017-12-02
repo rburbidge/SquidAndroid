@@ -7,11 +7,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.MainActivity;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**
  * Shows an intro flow to the user, include sign-in, device registration, etc.
+ *
+ * Callers can deep-link into a specific intro step. E.g.:
+ * <pre>
+ * Intent intent = new Intent(this, IntroActivity.class);
+ * intent.putExtra(IntentExtras.INTRO_STEP, IntroSteps.SIGN_IN);
+ * this.startActivity(intent);
+ * </pre>
  */
 public class IntroActivity extends AppCompatActivity implements IntroListener, GoogleSignInProvider {
 
@@ -24,10 +32,31 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
 
         this.googleSignIn = new GoogleSignIn(this);
 
-        final DescriptionFragment fragment = new DescriptionFragment();
+        final Fragment fragment = this.getInitialIntroFragment();
         final FragmentTransaction tx = getFragmentManager().beginTransaction();
         tx.add(R.id.intro_content, fragment, fragment.getClass().getSimpleName());
         tx.commit();
+    }
+
+    /**
+     * Gets the initial fragment for the intro activity based on the IntentExtras.INTRO_STEP intent parameter.
+     * The default is DescriptionFragment.
+     * @return The fragment that should launch the said activity.
+     * @throws IllegalArgumentException if the intro step has not been mapped to an intro fragment.
+     */
+    private Fragment getInitialIntroFragment() {
+        final int introStep = this.getIntent().getIntExtra(IntentExtras.INTRO_STEP, IntroStep.DESCRIPTION);
+        switch(introStep) {
+            case IntroStep.DESCRIPTION:
+                return new DescriptionFragment();
+            case IntroStep.SIGN_IN:
+                return new SignInFragment();
+            case IntroStep.ADD_DEVICE:
+                return new AddDeviceFragment();
+        }
+        throw new IllegalArgumentException(String.format(
+                "Unhandled %0=%1. Did you add your intro fragment to getStepFragment()?",
+                IntentExtras.INTRO_STEP, introStep));
     }
 
     public void descriptionComplete() {

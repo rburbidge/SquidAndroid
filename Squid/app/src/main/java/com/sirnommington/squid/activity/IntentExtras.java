@@ -5,5 +5,6 @@ package com.sirnommington.squid.activity;
  */
 public class IntentExtras {
     public static final String GCM_TOKEN = "gcmToken";
+    public static final String INTRO_STEP = "introStep";
     public static final String URL = "url";
 }
