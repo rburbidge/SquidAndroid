@@ -65,6 +65,7 @@ public class GoogleSignIn {
     /**
      * Silently signs the user in, returning the ID token; null if the user has not already signed in.
      * @return The ID token, or null.
+     * @throws IllegalStateException if called on the UI thread (due to use of await())
      */
     public String silentSignIn() {
         final OptionalPendingResult<GoogleSignInResult> pendingResult = Auth.GoogleSignInApi.silentSignIn(this.googleApiClient);
