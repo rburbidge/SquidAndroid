@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sirnommington.squid.activity.prefs.AboutActivity"
     android:orientation="vertical"
-    style="@style/About">
+    tools:context="com.sirnommington.squid.activity.prefs.AboutActivity"
+    style="@style/SquidActivity">
 
     <TextView
         android:layout_width="match_parent"
