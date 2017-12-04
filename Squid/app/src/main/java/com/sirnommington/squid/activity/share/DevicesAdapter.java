@@ -14,9 +14,12 @@ import com.sirnommington.squid.services.squid.DeviceModel;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Adapter that includes the user's devices, as well as an add device item.
+ */
 public class DevicesAdapter extends BaseAdapter {
     /**
-     * The following are view type parameters.
+     * The following are view types.
      * **When adding a new view type, change COUNT_VIEW_TYPES to refer to <latest view type> + 1**
      */
     public static final int VIEW_TYPE_DEVICE = 0;
@@ -96,9 +99,13 @@ public class DevicesAdapter extends BaseAdapter {
         return itemView;
     }
 
-    public void setDevices(Collection<DeviceModel> payload) {
+    /**
+     * Updates the adapter's set of devices, and notifies all users of the adapter.
+     * @param devices The new set of devices.
+     */
+    public void setDevices(Collection<DeviceModel> devices) {
         this.devices.clear();
-        this.devices.addAll(payload);
+        this.devices.addAll(devices);
         this.notifyDataSetChanged();
     }
 }

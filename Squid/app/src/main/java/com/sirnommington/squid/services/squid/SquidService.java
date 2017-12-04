@@ -63,9 +63,9 @@ public class SquidService {
      * Removes a device.
      * @param idToken The Google OAuth ID token for the user.
      * @param deviceId The
-     * @return
-     * @throws IOException
-     * @throws JSONException
+     * @return True if the device was successfully removed.
+     * @throws IOException If there is an issue sending the request.
+     * @throws JSONException If there is an issue parsing the response.
      */
     public boolean removeDevice(String idToken, String deviceId) throws IOException, JSONException {
         final HttpResponse response = this.sendRequest(idToken, "DELETE", "api/devices/" + deviceId, null, null);
@@ -98,6 +98,14 @@ public class SquidService {
         return null;
     }
 
+    /**
+     * Sends the URL to a device.
+     * @param idToken The Google OAuth ID token for the user.
+     * @param deviceId The recipient device ID.
+     * @param url The URL to send.
+     * @throws IOException If there is an issue sending the request.
+     * @throws JSONException If there is an issue parsing the response.
+     */
     public void sendUrl(String idToken, String deviceId, String url) throws JSONException, IOException {
         final JSONObject body = new JSONObject();
         body.put("url", url);

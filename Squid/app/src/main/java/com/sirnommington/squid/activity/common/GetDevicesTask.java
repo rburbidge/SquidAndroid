@@ -8,6 +8,9 @@ import com.sirnommington.squid.services.squid.SquidService;
 
 import java.util.Collection;
 
+/**
+ * Retrieves the user's devices.
+ */
 public class GetDevicesTask extends AsyncTask<Void, Void, AsyncResponse<Collection<DeviceModel>>> {
     private final GoogleSignIn googleSignIn;
     private final SquidService squidService;

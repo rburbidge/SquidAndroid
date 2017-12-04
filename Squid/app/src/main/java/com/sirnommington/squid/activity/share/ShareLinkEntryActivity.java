@@ -52,7 +52,7 @@ public class ShareLinkEntryActivity extends AppCompatActivity {
         }
 
         if (introStep != null) {
-            // If we need to launch the intro flow, then do that
+            // Launch the intro activity if required
             // TODO: At the moment this does not send the URL once the intro flow is complete, however we want to enable
             // that int the future.
             final Intent squidIntro = new Intent(this, IntroActivity.class);

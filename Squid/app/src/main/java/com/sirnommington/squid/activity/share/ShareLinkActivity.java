@@ -24,10 +24,8 @@ import java.util.Collection;
 /**
  * Allows the user to send a URL to another device.
  */
-public class ShareLinkActivity extends AppCompatActivity {
+public class ShareLinkActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = ShareLinkActivity.class.getSimpleName();
-
-    final ShareLinkActivity thiz = this;
 
     private GoogleSignIn googleSignIn;
     private SquidService squidService;
@@ -49,26 +47,30 @@ public class ShareLinkActivity extends AppCompatActivity {
 
         final GridView devices = (GridView) this.findViewById(R.id.devices);
         devices.setAdapter(this.devicesAdapter);
-        devices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int viewType = devicesAdapter.getItemViewType(position);
-                switch(viewType) {
-                    case DevicesAdapter.VIEW_TYPE_DEVICE:
-                        final DeviceModel device = (DeviceModel) devicesAdapter.getItem(position);
-                        sendLink(device);
-                        break;
-                    case DevicesAdapter.VIEW_TYPE_ADD_DEVICE:
-                        // Show AddOtherDevice activity
-                        break;
-                    default:
-                        // TODO Log this error in telemetry
-                        Log.e(TAG, "OnItemClickListener cannot handle view type: " + viewType);
-                }
-            }
-        });
+        devices.setOnItemClickListener(this);
 
         this.getDevices();
+    }
+
+    /**
+     * Handles clicks on the devices grid items.
+     * * If device was clicked, sends the URL to the device.
+     * * If add device was clicked, opens AddOtherDeviceActivity.
+     */
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final int viewType = this.devicesAdapter.getItemViewType(position);
+        switch(viewType) {
+            case DevicesAdapter.VIEW_TYPE_DEVICE:
+                final DeviceModel device = (DeviceModel) this.devicesAdapter.getItem(position);
+                this.sendLink(device);
+                break;
+            case DevicesAdapter.VIEW_TYPE_ADD_DEVICE:
+                // TODO Show AddOtherDevice activity
+                break;
+            default:
+                // TODO Log this error in telemetry
+                Log.e(TAG, "OnItemClickListener cannot handle view type: " + viewType);
+        }
     }
 
     /**
@@ -83,7 +85,7 @@ public class ShareLinkActivity extends AppCompatActivity {
                 if(response.error != null) {
                     showError(getResources().getString(R.string.get_devices_error));
                 } else {
-                    thiz.devicesAdapter.setDevices(response.payload);
+                    devicesAdapter.setDevices(response.payload);
                 }
             }
         }.execute();
@@ -96,9 +98,9 @@ public class ShareLinkActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                final String accessToken = googleSignIn.silentSignIn();
+                final String idToken = googleSignIn.silentSignIn();
                 try {
-                    squidService.sendUrl(accessToken, device.id, url);
+                    squidService.sendUrl(idToken, device.id, url);
                     finish();
                 } catch (Exception e) {
                     showError(getResources().getString(R.string.share_link_error, device.name));
@@ -112,6 +114,6 @@ public class ShareLinkActivity extends AppCompatActivity {
      * Shows an error message to the user.
      */
     private void showError(String error) {
-        Toast.makeText(thiz, error, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 }
