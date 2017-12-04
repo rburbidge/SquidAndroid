@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.MainActivity;
+import com.sirnommington.squid.activity.common.ActivityHelper;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
@@ -34,14 +35,14 @@ public class InitialActivity extends AppCompatActivity {
                 // If the app has never been opened or the user is not signed in, then start the intro activity
                 if(!preferences.isInitialized() || googleSignIn.silentSignIn() == null) {
                     Intent squidDescription = new Intent(thiz, IntroActivity.class);
-                    squidDescription.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
+                    squidDescription.addFlags(ActivityHelper.ACTIVITY_START_CLEAR_HISTORY);
                     thiz.startActivity(squidDescription);
                     return null;
                 }
 
                 // The user has signed-in and initialized the app before. Start the main activity
                 final Intent main = new Intent(thiz, MainActivity.class);
-                main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
+                main.addFlags(ActivityHelper.ACTIVITY_START_CLEAR_HISTORY);
                 thiz.startActivity(main);
                 return null;
             }

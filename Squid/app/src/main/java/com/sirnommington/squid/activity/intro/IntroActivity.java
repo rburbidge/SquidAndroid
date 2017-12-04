@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.MainActivity;
+import com.sirnommington.squid.activity.common.ActivityHelper;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**
@@ -69,7 +70,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
 
     public void addDeviceComplete() {
         final Intent main = new Intent(this, MainActivity.class);
-        main.addFlags(ActivityHelper.ACTIVITY_START_FLAGS);
+        main.addFlags(ActivityHelper.ACTIVITY_START_CLEAR_HISTORY);
         this.startActivity(main);
         this.finish();
     }
