@@ -20,7 +20,6 @@ import java.util.Collection;
 
 /**
  * Displays a list of devices.
- * Created by Ryan Burbidge on 10/20/2017.
  */
 public class DevicesFragment extends ListFragment {
 

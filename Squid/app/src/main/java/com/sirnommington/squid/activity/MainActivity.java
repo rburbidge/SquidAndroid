@@ -1,7 +1,6 @@
 package com.sirnommington.squid.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.common.AsyncResponse;
+import com.sirnommington.squid.activity.common.GetDevicesTask;
 import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;
@@ -63,17 +64,7 @@ public class MainActivity extends AppCompatActivity {
      * Refreshes the list of devices.
      */
     private void refreshDevices() {
-        new AsyncTask<Void, Void, AsyncResponse<Collection<DeviceModel>>>() {
-            @Override
-            protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
-                try {
-                    final String idToken = googleSignIn.silentSignIn();
-                    return new AsyncResponse(thiz.squidService.getDevices(idToken), null);
-                } catch(Exception e) {
-                    return null;
-                }
-            }
-
+        new GetDevicesTask(this.googleSignIn, this.squidService) {
             @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
                 super.onPostExecute(response);
