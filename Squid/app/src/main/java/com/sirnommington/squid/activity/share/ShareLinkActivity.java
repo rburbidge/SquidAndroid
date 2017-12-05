@@ -67,7 +67,7 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
                 break;
             case DevicesAdapter.VIEW_TYPE_ADD_DEVICE:
                 final Intent addOtherDevice = new Intent(getApplicationContext(), AddOtherDeviceActivity.class);
-                startActivity(addOtherDevice);
+                this.startActivity(addOtherDevice);
                 break;
             default:
                 // TODO Log this error in telemetry
