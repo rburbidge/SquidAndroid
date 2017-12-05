@@ -1,13 +1,14 @@
 package com.sirnommington.squid.activity.prefs;
 
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
+
 import com.sirnommington.squid.R;
 
 /**
  * About screen for the app. Shows credits, etc.
  */
-public class AboutActivity extends Activity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

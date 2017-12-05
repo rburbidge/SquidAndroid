@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
@@ -8,11 +7,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="About">
+    <style name="SquidActivity">
+        <item name="android:background">@color/colorPrimaryDark</item>
         <item name="android:layout_margin">5dp</item>
     </style>
+
     <style name="AboutText">
         <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="InstallBadge">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">100dp</item>
     </style>
 
     <style name="IntroTextPrimary">

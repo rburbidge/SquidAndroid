@@ -1,5 +1,6 @@
 package com.sirnommington.squid.activity.share;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -65,7 +66,8 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
                 this.sendLink(device);
                 break;
             case DevicesAdapter.VIEW_TYPE_ADD_DEVICE:
-                // TODO Show AddOtherDevice activity
+                final Intent addOtherDevice = new Intent(getApplicationContext(), AddOtherDeviceActivity.class);
+                this.startActivity(addOtherDevice);
                 break;
             default:
                 // TODO Log this error in telemetry

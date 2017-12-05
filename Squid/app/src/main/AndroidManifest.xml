@@ -10,10 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activity.share.AddOtherDeviceActivity"
+            android:label="@string/add_a_device">
+        </activity>
+        <activity
             android:name=".activity.prefs.AboutActivity"
             android:label="@string/preferences_about">
             <intent-filter>
                 <action android:name="com.sirnommington.squid.activity.prefs.AboutActivity"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -35,13 +40,16 @@
         <activity android:name=".activity.prefs.PreferencesActivity"/>
         <activity android:name=".activity.share.ShareLinkEntryActivity">
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.share.ShareLinkActivity"
-                  android:label="@string/select_a_device">
+        <activity
+            android:name=".activity.share.ShareLinkActivity"
+            android:label="@string/select_a_device">
         </activity>
 
         <!-- GCM settings -->
