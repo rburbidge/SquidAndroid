@@ -9,7 +9,7 @@
 
     <style name="SquidActivity">
         <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:padding">5dp</item>
     </style>
 
     <style name="AboutText">
