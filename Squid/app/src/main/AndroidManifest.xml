@@ -37,7 +37,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity"/>
-        <activity android:name=".activity.prefs.PreferencesActivity"/>
+        <activity
+            android:name=".activity.prefs.PreferencesActivity"
+            android:label="@string/menu_settings"/>
         <activity android:name=".activity.share.ShareLinkEntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
