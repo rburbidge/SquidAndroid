@@ -61,9 +61,7 @@ public class ShareLinkEntryActivity extends AppCompatActivity {
         } else {
             // Otherwise, open ShareLinkActivity
             final String url = ActivityHelper.getStringExtra(this, TAG, Intent.EXTRA_TEXT);
-            final Intent launchIntent = new Intent(this, ShareLinkActivity.class);
-            launchIntent.putExtra(IntentExtras.URL, url);
-            startActivity(launchIntent);
+            startActivity(ShareLinkActivity.createShareLinkIntent(this, url));
         }
 
         this.finish();
