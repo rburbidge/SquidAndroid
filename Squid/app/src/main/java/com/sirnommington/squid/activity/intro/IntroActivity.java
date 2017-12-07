@@ -68,7 +68,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
     }
 
     /**
-     * Sets the app as being initialized
+     * Called when device registration has completed. Sets the app as being initialized and launches the main activity.
      */
     public void addDeviceComplete() {
         final Preferences preferences = new Preferences(this);

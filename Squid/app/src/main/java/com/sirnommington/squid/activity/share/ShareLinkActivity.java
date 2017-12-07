@@ -69,6 +69,9 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
         return intent;
     }
 
+    /**
+     * Initializes the activity with its parameters.
+     */
     private void init(String url, int titleResourceId) {
         this.url = url;
         this.getSupportActionBar().setTitle(titleResourceId);
@@ -87,7 +90,7 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
         this.squidService = new SquidService(preferences.getSquidEndpoint());
         this.devicesAdapter = new DevicesAdapter(this);
 
-        setContentView(R.layout.activity_share_link);
+        this.setContentView(R.layout.activity_share_link);
 
         final GridView devices = (GridView) this.findViewById(R.id.devices);
         devices.setAdapter(this.devicesAdapter);
