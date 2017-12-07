@@ -2,14 +2,13 @@ package com.sirnommington.squid.activity.intro;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
-import com.sirnommington.squid.activity.MainActivity;
-import com.sirnommington.squid.activity.common.ActivityHelper;
+import com.sirnommington.squid.activity.share.ShareLinkActivity;
+import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**
@@ -68,10 +67,14 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
         this.replaceBottomFragment(new AddDeviceFragment());
     }
 
+    /**
+     * Called when device registration has completed. Sets the app as being initialized and launches the main activity.
+     */
     public void addDeviceComplete() {
-        final Intent main = new Intent(this, MainActivity.class);
-        main.addFlags(ActivityHelper.ACTIVITY_START_CLEAR_HISTORY);
-        this.startActivity(main);
+        final Preferences preferences = new Preferences(this);
+        preferences.setInitialized();
+
+        this.startActivity(ShareLinkActivity.createMainIntent(this));
         this.finish();
     }
 

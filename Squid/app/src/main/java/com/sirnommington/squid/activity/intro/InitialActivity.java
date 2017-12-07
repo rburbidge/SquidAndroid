@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sirnommington.squid.R;
-import com.sirnommington.squid.activity.MainActivity;
 import com.sirnommington.squid.activity.common.ActivityHelper;
+import com.sirnommington.squid.activity.share.ShareLinkActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
@@ -41,9 +41,7 @@ public class InitialActivity extends AppCompatActivity {
                 }
 
                 // The user has signed-in and initialized the app before. Start the main activity
-                final Intent main = new Intent(thiz, MainActivity.class);
-                main.addFlags(ActivityHelper.ACTIVITY_START_CLEAR_HISTORY);
-                thiz.startActivity(main);
+                thiz.startActivity(ShareLinkActivity.createMainIntent(getApplicationContext()));
                 return null;
             }
         }.execute();
