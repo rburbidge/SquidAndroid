@@ -144,16 +144,17 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
      * TODO Cache the user's devices on the device so that they show up faster.
      */
     private void getDevices() {
+        final View progress = this.findViewById(R.id.progress);
         new GetDevicesTask(this.googleSignIn, this.squidService) {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                findViewById(R.id.progress).setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);
             }
 
             @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
-                findViewById(R.id.progress).setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
 
                 super.onPostExecute(response);
                 if(response.error != null) {
