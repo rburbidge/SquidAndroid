@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -145,9 +144,18 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
      * TODO Cache the user's devices on the device so that they show up faster.
      */
     private void getDevices() {
+        final View progress = this.findViewById(R.id.progress);
         new GetDevicesTask(this.googleSignIn, this.squidService) {
             @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progress.setVisibility(View.VISIBLE);
+            }
+
+            @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
+                progress.setVisibility(View.GONE);
+
                 super.onPostExecute(response);
                 if(response.error != null) {
                     showError(getResources().getString(R.string.get_devices_error));
