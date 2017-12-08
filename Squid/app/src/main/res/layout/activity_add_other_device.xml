@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,13 +29,12 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center_horizontal">
-            <ImageView
-                android:id="@+id/install_chrome"
-                android:src="@drawable/chrome_web_store_badge"
-                style="@style/InstallBadge"/>
-            <ImageView
-                android:id="@+id/install_android"
-                android:src="@drawable/google_play_badge"
-                style="@style/InstallBadge"/>
+        <fragment
+            android:id="@+id/install_apps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_install_apps"
+            class="com.sirnommington.squid.activity.intro.InstallAppsFragment"/>
+
     </LinearLayout>
 </LinearLayout>
