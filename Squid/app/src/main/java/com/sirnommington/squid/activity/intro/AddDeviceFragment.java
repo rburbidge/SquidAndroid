@@ -22,11 +22,10 @@ import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.AddDeviceResult;
+import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
 
-import org.json.JSONException;
-
-import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Retrieves the GCM token for the user and registers their device with the service.
@@ -67,33 +66,25 @@ public class AddDeviceFragment extends Fragment {
      * @param gcmToken The device's GCM token on which it will be messaged.
      */
     private void addThisDevice(final String gcmToken) {
-        new AsyncTask<String, Void, AddDeviceResult>() {
+        new AsyncTask<String, Void, InitializeResult>() {
             @Override
-            protected AddDeviceResult doInBackground(String... params) {
+            protected InitializeResult doInBackground(String... params) {
                 // Delay the add device operation to a minimum of 3s so that the fragment doesn't disappear too quickly
                 final int minMillisToAddDevice = 3000;
-                return Delay.delay(new Delay.Run<AddDeviceResult>() {
+                return Delay.delay(new Delay.Run<InitializeResult>() {
                     @Override
-                    public AddDeviceResult run() {
-                        // TODO Re-examine how exceptions are handled. Currently just return null to indicate error
-                        final String idToken = googleSignIn.silentSignIn();
-                        try {
-                            return thiz.squidService.addDevice(idToken, Build.MODEL, gcmToken);
-                        } catch (IOException e) {
-                            return null;
-                        } catch (JSONException e) {
-                            return null;
-                        }
+                    public InitializeResult run() {
+                        return thiz.initializeApp(gcmToken);
                     }
                 }, minMillisToAddDevice);
             }
 
             @Override
-            protected void onPostExecute(AddDeviceResult result) {
+            protected void onPostExecute(InitializeResult result) {
                 String message;
-                if(result == null) {
+                if(result == null || result.error != null) {
                     message = getResources().getString(R.string.add_device_error);
-                } else if(result.deviceCreated) {
+                } else if(result.deviceAdded) {
                     message = getResources().getString(R.string.add_device_added, Build.MODEL);
                 } else {
                     message = getResources().getString(R.string.add_device_already_added);
@@ -101,7 +92,7 @@ public class AddDeviceFragment extends Fragment {
                 Toast.makeText(thiz.getActivity(), message, Toast.LENGTH_LONG).show();
 
                 if(result != null) {
-                    ((IntroListener) getActivity()).addDeviceComplete();
+                    ((IntroListener) getActivity()).addDeviceComplete(result.hasOtherDevices);
                 }
             }
         }.execute();
@@ -128,4 +119,50 @@ public class AddDeviceFragment extends Fragment {
         }
     }
 
+
+    /**
+     * Registers the device with the service, and checks if the user has an existing devices besides this one.
+     * @param gcmToken This device's GCM token.
+     */
+    private InitializeResult initializeApp(final String gcmToken) {
+        final String idToken = googleSignIn.silentSignIn();
+        final InitializeResult result = new InitializeResult();
+
+        // Register this device
+        try {
+            AddDeviceResult addDeviceResult = thiz.squidService.addDevice(idToken, Build.MODEL, gcmToken);
+            result.deviceAdded = addDeviceResult.deviceCreated;
+        } catch(Exception e) {
+            result.error = e.toString();
+            return result;
+        }
+
+        // Check if the user has other registered devices
+        try {
+            Collection<DeviceModel> devices = thiz.squidService.getDevices(idToken);
+            result.hasOtherDevices = devices != null && devices.size() > 1;
+        } catch(Exception e) {
+            result.error = e.toString();
+            return result;
+        }
+
+        return result;
+    }
+
+    private class InitializeResult {
+        /**
+         * True if this device was newly registered; false if it was already registered.
+         */
+        public boolean deviceAdded;
+
+        /**
+         * True if the user has other devices registered.
+         */
+        public boolean hasOtherDevices;
+
+        /**
+         * Non-null error message if an error occurred during initialization.
+         */
+        public String error;
+    }
 }

@@ -69,9 +69,12 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Initializes the activity with its parameters.
+     * Initializes the activity with its intent parameters.
      */
-    private void init(String url, int titleResourceId) {
+    private void init() {
+        final String url = ActivityHelper.getStringExtra(this, TAG, IntentExtras.URL);
+        final int titleResourceId = getIntent().getIntExtra(IntentExtras.TITLE_RESOURCE_ID, R.string.select_a_device);
+
         this.url = url;
         this.getSupportActionBar().setTitle(titleResourceId);
     }
@@ -80,9 +83,7 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final String url = ActivityHelper.getStringExtra(this, TAG, IntentExtras.URL);
-        final int titleResourceId = getIntent().getIntExtra(IntentExtras.TITLE_RESOURCE_ID, R.string.select_a_device);
-        this.init(url, titleResourceId);
+        this.init();
 
         final Preferences preferences = new Preferences(this);
         this.googleSignIn = new GoogleSignIn(this);
@@ -130,8 +131,7 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
                 this.sendLink(device);
                 break;
             case DevicesAdapter.VIEW_TYPE_ADD_DEVICE:
-                final Intent addOtherDevice = new Intent(getApplicationContext(), AddOtherDeviceActivity.class);
-                this.startActivity(addOtherDevice);
+                this.startActivity(AddOtherDeviceActivity.createIntent(this, true));
                 break;
             default:
                 // TODO Log this error in telemetry

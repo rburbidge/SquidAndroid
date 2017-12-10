@@ -1,9 +1,8 @@
 <resources>
     <!-- Strings organized by feature -->
-    <string name="add_other_device_android">Android</string>
-    <string name="add_other_device_chrome">Google Chrome</string>
-    <string name="add_other_device_how_to">To add another device, simply install and run Squid on that device.</string>
-    <string name="add_other_device_install_on_chrome">Select Play Store for Android, or Chrome Web Store for Chrome.</string>
+    <string name="add_other_device_how_to">To add another device, simply install and run Squid on that device!</string>
+    <string name="add_other_device_title_no_devices">It looks like Squid isn\'t installed on your other devices!</string>
+    <string name="add_other_device_title_has_devices">Add another device!</string>
 
     <string name="add_device_in_progress">Registering your device...</string>
     <string name="add_device_added">Your \%s\ has been added!</string>
