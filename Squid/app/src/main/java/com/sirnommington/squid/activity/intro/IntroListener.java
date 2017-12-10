@@ -16,6 +16,7 @@ public interface IntroListener {
 
     /**
      * User has completed adding their device.
+     * @param hasOtherDevices True if the user has devices registered other than this one.
      */
-    void addDeviceComplete();
+    void addDeviceComplete(boolean hasOtherDevices);
 }

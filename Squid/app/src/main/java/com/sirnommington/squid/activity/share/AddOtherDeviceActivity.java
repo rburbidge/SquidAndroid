@@ -1,10 +1,12 @@
 package com.sirnommington.squid.activity.share;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.sirnommington.squid.R;
 
@@ -16,10 +18,39 @@ import com.sirnommington.squid.R;
  */
 public class AddOtherDeviceActivity extends AppCompatActivity {
 
+    private static final String EXTRA_HAS_OTHER_DEVICES = "hasOtherDevices";
+
+    // TODO Deal with request code uniqueness
+    public static final int ACTIVITY_COMPLETE = 2;
+
+    /**
+     * Creates an intent for the activity
+     * @param hasOtherDevices True if the user has other devices registered. This controls the messaging that the user
+     * will see.
+     */
+    public static Intent createIntent(Context context, boolean hasOtherDevices) {
+        final Intent intent = new Intent(context, AddOtherDeviceActivity.class);
+        intent.putExtra(EXTRA_HAS_OTHER_DEVICES, hasOtherDevices);
+        return intent;
+    }
+
+    /**
+     * Initializes the activity with its intent parameters.
+     */
+    private void init() {
+        final TextView title = (TextView) this.findViewById(R.id.title);
+        final boolean hasOtherDevices = this.getIntent().getBooleanExtra(EXTRA_HAS_OTHER_DEVICES, true);
+        title.setText(hasOtherDevices
+                ? R.string.add_other_device_title_has_devices
+                : R.string.add_other_device_title_no_devices);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_other_device);
+
+        this.init();
 
         this.findViewById(R.id.install_android).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +59,6 @@ public class AddOtherDeviceActivity extends AppCompatActivity {
             }
         });
         this.findViewById(R.id.install_chrome).setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 installChromeExtension();

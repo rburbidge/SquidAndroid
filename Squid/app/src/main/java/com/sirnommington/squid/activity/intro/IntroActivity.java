@@ -2,11 +2,15 @@ package com.sirnommington.squid.activity.intro;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
+import com.sirnommington.squid.activity.share.AddOtherDeviceActivity;
 import com.sirnommington.squid.activity.share.ShareLinkActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
@@ -59,6 +63,14 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
                 IntentExtras.INTRO_STEP, introStep));
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == AddOtherDeviceActivity.ACTIVITY_COMPLETE) {
+            this.introComplete();
+        }
+    }
+
     public void descriptionComplete() {
         this.replaceBottomFragment(new SignInFragment());
     }
@@ -68,12 +80,24 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
     }
 
     /**
-     * Called when device registration has completed. Sets the app as being initialized and launches the main activity.
+     * Sets the app as being initialized and launches the next activity.
+     *
+     * If the user has other devices, the completes the intro. Otherwise, shows the InstallAppsFragment.
      */
-    public void addDeviceComplete() {
+    public void addDeviceComplete(boolean hasOtherDevices) {
         final Preferences preferences = new Preferences(this);
         preferences.setInitialized();
 
+        if(hasOtherDevices) {
+            this.introComplete();
+        } else {
+            this.startActivityForResult(
+                AddOtherDeviceActivity.createIntent(this, hasOtherDevices),
+                AddOtherDeviceActivity.ACTIVITY_COMPLETE);
+        }
+    }
+
+    public void introComplete() {
         this.startActivity(ShareLinkActivity.createMainIntent(this));
         this.finish();
     }
