@@ -140,6 +140,8 @@ public class AddDeviceFragment extends Fragment {
         // Check if the user has other registered devices
         try {
             Collection<DeviceModel> devices = thiz.squidService.getDevices(idToken);
+
+            // Size > 1 because this device is also included in the getDevices() response
             result.hasOtherDevices = devices != null && devices.size() > 1;
         } catch(Exception e) {
             result.error = e.toString();
