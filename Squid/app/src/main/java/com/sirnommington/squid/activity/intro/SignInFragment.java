@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.RequestCode;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**
@@ -37,7 +38,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.sign_in_button) {
-            googleSignIn.signIn(this);
+            googleSignIn.signIn(this, RequestCode.SIGN_IN);
         }
     }
 
@@ -45,8 +46,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO Is there a way to encapsulate this logic inside GoogleSignIn class?
-        if (requestCode == GoogleSignIn.SIGN_IN_REQUEST_CODE) {
+        if (requestCode == RequestCode.SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             this.handleSignInResult(result);
         }

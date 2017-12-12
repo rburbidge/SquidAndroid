@@ -19,9 +19,6 @@ import com.sirnommington.squid.R;
  * Helpers for signing into Google.
  */
 public class GoogleSignIn {
-
-    public static int SIGN_IN_REQUEST_CODE = 1;
-
     private static final String TAG = GoogleSignIn.class.getSimpleName();
 
     private final GoogleApiClient googleApiClient;
@@ -55,11 +52,12 @@ public class GoogleSignIn {
 
     /**
      * Signs the user in. The calling fragment must implement onActivityResult()
-     * @param fragment
+     * @param fragment The fragment that sign-in is being called from.
+     * @param requestCode The request code to invoke onActivityResult() with.
      */
-    public void signIn(Fragment fragment) {
+    public void signIn(Fragment fragment, int requestCode) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        fragment.startActivityForResult(signInIntent, SIGN_IN_REQUEST_CODE);
+        fragment.startActivityForResult(signInIntent, requestCode);
     }
 
     /**

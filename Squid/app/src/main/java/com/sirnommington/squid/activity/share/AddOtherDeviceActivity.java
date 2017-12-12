@@ -20,9 +20,6 @@ public class AddOtherDeviceActivity extends AppCompatActivity {
 
     private static final String EXTRA_HAS_OTHER_DEVICES = "hasOtherDevices";
 
-    // TODO Deal with request code uniqueness
-    public static final int ACTIVITY_COMPLETE = 2;
-
     /**
      * Creates an intent for the activity
      * @param hasOtherDevices True if the user has other devices registered. This controls the messaging that the user
