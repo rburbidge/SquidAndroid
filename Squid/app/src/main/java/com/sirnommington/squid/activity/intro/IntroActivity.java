@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
+import com.sirnommington.squid.activity.RequestCode;
 import com.sirnommington.squid.activity.share.AddOtherDeviceActivity;
 import com.sirnommington.squid.activity.share.ShareLinkActivity;
 import com.sirnommington.squid.services.Preferences;
@@ -66,7 +65,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == AddOtherDeviceActivity.ACTIVITY_COMPLETE) {
+        if(requestCode == RequestCode.ADD_OTHER_DEVICE) {
             this.introComplete();
         }
     }
@@ -93,7 +92,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
         } else {
             this.startActivityForResult(
                 AddOtherDeviceActivity.createIntent(this, hasOtherDevices),
-                AddOtherDeviceActivity.ACTIVITY_COMPLETE);
+                RequestCode.ADD_OTHER_DEVICE);
         }
     }
 
