@@ -142,37 +142,45 @@ public class SquidService {
             final String relativePath,
             final JSONObject requestBody,
             final JsonParser responseParser) throws IOException, JSONException {
-        URL url = new URL(this.endpoint + relativePath);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod(requestMethod);
+        final URL url = new URL(this.endpoint + relativePath);
+        final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        try {
+            conn.setRequestMethod(requestMethod);
 
-        // Header prefixes are one of the following:
-        // 'Bearer Google OAuth Access Token='
-        // 'Bearer Google OAuth ID Token='
-        // See http://stackoverflow.com/questions/8311836/how-to-identify-a-google-oauth2-user/13016081#13016081 for
-        // details on Google access vs. ID tokens
-        conn.setRequestProperty("Authorization", "Bearer Google OAuth ID Token=" + idToken);
+            // Header prefixes are one of the following:
+            // 'Bearer Google OAuth Access Token='
+            // 'Bearer Google OAuth ID Token='
+            // See http://stackoverflow.com/questions/8311836/how-to-identify-a-google-oauth2-user/13016081#13016081 for
+            // details on Google access vs. ID tokens
+            conn.setRequestProperty("Authorization", "Bearer Google OAuth ID Token=" + idToken);
 
-        if(requestBody != null) {
-            conn.setRequestProperty("Content-Type", "application/json");
+            if (requestBody != null) {
+                conn.setRequestProperty("Content-Type", "application/json");
+            }
+
+            conn.connect();
+
+            // Write request body if one was included
+            if (requestBody != null) {
+                DataOutputStream output = new DataOutputStream(conn.getOutputStream());
+                output.writeBytes(requestBody.toString());
+                output.flush();
+                output.close();
+            }
+
+            final int responseCode = conn.getResponseCode();
+
+            // Read response body if parser was passed and response was success
+            Object parsedBody = null;
+            if(responseParser != null && (responseCode == 200 || responseCode == 302)) {
+                final String bodyString = readAll(conn.getInputStream());
+                parsedBody = responseParser.parse(bodyString);
+            }
+
+            return new HttpResponse<>(responseCode, parsedBody);
+        } finally {
+            conn.disconnect();
         }
-
-        conn.connect();
-
-        if(requestBody != null) {
-            DataOutputStream output = new DataOutputStream(conn.getOutputStream());
-            output.writeBytes(requestBody.toString());
-            output.flush ();
-            output.close ();
-        }
-
-        final int responseCode = conn.getResponseCode();
-        Object parsedBody = null;
-        if(responseParser != null && (responseCode == 200 || responseCode == 302)) {
-            final String bodyString = readAll(conn.getInputStream());
-            parsedBody = responseParser.parse(bodyString);
-        }
-        return new HttpResponse<>(responseCode, parsedBody);
     }
 
     /**
