@@ -53,7 +53,7 @@ public class Preferences {
     }
 
     public String getSquidEndpoint() {
-        return getPreference(R.string.pref_squid_endpoint, R.string.default_squid_endpoint);
+        return getPreference(R.string.pref_squid_endpoint, R.string.squid_endpoint_default);
     }
 
     public DeviceModel getThisDevice() {

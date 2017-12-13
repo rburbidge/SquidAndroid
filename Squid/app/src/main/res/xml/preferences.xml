@@ -18,7 +18,7 @@
             android:summary="@string/dev_settings_squid_endpoint_summary"
             android:entries="@array/squid_endpoints"
             android:entryValues="@array/squid_endpoints"
-            android:defaultValue="@string/default_squid_endpoint"/>
+            android:defaultValue="@string/squid_endpoint_default"/>
         <Preference
             android:key="@string/pref_reset"
             android:title="@string/dev_settings_reset"
