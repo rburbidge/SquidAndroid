@@ -15,7 +15,6 @@ import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.common.ActivityHelper;
 import com.sirnommington.squid.activity.fragment.DevicesAdapter;
-import com.sirnommington.squid.activity.intro.GoogleSignInProvider;
 import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
@@ -25,7 +24,7 @@ import com.sirnommington.squid.services.squid.SquidService;
 /**
  * Allows the user to send a URL to another device.
  */
-public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClickedListener, GoogleSignInProvider, SquidServiceProvider {
+public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClickedListener, SquidServiceProvider {
     private static final String TAG = ShareLinkActivity.class.getSimpleName();
 
     private GoogleSignIn googleSignIn;
@@ -81,7 +80,7 @@ public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClic
 
         final Preferences preferences = new Preferences(this);
         this.googleSignIn = new GoogleSignIn(this);
-        this.squidService = new SquidService(preferences.getSquidEndpoint());
+        this.squidService = new SquidService(preferences.getSquidEndpoint(), this.googleSignIn);
 
         this.setContentView(R.layout.activity_share_link);
     }
@@ -131,9 +130,8 @@ public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClic
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                final String idToken = googleSignIn.silentSignIn();
                 try {
-                    squidService.sendUrl(idToken, device.id, url);
+                    squidService.sendUrl(device.id, url);
                     finish();
                 } catch (Exception e) {
                     showError(getResources().getString(R.string.share_link_error, device.name));
@@ -148,11 +146,6 @@ public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClic
      */
     private void showError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public GoogleSignIn getGoogleSignIn() {
-        return this.googleSignIn;
     }
 
     @Override

@@ -56,10 +56,8 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
     private void getDevices() {
         final View progress = getView().findViewById(R.id.progress);
 
-        final GoogleSignIn googleSignIn = ((GoogleSignInProvider) this.getActivity()).getGoogleSignIn();
         final SquidService squidService = ((SquidServiceProvider) this.getActivity()).getSquidService();
-
-        new GetDevicesTask(googleSignIn, squidService) {
+        new GetDevicesTask(squidService) {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
