@@ -10,7 +10,7 @@
     <fragment
         android:id="@+id/device_grid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:layout="@layout/fragment_device_grid"
         class="com.sirnommington.squid.activity.fragment.DeviceGridFragment"/>
 </LinearLayout>
