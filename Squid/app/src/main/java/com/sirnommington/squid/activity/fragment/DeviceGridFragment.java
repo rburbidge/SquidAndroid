@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity.share;
+package com.sirnommington.squid.activity.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +13,8 @@ import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.GetDevicesTask;
 import com.sirnommington.squid.activity.intro.GoogleSignInProvider;
+import com.sirnommington.squid.activity.share.OnDeviceClickedListener;
+import com.sirnommington.squid.activity.share.SquidServiceProvider;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;

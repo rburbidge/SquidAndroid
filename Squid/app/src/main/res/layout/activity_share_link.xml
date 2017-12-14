@@ -12,5 +12,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_device_grid"
-        class="com.sirnommington.squid.activity.share.DeviceGridFragment"/>
+        class="com.sirnommington.squid.activity.fragment.DeviceGridFragment"/>
 </LinearLayout>

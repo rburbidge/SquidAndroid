@@ -9,24 +9,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
-import com.sirnommington.squid.activity.common.AsyncResponse;
-import com.sirnommington.squid.activity.common.GetDevicesTask;
 import com.sirnommington.squid.activity.common.ActivityHelper;
+import com.sirnommington.squid.activity.fragment.DevicesAdapter;
 import com.sirnommington.squid.activity.intro.GoogleSignInProvider;
 import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
-
-import java.util.Collection;
 
 /**
  * Allows the user to send a URL to another device.

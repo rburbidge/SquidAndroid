@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.sirnommington.squid.activity.share.DeviceGridFragment">
+             tools:context="com.sirnommington.squid.activity.fragment.DeviceGridFragment">
 
     <LinearLayout
         android:id="@+id/progress"
