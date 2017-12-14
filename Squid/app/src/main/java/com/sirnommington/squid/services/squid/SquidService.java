@@ -1,7 +1,10 @@
 package com.sirnommington.squid.services.squid;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sirnommington.squid.services.google.GoogleSignIn;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,29 +27,31 @@ public class SquidService {
     private static final String TAG = "SquidService";
 
     private final String endpoint;
+    private final GoogleSignIn googleSignIn;
 
     /**
      * @param endpoint The endpoint. e.g. https://www.host.com
+     * @param googleSignIn Google sign-in used to obtain ID tokens for silent auth.
      */
-    public SquidService(String endpoint) {
+    public SquidService(String endpoint, GoogleSignIn googleSignIn) {
         this.endpoint = endpoint;
+        this.googleSignIn = googleSignIn;
     }
 
     /**
      * Adds a new device.
-     * @param idToken The Google OAuth ID token for the user.
      * @param name The device name.
      * @param gcmToken The device GCM token.
      * @return Result indicating added, already existed, etc.
      * @throws IOException If there is an issue sending the request.
      * @throws JSONException If there is an issue constructing the outgoing request.
      */
-    public AddDeviceResult addDevice(String idToken, String name, String gcmToken) throws IOException, JSONException {
+    public AddDeviceResult addDevice(String name, String gcmToken) throws IOException, JSONException {
         final JSONObject body = new JSONObject();
         body.put("name", name);
         body.put("gcmToken", gcmToken);
 
-        final HttpResponse<DeviceModel> response = this.sendRequest(idToken, "POST", "/api/devices", body, new JsonParser() {
+        final HttpResponse<DeviceModel> response = this.sendRequest("POST", "/api/devices", body, new JsonParser() {
             @Override
             public Object parse(String jsonString) throws JSONException {
                 return DeviceModel.from(jsonString);
@@ -61,14 +66,13 @@ public class SquidService {
 
     /**
      * Removes a device.
-     * @param idToken The Google OAuth ID token for the user.
      * @param deviceId The
      * @return True if the device was successfully removed.
      * @throws IOException If there is an issue sending the request.
      * @throws JSONException If there is an issue parsing the response.
      */
-    public boolean removeDevice(String idToken, String deviceId) throws IOException, JSONException {
-        final HttpResponse response = this.sendRequest(idToken, "DELETE", "api/devices/" + deviceId, null, null);
+    public boolean removeDevice(String deviceId) throws IOException, JSONException {
+        final HttpResponse response = this.sendRequest("DELETE", "api/devices/" + deviceId, null, null);
         return response.statusCode == 200;
     }
 
@@ -76,13 +80,12 @@ public class SquidService {
      * Gets the user's devices.
      *
      * TODO What does this return if the user doesn't exist or had no devices?
-     * @param idToken The Google OAuth ID token for the user.
      * @return The devices, or null if an error occurred.
      * @throws IOException If there is an issue sending the request.
      * @throws JSONException If there is an issue parsing the response.
      */
-    public Collection<DeviceModel> getDevices(String idToken) throws IOException, JSONException {
-        final HttpResponse<Collection<DeviceModel>> response = this.sendRequest(idToken, "GET", "/api/devices", null,
+    public Collection<DeviceModel> getDevices() throws IOException, JSONException {
+        final HttpResponse<Collection<DeviceModel>> response = this.sendRequest("GET", "/api/devices", null,
             new JsonParser() {
                 @Override
                 public Object parse(String jsonString) throws JSONException{
@@ -100,17 +103,16 @@ public class SquidService {
 
     /**
      * Sends the URL to a device.
-     * @param idToken The Google OAuth ID token for the user.
      * @param deviceId The recipient device ID.
      * @param url The URL to send.
      * @throws IOException If there is an issue sending the request.
      * @throws JSONException If there is an issue parsing the response.
      */
-    public void sendUrl(String idToken, String deviceId, String url) throws JSONException, IOException {
+    public void sendUrl(String deviceId, String url) throws JSONException, IOException {
         final JSONObject body = new JSONObject();
         body.put("url", url);
 
-        this.sendRequest(idToken, "POST", "/api/devices/" + deviceId + "/commands", body, null);
+        this.sendRequest("POST", "/api/devices/" + deviceId + "/commands", body, null);
     }
 
     /**
@@ -129,7 +131,6 @@ public class SquidService {
 
     /**
      * Helper method for sending HTTP requests.
-     * @param idToken The Google OAuth ID token to send.
      * @param requestMethod GET, PUT, etc.
      * @param relativePath The relative path. Must be preceded with a forward slash.
      * @param requestBody The JSON request body, if any.
@@ -137,11 +138,18 @@ public class SquidService {
      * @return The HTTP response.
      */
     private HttpResponse sendRequest(
-            final String idToken,
             final String requestMethod,
             final String relativePath,
             final JSONObject requestBody,
             final JsonParser responseParser) throws IOException, JSONException {
+        // Bomb out early if we can't get an ID token for authentication
+        final String idToken = this.googleSignIn.silentSignIn();
+        if(idToken == null) {
+            final String errorMessage = "Client side error. Unable to obtain Google ID token. User is not signed in.";
+            Log.e(TAG, errorMessage);
+            return new HttpResponse(401, errorMessage);
+        }
+
         URL url = new URL(this.endpoint + relativePath);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(requestMethod);

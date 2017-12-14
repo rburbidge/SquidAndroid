@@ -33,16 +33,15 @@ import java.util.Collection;
 public class AddDeviceFragment extends Fragment {
     private final AddDeviceFragment thiz = this;
 
-    private GoogleSignIn googleSignIn;
     private boolean isReceiverRegistered;
     private BroadcastReceiver registrationBroadcastReceiver;
     private SquidService squidService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.googleSignIn = ((GoogleSignInProvider) this.getActivity()).getGoogleSignIn();
+        final GoogleSignIn googleSignIn = ((GoogleSignInProvider) this.getActivity()).getGoogleSignIn();
         final Preferences prefs = new Preferences(this.getActivity());
-        this.squidService = new SquidService(prefs.getSquidEndpoint());
+        this.squidService = new SquidService(prefs.getSquidEndpoint(), googleSignIn);
 
         // When retrieving GCM token completes, register the device with the Squid service
         registrationBroadcastReceiver = new BroadcastReceiver() {
@@ -125,12 +124,11 @@ public class AddDeviceFragment extends Fragment {
      * @param gcmToken This device's GCM token.
      */
     private InitializeResult initializeApp(final String gcmToken) {
-        final String idToken = googleSignIn.silentSignIn();
         final InitializeResult result = new InitializeResult();
 
         // Register this device
         try {
-            AddDeviceResult addDeviceResult = thiz.squidService.addDevice(idToken, Build.MODEL, gcmToken);
+            AddDeviceResult addDeviceResult = thiz.squidService.addDevice(Build.MODEL, gcmToken);
             result.deviceAdded = addDeviceResult.deviceCreated;
         } catch(Exception e) {
             result.error = e.toString();
@@ -139,7 +137,7 @@ public class AddDeviceFragment extends Fragment {
 
         // Check if the user has other registered devices
         try {
-            Collection<DeviceModel> devices = thiz.squidService.getDevices(idToken);
+            Collection<DeviceModel> devices = thiz.squidService.getDevices();
 
             // Size > 1 because this device is also included in the getDevices() response
             result.hasOtherDevices = devices != null && devices.size() > 1;
