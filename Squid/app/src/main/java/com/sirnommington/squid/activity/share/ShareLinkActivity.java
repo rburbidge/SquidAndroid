@@ -19,6 +19,7 @@ import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.GetDevicesTask;
 import com.sirnommington.squid.activity.common.ActivityHelper;
+import com.sirnommington.squid.activity.intro.GoogleSignInProvider;
 import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
@@ -30,12 +31,11 @@ import java.util.Collection;
 /**
  * Allows the user to send a URL to another device.
  */
-public class ShareLinkActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClickedListener, GoogleSignInProvider, SquidServiceProvider {
     private static final String TAG = ShareLinkActivity.class.getSimpleName();
 
     private GoogleSignIn googleSignIn;
     private SquidService squidService;
-    private DevicesAdapter devicesAdapter;
     private String url;
 
     /**
@@ -88,15 +88,8 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
         final Preferences preferences = new Preferences(this);
         this.googleSignIn = new GoogleSignIn(this);
         this.squidService = new SquidService(preferences.getSquidEndpoint());
-        this.devicesAdapter = new DevicesAdapter(this);
 
         this.setContentView(R.layout.activity_share_link);
-
-        final GridView devices = (GridView) this.findViewById(R.id.devices);
-        devices.setAdapter(this.devicesAdapter);
-        devices.setOnItemClickListener(this);
-
-        this.getDevices();
     }
 
     @Override
@@ -123,11 +116,9 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
      * * If device was clicked, sends the URL to the device.
      * * If add device was clicked, opens AddOtherDeviceActivity.
      */
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        final int viewType = this.devicesAdapter.getItemViewType(position);
+    public void onDeviceClicked(int viewType, DeviceModel device) {
         switch(viewType) {
             case DevicesAdapter.VIEW_TYPE_DEVICE:
-                final DeviceModel device = (DeviceModel) this.devicesAdapter.getItem(position);
                 this.sendLink(device);
                 break;
             case DevicesAdapter.VIEW_TYPE_ADD_DEVICE:
@@ -137,33 +128,6 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
                 // TODO Log this error in telemetry
                 Log.e(TAG, "OnItemClickListener cannot handle view type: " + viewType);
         }
-    }
-
-    /**
-     * Retrieves the user's devices from the server.
-     * TODO Cache the user's devices on the device so that they show up faster.
-     */
-    private void getDevices() {
-        final View progress = this.findViewById(R.id.progress);
-        new GetDevicesTask(this.googleSignIn, this.squidService) {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progress.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
-                progress.setVisibility(View.GONE);
-
-                super.onPostExecute(response);
-                if(response.error != null) {
-                    showError(getResources().getString(R.string.get_devices_error));
-                } else {
-                    devicesAdapter.setDevices(response.payload);
-                }
-            }
-        }.execute();
     }
 
     /**
@@ -190,5 +154,15 @@ public class ShareLinkActivity extends AppCompatActivity implements AdapterView.
      */
     private void showError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public GoogleSignIn getGoogleSignIn() {
+        return this.googleSignIn;
+    }
+
+    @Override
+    public SquidService getSquidService() {
+        return this.squidService;
     }
 }

@@ -7,23 +7,10 @@
     android:orientation="vertical"
     android:background="@color/colorPrimaryDark">
 
-    <LinearLayout
-        android:id="@+id/progress"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone" >
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <GridView
-        android:id="@+id/devices"
+    <fragment
+        android:id="@+id/device_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2"
-        tools:listitem="@layout/grid_item_device">
-    </GridView>
+        tools:layout="@layout/fragment_device_grid"
+        class="com.sirnommington.squid.activity.share.DeviceGridFragment"/>
 </LinearLayout>
