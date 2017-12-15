@@ -1,6 +1,7 @@
 package com.sirnommington.squid.activity.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,8 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.GetDevicesTask;
-import com.sirnommington.squid.activity.intro.GoogleSignInProvider;
 import com.sirnommington.squid.activity.share.OnDeviceClickedListener;
 import com.sirnommington.squid.activity.share.SquidServiceProvider;
-import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
 
@@ -44,8 +43,8 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         this.getDevices();
     }
 
@@ -55,17 +54,20 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
      */
     private void getDevices() {
         final View progress = getView().findViewById(R.id.progress);
+        final View devices = getView().findViewById(R.id.devices);
 
         final SquidService squidService = ((SquidServiceProvider) this.getActivity()).getSquidService();
         new GetDevicesTask(squidService) {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                devices.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
             }
 
             @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
+                devices.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
 
                 super.onPostExecute(response);
