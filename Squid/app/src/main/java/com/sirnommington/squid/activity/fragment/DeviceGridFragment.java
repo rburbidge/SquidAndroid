@@ -1,6 +1,7 @@
 package com.sirnommington.squid.activity.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,8 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         this.getDevices();
     }
 
