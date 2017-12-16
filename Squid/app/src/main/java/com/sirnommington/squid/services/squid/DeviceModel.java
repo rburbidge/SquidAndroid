@@ -3,10 +3,12 @@ package com.sirnommington.squid.services.squid;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Device returned by SquidService.
  */
-public class DeviceModel {
+public class DeviceModel implements Serializable {
     /**
      * The device unique ID, defined by SquidService.
      */

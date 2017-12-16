@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activity.device.DeviceActivity"/>
         <activity
             android:name=".activity.intro.IntroActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
@@ -36,6 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activity.main.MainActivity"/>
         <activity
             android:name=".activity.prefs.PreferencesActivity"
             android:label="@string/menu_settings"/>

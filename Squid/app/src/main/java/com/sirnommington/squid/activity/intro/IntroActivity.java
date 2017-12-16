@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.RequestCode;
+import com.sirnommington.squid.activity.main.MainActivity;
 import com.sirnommington.squid.activity.share.AddOtherDeviceActivity;
 import com.sirnommington.squid.activity.share.ShareLinkActivity;
 import com.sirnommington.squid.services.Preferences;
@@ -97,7 +98,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
     }
 
     public void introComplete() {
-        this.startActivity(ShareLinkActivity.createMainIntent(this));
+        this.startActivity(MainActivity.createIntent(this));
         this.finish();
     }
 

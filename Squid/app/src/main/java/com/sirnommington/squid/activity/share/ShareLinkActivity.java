@@ -4,18 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.common.ActivityHelper;
+import com.sirnommington.squid.activity.common.MenuActivity;
 import com.sirnommington.squid.activity.fragment.DevicesAdapter;
-import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;
@@ -24,20 +20,12 @@ import com.sirnommington.squid.services.squid.SquidService;
 /**
  * Allows the user to send a URL to another device.
  */
-public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClickedListener, SquidServiceProvider {
+public class ShareLinkActivity extends MenuActivity implements OnDeviceClickedListener, SquidServiceProvider {
     private static final String TAG = ShareLinkActivity.class.getSimpleName();
 
     private GoogleSignIn googleSignIn;
     private SquidService squidService;
     private String url;
-
-    /**
-     * Creates an intent to launch this activity as the app's main activity.
-     * TODO This is currently a stop-gap until we determine what to show on the main activity.
-     */
-    public static Intent createMainIntent(Context context) {
-        return createIntent(context, "https://www.google.com", R.string.app_name);
-    }
 
     /**
      * Creates an intent to launch this activity when a link is being shared from the browser.
@@ -83,25 +71,6 @@ public class ShareLinkActivity extends AppCompatActivity implements OnDeviceClic
         this.squidService = new SquidService(preferences.getSquidEndpoint(), this.googleSignIn);
 
         this.setContentView(R.layout.activity_share_link);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.dev_options:
-                this.startActivity(new Intent(this, PreferencesActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     /**
