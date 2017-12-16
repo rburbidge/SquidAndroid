@@ -21,7 +21,6 @@ public class DeviceActivity extends AppCompatActivity {
     private void init(DeviceModel device) {
         final TextView title = this.findViewById(R.id.title);
         title.setText(device.name);
-        this.getSupportActionBar().setTitle(device.name);
     }
 
     @Override

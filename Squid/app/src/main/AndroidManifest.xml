@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.device.DeviceActivity"/>
+        <activity
+            android:name=".activity.device.DeviceActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".activity.intro.IntroActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>

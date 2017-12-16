@@ -9,18 +9,49 @@
     android:background="@color/colorPrimaryDark"
     tools:context="com.sirnommington.squid.activity.device.DeviceActivity">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="@dimen/grid_device_image_size"
-        android:layout_height="@dimen/grid_device_image_size"
-        android:tint="@color/textPrimary"
-        android:src="@drawable/ic_phone_android_black_100dp"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/half_device_image_size"
+                android:background="@color/colorPrimary"></View>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/half_device_image_size"
+                android:background="@color/colorPrimaryDark"/>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/image"
+            android:tint="@color/textPrimary"
+            android:src="@drawable/ic_phone_android_black_100dp"
+            android:background="@drawable/background_device"
+            android:layout_gravity="center_horizontal"
+            style="@style/DeviceImage"/>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/textPrimary"
+        style="@style/DeviceTitle"
         tools:text="Nexus 5X"/>
 
+    <Button
+        android:text="Try sending a link"
+        android:layout_marginTop="50dp"
+        style="@style/DeviceButton"/>
+    <Button
+        android:text="Remove this device"
+        style="@style/DeviceButton"/>
 </LinearLayout>
