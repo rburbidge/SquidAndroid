@@ -16,6 +16,8 @@
     <string name="dev_settings_squid_endpoint">Squid endpoint</string>
     <string name="dev_settings_squid_endpoint_summary">Change the service endpoint of the app.</string>
 
+    <string name="device_remove_device_error">A problem occurred while removing %1$s. Please try again later.</string>
+
     <string name="menu_settings">Settings</string>
 
     <string name="preferences_about">About</string>
@@ -24,7 +26,7 @@
     <string name="preferences_block_notifications">Block received web pages</string>
     <string name="preferences_block_notifications_summary">Prevent the app from launching the browser when a page is received from another device.</string>
 
-    <string name="share_link_error">A problem occurred while sending to %1$s. Please try again.</string>
+    <string name="share_link_error">A problem occurred while sending to %1$s. Please try again later.</string>
 
     <string name="sign_in_title">Sign in to your Google account!</string>
     <string name="sign_in_subtitle">Squid provides a secure experience using Google authentication.</string>
