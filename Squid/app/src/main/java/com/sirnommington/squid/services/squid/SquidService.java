@@ -24,7 +24,7 @@ import java.util.Collection;
  */
 public class SquidService {
 
-    private static final String TAG = "SquidService";
+    private static final String TAG = SquidService.class.getSimpleName();;
 
     private final String endpoint;
     private final GoogleSignIn googleSignIn;

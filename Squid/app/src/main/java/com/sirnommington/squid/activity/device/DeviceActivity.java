@@ -20,7 +20,7 @@ import com.sirnommington.squid.services.squid.SquidService;
 /**
  * Shows device details and allows the user to delete the device or test sending a link.
  */
-public class DeviceActivity extends AppCompatActivity {
+public class DeviceActivity extends AppCompatActivity implements RemoveConfirmationDialogListener {
 
     private DeviceModel device;
     private SquidService squidService;
@@ -67,21 +67,36 @@ public class DeviceActivity extends AppCompatActivity {
     }
 
     /**
-     * Removes this device from the service.
+     * Called when the user confirms/denies device removal.
+     * @param remove True if the user chose to remove the device.
+     */
+    @Override
+    public void onRemoveConfirmComplete(boolean remove) {
+        if(remove) {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    try {
+                        squidService.removeDevice(device.id);
+                        finish();
+                    } catch (Exception e) {
+                        showError(getResources().getString(R.string.device_remove_device_error, device.name));
+                    }
+                    return null;
+                }
+            }.execute();
+        }
+    }
+
+    /**
+     * Shows a dialog to confirm device removal.
      */
     private void removeDevice() {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    squidService.removeDevice(device.id);
-                    finish();
-                } catch (Exception e) {
-                    showError(getResources().getString(R.string.device_remove_device_error, device.name));
-                }
-                return null;
-            }
-        }.execute();
+        final RemoveConfirmationDialog removeDialog = new RemoveConfirmationDialog();
+        final Bundle bundle = new Bundle();
+        bundle.putString(IntentExtras.DEVICE_NAME, this.device.name);
+        removeDialog.setArguments(bundle);
+        removeDialog.show(this.getSupportFragmentManager(), RemoveConfirmationDialog.TAG);
     }
 
     /**

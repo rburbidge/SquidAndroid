@@ -16,7 +16,10 @@
     <string name="dev_settings_squid_endpoint">Squid endpoint</string>
     <string name="dev_settings_squid_endpoint_summary">Change the service endpoint of the app.</string>
 
+    <string name="device_remove">Remove this device</string>
     <string name="device_remove_device_error">A problem occurred while removing %1$s. Please try again later.</string>
+    <string name="device_send_link">Try sending a link</string>
+    <string name="device_remove_device_confirm">To use %1$s again, you will need to re-run Squid on that device.\n\nAre you sure you want to remove %1$s?</string>
 
     <string name="menu_settings">Settings</string>
 
@@ -37,7 +40,10 @@
     <!-- Generic strings -->
     <string name="add_a_device">Add a device</string>
     <string name="app_name">Squid</string>
+    <string name="cancel">Cancel</string>
     <string name="get_devices_error">A problem occurred while retrieving your devices :(</string>
     <string name="next">Next</string>
+    <string name="remove">Remove</string>
     <string name="select_a_device">Select a device</string>
+
 </resources>
