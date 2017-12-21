@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.prefs.PreferencesActivity;
 
+/**
+ * Base activity including the app menu.
+ */
 public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -21,7 +24,7 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.dev_options:
+            case R.id.settings:
                 this.startActivity(new Intent(this, PreferencesActivity.class));
                 return true;
             default:

@@ -25,6 +25,11 @@ public class DeviceActivity extends AppCompatActivity implements RemoveConfirmat
     private DeviceModel device;
     private SquidService squidService;
 
+    /**
+     * Creates an intent to launch this activity for a given device.
+     * @param context The app context.
+     * @param device The device for which the activity is launched.
+     */
     public static Intent createIntent(Context context, DeviceModel device) {
         final Intent intent = new Intent(context, DeviceActivity.class);
         intent.putExtra(IntentExtras.DEVICE, device);

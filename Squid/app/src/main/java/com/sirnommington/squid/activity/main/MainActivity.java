@@ -2,7 +2,6 @@ package com.sirnommington.squid.activity.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,6 +17,10 @@ import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
 
+/**
+ * The main activity that the user will see upon opening the app via the homescreen (assuming the app has already been
+ * initialized).
+ */
 public class MainActivity extends MenuActivity implements OnDeviceClickedListener, SquidServiceProvider {
     private static final String TAG = MainActivity.class.getSimpleName();
 
