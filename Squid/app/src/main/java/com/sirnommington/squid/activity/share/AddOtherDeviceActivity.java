@@ -61,6 +61,12 @@ public class AddOtherDeviceActivity extends AppCompatActivity {
                 installChromeExtension();
             }
         });
+        this.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**

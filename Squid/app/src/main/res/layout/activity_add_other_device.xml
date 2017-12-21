@@ -55,4 +55,9 @@
             android:src="@drawable/google_play_badge"
             style="@style/InstallBadge"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/dismiss"
+        android:text="@string/later"
+        style="@style/IntroButton"/>
 </LinearLayout>
