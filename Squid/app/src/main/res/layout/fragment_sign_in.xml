@@ -21,6 +21,6 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        style="@style/IntroButton" />
+        style="@style/BottomButton" />
 
 </RelativeLayout>

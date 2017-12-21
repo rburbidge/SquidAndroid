@@ -16,6 +16,16 @@
         <item name="android:layout_marginTop">10dp</item>
     </style>
 
+    <style name="BottomButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">200dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="InstallAppText">
         <item name="android:layout_marginLeft">50dp</item>
         <item name="android:layout_marginRight">50dp</item>
@@ -36,14 +46,5 @@
     <style name="IntroTextSecondary" parent="@style/IntroTextPrimary">
         <item name="android:textSize">15sp</item>
         <item name="android:layout_marginTop">10dp</item>
-    </style>
-    <style name="IntroButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minWidth">200dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:gravity">center</item>
     </style>
 </resources>
