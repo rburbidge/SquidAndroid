@@ -31,20 +31,18 @@ public class ShareLinkActivity extends MenuActivity implements OnDeviceClickedLi
      * Creates an intent to launch this activity when a link is being shared from the browser.
      */
     public static Intent createShareLinkIntent(Context context, String url) {
-        return createIntent(context, url, R.string.select_a_device);
+        return createIntent(context, url);
     }
 
     /**
      * Creates a share link activity intent.
      * @param context The app context.
      * @param url The URL to share when the user selects a device.
-     * @param titleResourceId The activity title.
      * @return The intent.
      */
-    private static Intent createIntent(Context context, String url, int titleResourceId) {
+    private static Intent createIntent(Context context, String url) {
         final Intent intent = new Intent(context, ShareLinkActivity.class);
         intent.putExtra(IntentExtras.URL, url);
-        intent.putExtra(IntentExtras.TITLE_RESOURCE_ID, titleResourceId);
         intent.addFlags(ActivityHelper.ACTIVITY_START_CLEAR_HISTORY);
         return intent;
     }
@@ -54,10 +52,7 @@ public class ShareLinkActivity extends MenuActivity implements OnDeviceClickedLi
      */
     private void init() {
         final String url = ActivityHelper.getStringExtra(this, TAG, IntentExtras.URL);
-        final int titleResourceId = getIntent().getIntExtra(IntentExtras.TITLE_RESOURCE_ID, R.string.select_a_device);
-
         this.url = url;
-        this.getSupportActionBar().setTitle(titleResourceId);
     }
 
     @Override
