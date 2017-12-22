@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="button_min_width">200dp</dimen>
+
     <dimen name="device_padding">10dp</dimen>
     <dimen name="device_padding_horizontal">20dp</dimen>
     <dimen name="grid_device_image_size">100dp</dimen>
     <dimen name="grid_device_title_padding">20dp</dimen>
+
+    <dimen name="device_image_size">100dp</dimen>
+    <dimen name="half_device_image_size">50dp</dimen>
 </resources>

@@ -24,7 +24,7 @@ import java.util.Collection;
  */
 public class SquidService {
 
-    private static final String TAG = "SquidService";
+    private static final String TAG = SquidService.class.getSimpleName();;
 
     private final String endpoint;
     private final GoogleSignIn googleSignIn;
@@ -72,7 +72,7 @@ public class SquidService {
      * @throws JSONException If there is an issue parsing the response.
      */
     public boolean removeDevice(String deviceId) throws IOException, JSONException {
-        final HttpResponse response = this.sendRequest("DELETE", "api/devices/" + deviceId, null, null);
+        final HttpResponse response = this.sendRequest("DELETE", "/api/devices/" + deviceId, null, null);
         return response.statusCode == 200;
     }
 

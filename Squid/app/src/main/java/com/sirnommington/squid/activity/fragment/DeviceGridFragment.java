@@ -1,7 +1,6 @@
 package com.sirnommington.squid.activity.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +26,11 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
     private OnDeviceClickedListener deviceClickedListener;
     private DevicesAdapter devicesAdapter;
 
+    /**
+     * Keeps track of whether or not this fragment has loaded devices before.
+     */
+    private boolean hasLoaded = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,8 +47,8 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         this.getDevices();
     }
 
@@ -52,29 +56,25 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
      * Retrieves the user's devices from the server.
      * TODO Cache the user's devices on the device so that they show up faster.
      */
-    private void getDevices() {
-        final View progress = getView().findViewById(R.id.progress);
-        final View devices = getView().findViewById(R.id.devices);
-
+    public void getDevices() {
         final SquidService squidService = ((SquidServiceProvider) this.getActivity()).getSquidService();
         new GetDevicesTask(squidService) {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                devices.setVisibility(View.GONE);
-                progress.setVisibility(View.VISIBLE);
+                showLoading(!hasLoaded);
             }
 
             @Override
             protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
-                devices.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-
                 super.onPostExecute(response);
+                showLoading(false);
+
                 if(response.error != null) {
                     showError(getResources().getString(R.string.get_devices_error));
                 } else {
                     devicesAdapter.setDevices(response.payload);
+                    hasLoaded = true;
                 }
             }
         }.execute();
@@ -94,5 +94,21 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
      */
     private void showError(String error) {
         Toast.makeText(this.getActivity(), error, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Shows or hides the loading indicator.
+     * @param show True to show loading, false to hide.
+     */
+    private void showLoading(boolean show) {
+        final View progress = getView().findViewById(R.id.progress);
+        final View devices = getView().findViewById(R.id.devices);
+        if(show) {
+            devices.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
+        } else {
+            devices.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.GONE);
+        }
     }
 }
