@@ -16,6 +16,16 @@
         <item name="android:layout_marginTop">10dp</item>
     </style>
 
+    <style name="BottomButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">@dimen/button_min_width</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="DeviceButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -28,6 +38,7 @@
     </style>
     <style name="DeviceTitle" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:layout_marginTop">10dp</item>
+
     </style>
 
     <style name="InstallAppText">
@@ -50,14 +61,5 @@
     <style name="IntroTextSecondary" parent="@style/IntroTextPrimary">
         <item name="android:textSize">15sp</item>
         <item name="android:layout_marginTop">10dp</item>
-    </style>
-    <style name="IntroButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minWidth">@dimen/button_min_width</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:gravity">center</item>
     </style>
 </resources>
