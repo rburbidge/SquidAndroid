@@ -2,6 +2,8 @@ package com.sirnommington.squid.activity;
 
 import android.app.Fragment;
 
+import com.sirnommington.squid.activity.common.AddOtherDeviceActivity;
+
 /**
  * Request codes for startActivityForResult() calls from either {@link android.support.v7.app.AppCompatActivity} or
  * {@link Fragment}.
@@ -14,7 +16,7 @@ public class RequestCode {
     public static final int SIGN_IN = 1;
 
     /**
-     * For use with {@link com.sirnommington.squid.activity.share.AddOtherDeviceActivity}
+     * For use with {@link AddOtherDeviceActivity}
      */
     public static final int ADD_OTHER_DEVICE = 2;
 }

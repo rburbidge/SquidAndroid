@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity.intro;
+package com.sirnommington.squid.activity.intro.fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.RequestCode;
+import com.sirnommington.squid.activity.common.GoogleSignInProvider;
+import com.sirnommington.squid.activity.intro.IntroListener;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
 /**

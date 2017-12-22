@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity.share;
+package com.sirnommington.squid.activity.fragment;
 
 import com.sirnommington.squid.services.squid.DeviceModel;
 

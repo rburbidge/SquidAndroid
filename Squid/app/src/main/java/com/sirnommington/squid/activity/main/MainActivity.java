@@ -7,11 +7,11 @@ import android.util.Log;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.MenuActivity;
+import com.sirnommington.squid.activity.common.AddOtherDeviceActivity;
+import com.sirnommington.squid.activity.common.SquidServiceProvider;
 import com.sirnommington.squid.activity.device.DeviceActivity;
 import com.sirnommington.squid.activity.fragment.DevicesAdapter;
-import com.sirnommington.squid.activity.share.AddOtherDeviceActivity;
-import com.sirnommington.squid.activity.share.OnDeviceClickedListener;
-import com.sirnommington.squid.activity.share.SquidServiceProvider;
+import com.sirnommington.squid.activity.fragment.OnDeviceClickedListener;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.DeviceModel;

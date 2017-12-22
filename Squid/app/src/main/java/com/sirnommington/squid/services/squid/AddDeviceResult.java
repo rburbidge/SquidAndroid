@@ -2,7 +2,7 @@ package com.sirnommington.squid.services.squid;
 
 /**
  * Response from adding a device.
- * @see SquidService#addDevice(String, String, String)
+ * @see SquidService#addDevice(String, String)
  */
 public class AddDeviceResult {
     /**

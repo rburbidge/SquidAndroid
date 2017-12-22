@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity.intro;
+package com.sirnommington.squid.activity.intro.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.intro.IntroListener;
 
 /**
  * Describes the app.
