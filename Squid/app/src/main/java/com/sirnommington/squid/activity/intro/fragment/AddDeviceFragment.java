@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity.intro;
+package com.sirnommington.squid.activity.intro.fragment;
 
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -18,6 +18,8 @@ import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.Actions;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.common.Delay;
+import com.sirnommington.squid.activity.common.GoogleSignInProvider;
+import com.sirnommington.squid.activity.intro.IntroListener;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
 import com.sirnommington.squid.services.google.GoogleSignIn;

@@ -12,8 +12,7 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.GetDevicesTask;
-import com.sirnommington.squid.activity.share.OnDeviceClickedListener;
-import com.sirnommington.squid.activity.share.SquidServiceProvider;
+import com.sirnommington.squid.activity.common.SquidServiceProvider;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
 

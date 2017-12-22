@@ -1,4 +1,4 @@
-package com.sirnommington.squid.activity.intro;
+package com.sirnommington.squid.activity.common;
 
 import com.sirnommington.squid.services.google.GoogleSignIn;
 

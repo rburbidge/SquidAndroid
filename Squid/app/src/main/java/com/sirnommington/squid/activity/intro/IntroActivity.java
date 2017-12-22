@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.RequestCode;
+import com.sirnommington.squid.activity.common.GoogleSignInProvider;
+import com.sirnommington.squid.activity.intro.fragment.AddDeviceFragment;
+import com.sirnommington.squid.activity.intro.fragment.DescriptionFragment;
+import com.sirnommington.squid.activity.intro.fragment.SignInFragment;
 import com.sirnommington.squid.activity.main.MainActivity;
-import com.sirnommington.squid.activity.share.AddOtherDeviceActivity;
-import com.sirnommington.squid.activity.share.ShareLinkActivity;
+import com.sirnommington.squid.activity.common.AddOtherDeviceActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 

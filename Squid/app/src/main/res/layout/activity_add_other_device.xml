@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="com.sirnommington.squid.activity.share.AddOtherDeviceActivity"
+    tools:context="com.sirnommington.squid.activity.common.AddOtherDeviceActivity"
     style="@style/SquidActivity">
 
     <RelativeLayout
