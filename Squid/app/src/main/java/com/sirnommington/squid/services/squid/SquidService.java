@@ -105,13 +105,20 @@ public class SquidService {
      * Sends the URL to a device.
      * @param deviceId The recipient device ID.
      * @param url The URL to send.
-     * @throws JSONException If there is an issue parsing the response.
+     * @return True iff sending the URL succeeded.
      */
-    public void sendUrl(String deviceId, String url) throws JSONException {
-        final JSONObject body = new JSONObject();
-        body.put("url", url);
+    public boolean sendUrl(String deviceId, String url) {
+        JSONObject body;
+        try {
+            body = new JSONObject();
+            body.put("url", url);
+        } catch(JSONException e) {
+            Log.e(TAG, "sendUrl(): error creating JSON body: " + e);
+            return false;
+        }
 
-        this.sendRequest("POST", "/api/devices/" + deviceId + "/commands", body, null);
+        final HttpResponse response = this.sendRequest("POST", "/api/devices/" + deviceId + "/commands", body, null);
+        return response.isSuccess();
     }
 
     /**
@@ -125,6 +132,16 @@ public class SquidService {
         public HttpResponse(int statusCode, TBody body) {
             this.statusCode = statusCode;
             this.body = body;
+        }
+
+        public boolean isSuccess() {
+            switch(this.statusCode) {
+                case 200:
+                case 302:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 

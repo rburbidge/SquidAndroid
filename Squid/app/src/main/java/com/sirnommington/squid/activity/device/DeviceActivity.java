@@ -108,16 +108,19 @@ public class DeviceActivity extends AppCompatActivity implements RemoveConfirmat
      * Sends a link to the device. This allows the user to verify that their app is setup correctly.
      */
     private void sendLink() {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    // TODO Change the default URL
-                    squidService.sendUrl(device.id, "https://google.com");
-                } catch (Exception e) {
+            protected Boolean doInBackground(Void... voids) {
+                // TODO Change the default URL
+                return squidService.sendUrl(device.id, "https://google.com");
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                super.onPostExecute(success);
+                if(!success) {
                     showError(getResources().getString(R.string.share_link_error, device.name));
                 }
-                return null;
             }
         }.execute();
     }
