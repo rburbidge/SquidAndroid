@@ -72,25 +72,30 @@ public class DeviceActivity extends AppCompatActivity implements RemoveConfirmat
     }
 
     /**
-     * Called when the user confirms/denies device removal.
+     * Called when the user confirms/aborts device removal.
      * @param remove True if the user chose to remove the device.
      */
     @Override
     public void onRemoveConfirmComplete(boolean remove) {
-        if(remove) {
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        squidService.removeDevice(device.id);
-                        finish();
-                    } catch (Exception e) {
-                        showError(getResources().getString(R.string.device_remove_device_error, device.name));
-                    }
-                    return null;
+        if(!remove) return;
+
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                return squidService.removeDevice(device.id);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean removed) {
+                super.onPostExecute(removed);
+
+                if(!removed) {
+                    showError(getResources().getString(R.string.device_remove_device_error, device.name));
+                } else {
+                    finish();
                 }
-            }.execute();
-        }
+            }
+        }.execute();
     }
 
     /**
