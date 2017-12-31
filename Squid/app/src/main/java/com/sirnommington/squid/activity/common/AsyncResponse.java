@@ -8,10 +8,16 @@ public class AsyncResponse<TPayload> {
     public final TPayload payload;
     public final Object error;
 
+    /**
+     * Create for a success response.
+     */
     public static <TPayload> AsyncResponse<TPayload> create(TPayload payload) {
         return new AsyncResponse(payload, null);
     }
 
+    /**
+     * Create for an error response.
+     */
     public static <TPayload> AsyncResponse<TPayload> createError(Object error) {
         return new AsyncResponse(null, error);
     }

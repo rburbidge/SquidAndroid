@@ -118,7 +118,7 @@ public class SquidService {
         }
 
         final HttpResponse response = this.sendRequest("POST", "/api/devices/" + deviceId + "/commands", body, null);
-        return response.isSuccess();
+        return HttpResponse.isSuccess(response.statusCode);
     }
 
     /**
@@ -134,8 +134,11 @@ public class SquidService {
             this.body = body;
         }
 
-        public boolean isSuccess() {
-            switch(this.statusCode) {
+        /**
+         * Returns true if status code indicates success.
+         */
+        public static boolean isSuccess(int statusCode) {
+            switch(statusCode) {
                 case 200:
                 case 302:
                     return true;
