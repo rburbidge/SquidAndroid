@@ -28,8 +28,6 @@ import com.sirnommington.squid.services.squid.AddDeviceResult;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
 
-import org.json.JSONException;
-
 import java.util.Collection;
 
 /**
