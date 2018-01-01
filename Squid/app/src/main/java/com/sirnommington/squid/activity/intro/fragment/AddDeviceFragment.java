@@ -9,11 +9,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
@@ -53,6 +56,16 @@ public class AddDeviceFragment extends ProgressFragment {
         final View view = inflater.inflate(R.layout.fragment_add_device, container, false);
         this.deviceName = view.findViewById(R.id.device_name);
         this.deviceName.setText(Build.MODEL);
+        this.deviceName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                // Also register device when user hits enter on keyboard
+                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                    registerDevice();
+                }
+                return false;
+            }
+        });
         final Button addDeviceButton = view.findViewById(R.id.register_device_button);
         addDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,11 +156,10 @@ public class AddDeviceFragment extends ProgressFragment {
 
             @Override
             protected void onPostExecute(AsyncResponse<InitializeResult> result) {
-                showLoading(false);
-
                 String message;
                 if(result == null || result.error != null) {
                     message = getResources().getString(R.string.add_device_error);
+                    showLoading(false);
                 } else if(result.payload.deviceAdded) {
                     message = getResources().getString(R.string.add_device_added, Build.MODEL);
                 } else {
