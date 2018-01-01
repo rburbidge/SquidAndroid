@@ -1,6 +1,5 @@
 package com.sirnommington.squid.activity.intro.fragment;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +8,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
@@ -20,7 +22,9 @@ import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.Delay;
 import com.sirnommington.squid.activity.common.GoogleSignInProvider;
+import com.sirnommington.squid.activity.fragment.ProgressFragment;
 import com.sirnommington.squid.activity.intro.IntroListener;
+import com.sirnommington.squid.common.StringUtil;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
 import com.sirnommington.squid.services.google.GoogleSignIn;
@@ -33,42 +37,98 @@ import java.util.Collection;
 /**
  * Retrieves the GCM token for the user and registers their device with the service.
  */
-public class AddDeviceFragment extends Fragment {
+public class AddDeviceFragment extends ProgressFragment {
+    private static final String TAG = AddDeviceFragment.class.getSimpleName().toString();
+
     private final AddDeviceFragment thiz = this;
 
     private boolean isReceiverRegistered;
     private BroadcastReceiver registrationBroadcastReceiver;
     private SquidService squidService;
+    private EditText deviceName;
+    private String gcmToken;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_add_device, container, false);
+        this.deviceName = view.findViewById(R.id.device_name);
+        this.deviceName.setText(Build.MODEL);
+        final Button addDeviceButton = view.findViewById(R.id.register_device_button);
+        addDeviceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerDevice();
+            }
+        });
+
         final GoogleSignIn googleSignIn = ((GoogleSignInProvider) this.getActivity()).getGoogleSignIn();
         final Preferences prefs = new Preferences(this.getActivity());
         this.squidService = new SquidService(prefs.getSquidEndpoint(), googleSignIn);
 
+        this.initGcmRegistration();
+
+        return view;
+    }
+
+    @Override
+    public int getLoadingTextId() {
+        return R.string.add_device_in_progress;
+    }
+
+    /**
+     * Initializes retrieval of the GCM token.
+     */
+    private void initGcmRegistration() {
         // When retrieving GCM token completes, register the device with the Squid service
         registrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // GCM token is available from BroadcastReceiver intent, NOT MainActivity intent
-                final String gcmToken = intent.getStringExtra(IntentExtras.GCM_TOKEN);
-                thiz.addThisDevice(gcmToken);
+                gcmToken = intent.getStringExtra(IntentExtras.GCM_TOKEN);
             }
         };
         registerReceiver();
-
         final Intent intent = new Intent(this.getActivity(), SquidRegistrationIntentService.class);
         this.getActivity().startService(intent);
+    }
 
-        return inflater.inflate(R.layout.fragment_add_device, container, false);
+    /**
+     * Begins device registration. Shows an error to the user if either the device name is invalid, or GCM token is
+     * unavailable.
+     */
+    private void registerDevice() {
+        final String deviceName = this.deviceName.getText().toString();
+        final String gcmToken = this.gcmToken;
+
+        Integer errorStringId;
+        if(StringUtil.isNullOrWhitespace(deviceName)) {
+            errorStringId = R.string.add_device_name_invalid;
+        } else if(StringUtil.isNullOrWhitespace(gcmToken)) {
+            errorStringId = R.string.add_device_error;
+            Log.e(TAG, "GCM token was unavailable when user attempted to register device");
+        } else {
+            errorStringId = null;
+        }
+
+        if(errorStringId != null) {
+            Toast.makeText(getActivity(), errorStringId.intValue(), Toast.LENGTH_LONG).show();
+        } else {
+            this.registerDeviceImpl(deviceName, gcmToken);
+        }
     }
 
     /**
      * Adds this device to the Squid service.
      * @param gcmToken The device's GCM token on which it will be messaged.
      */
-    private void addThisDevice(final String gcmToken) {
+    private void registerDeviceImpl(final String deviceName, final String gcmToken) {
         new AsyncTask<String, Void, AsyncResponse<InitializeResult>>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                showLoading(true);
+            }
+
             @Override
             protected AsyncResponse<InitializeResult> doInBackground(String... params) {
                 // Delay the add device operation to a minimum of 3s so that the fragment doesn't disappear too quickly
@@ -76,13 +136,15 @@ public class AddDeviceFragment extends Fragment {
                 return Delay.delay(new Delay.Run<AsyncResponse<InitializeResult>>() {
                     @Override
                     public AsyncResponse<InitializeResult> run() {
-                        return thiz.initializeApp(gcmToken);
+                        return thiz.initializeApp(deviceName, gcmToken);
                     }
                 }, minMillisToAddDevice);
             }
 
             @Override
             protected void onPostExecute(AsyncResponse<InitializeResult> result) {
+                showLoading(false);
+
                 String message;
                 if(result == null || result.error != null) {
                     message = getResources().getString(R.string.add_device_error);
@@ -121,16 +183,15 @@ public class AddDeviceFragment extends Fragment {
         }
     }
 
-
     /**
      * Registers the device with the service, and checks if the user has an existing devices besides this one.
      * @param gcmToken This device's GCM token.
      */
-    private AsyncResponse<InitializeResult> initializeApp(final String gcmToken) {
+    private AsyncResponse<InitializeResult> initializeApp(final String deviceName, final String gcmToken) {
         final InitializeResult result = new InitializeResult();
 
         // Register this device
-        AsyncResponse<AddDeviceResult> addDeviceResult = thiz.squidService.addDevice(Build.MODEL, gcmToken);
+        AsyncResponse<AddDeviceResult> addDeviceResult = thiz.squidService.addDevice(deviceName, gcmToken);
         if(addDeviceResult.error != null) {
             return AsyncResponse.createError(addDeviceResult.error);
         }

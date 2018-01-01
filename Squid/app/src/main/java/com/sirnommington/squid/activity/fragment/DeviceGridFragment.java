@@ -2,7 +2,6 @@ package com.sirnommington.squid.activity.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import java.util.Collection;
 /**
  * Shows a set of devices in a grid, as well as an add device item.
  */
-public class DeviceGridFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class DeviceGridFragment extends ProgressFragment implements AdapterView.OnItemClickListener {
     private OnDeviceClickedListener deviceClickedListener;
     private DevicesAdapter devicesAdapter;
 
@@ -31,8 +30,7 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
     private boolean hasLoaded = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_device_grid, container, false);
 
         this.deviceClickedListener = (OnDeviceClickedListener)this.getActivity();
@@ -60,14 +58,14 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
 
         new AsyncTask<Void,  Void, AsyncResponse<Collection<DeviceModel>>>() {
             @Override
-            protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
-                return squidService.getDevices();
-            }
-
-            @Override
             protected void onPreExecute() {
                 super.onPreExecute();
                 showLoading(!hasLoaded);
+            }
+
+            @Override
+            protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
+                return squidService.getDevices();
             }
 
             @Override
@@ -99,21 +97,5 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
      */
     private void showError(String error) {
         Toast.makeText(this.getActivity(), error, Toast.LENGTH_LONG).show();
-    }
-
-    /**
-     * Shows or hides the loading indicator.
-     * @param show True to show loading, false to hide.
-     */
-    private void showLoading(boolean show) {
-        final View progress = getView().findViewById(R.id.progress);
-        final View devices = getView().findViewById(R.id.devices);
-        if(show) {
-            devices.setVisibility(View.GONE);
-            progress.setVisibility(View.VISIBLE);
-        } else {
-            devices.setVisibility(View.VISIBLE);
-            progress.setVisibility(View.GONE);
-        }
     }
 }

@@ -7,7 +7,8 @@
     <string name="add_device_in_progress">Registering your device...</string>
     <string name="add_device_added">Your \%s\ has been added!</string>
     <string name="add_device_already_added">Welcome back!</string>
-    <string name="add_device_error">A problem occurred while adding your device :(</string>
+    <string name="add_device_error">A problem occurred while adding your device. Please try again later.</string>
+    <string name="add_device_name_invalid">This device must have a name.</string>
 
     <string name="dev_settings">Developer settings</string>
     <string name="dev_settings_reset">Reset</string>
@@ -45,6 +46,7 @@
     <string name="cancel">Cancel</string>
     <string name="get_devices_error">A problem occurred while retrieving your devices :(</string>
     <string name="later">Later</string>
+    <string name="loading">Loading...</string>
     <string name="next">Next</string>
     <string name="remove">Remove</string>
     <string name="select_a_device">Select a device</string>
