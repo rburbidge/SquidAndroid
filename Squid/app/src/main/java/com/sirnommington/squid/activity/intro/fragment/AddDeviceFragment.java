@@ -28,6 +28,8 @@ import com.sirnommington.squid.services.squid.AddDeviceResult;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
 
+import org.json.JSONException;
+
 import java.util.Collection;
 
 /**
@@ -130,13 +132,11 @@ public class AddDeviceFragment extends Fragment {
         final InitializeResult result = new InitializeResult();
 
         // Register this device
-        // TODO Have addDevice return AsyncResponse
-        try {
-            AddDeviceResult addDeviceResult = thiz.squidService.addDevice(Build.MODEL, gcmToken);
-            result.deviceAdded = addDeviceResult.deviceCreated;
-        } catch(Exception e) {
-            return AsyncResponse.createError(e);
+        AsyncResponse<AddDeviceResult> addDeviceResult = thiz.squidService.addDevice(Build.MODEL, gcmToken);
+        if(addDeviceResult.error != null) {
+            return AsyncResponse.createError(addDeviceResult.error);
         }
+        result.deviceAdded = addDeviceResult.payload.deviceCreated;
 
         // Check if the user has other registered devices
         AsyncResponse<Collection<DeviceModel>> devices = thiz.squidService.getDevices();

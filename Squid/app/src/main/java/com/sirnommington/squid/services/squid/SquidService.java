@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sirnommington.squid.activity.common.AsyncResponse;
+import com.sirnommington.squid.services.common.HttpResponse;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 
 import org.json.JSONException;
@@ -47,12 +48,16 @@ public class SquidService {
      * @param name The device name.
      * @param gcmToken The device GCM token.
      * @return Result indicating added, already existed, etc.
-     * @throws JSONException If there is an issue constructing the outgoing request.
      */
-    public AddDeviceResult addDevice(String name, String gcmToken) throws JSONException {
+    public AsyncResponse<AddDeviceResult> addDevice(String name, String gcmToken) {
         final JSONObject body = new JSONObject();
-        body.put("name", name);
-        body.put("gcmToken", gcmToken);
+        try {
+            body.put("name", name);
+            body.put("gcmToken", gcmToken);
+        } catch(JSONException e) {
+            Log.e(TAG, "addDevice(): error creating JSON body: " + e);
+            return AsyncResponse.createError(e);
+        }
 
         final HttpResponse<DeviceModel> response = this.sendRequest("POST", "/api/devices", body, new JsonParser() {
             @Override
@@ -60,12 +65,12 @@ public class SquidService {
                 return DeviceModel.from(jsonString);
             }
         });
-        if(response.statusCode != 200 && response.statusCode != 302) {
-            // TODO Figure out how to return errors
-            //throw new IOException("An error occurred while adding the device");
-        }
 
-        return new AddDeviceResult(response.body, response.statusCode == 200);
+        if(response.isSuccess()) {
+            return AsyncResponse.create(new AddDeviceResult(response.body, response.statusCode == 200));
+        } else {
+            return AsyncResponse.createError(response.body);
+        }
     }
 
     /**
@@ -118,34 +123,7 @@ public class SquidService {
         }
 
         final HttpResponse response = this.sendRequest("POST", "/api/devices/" + deviceId + "/commands", body, null);
-        return HttpResponse.isSuccess(response.statusCode);
-    }
-
-    /**
-     * An HTTP Response.
-     * @param <TBody> The body type.
-     */
-    private static class HttpResponse<TBody> {
-        public final int statusCode;
-        public final TBody body;
-
-        public HttpResponse(int statusCode, TBody body) {
-            this.statusCode = statusCode;
-            this.body = body;
-        }
-
-        /**
-         * Returns true if status code indicates success.
-         */
-        public static boolean isSuccess(int statusCode) {
-            switch(statusCode) {
-                case 200:
-                case 302:
-                    return true;
-                default:
-                    return false;
-            }
-        }
+        return response.isSuccess();
     }
 
     /**
