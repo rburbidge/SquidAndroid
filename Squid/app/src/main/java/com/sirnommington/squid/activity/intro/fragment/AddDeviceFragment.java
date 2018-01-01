@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.Actions;
 import com.sirnommington.squid.activity.IntentExtras;
+import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.Delay;
 import com.sirnommington.squid.activity.common.GoogleSignInProvider;
 import com.sirnommington.squid.activity.intro.IntroListener;
@@ -67,25 +68,25 @@ public class AddDeviceFragment extends Fragment {
      * @param gcmToken The device's GCM token on which it will be messaged.
      */
     private void addThisDevice(final String gcmToken) {
-        new AsyncTask<String, Void, InitializeResult>() {
+        new AsyncTask<String, Void, AsyncResponse<InitializeResult>>() {
             @Override
-            protected InitializeResult doInBackground(String... params) {
+            protected AsyncResponse<InitializeResult> doInBackground(String... params) {
                 // Delay the add device operation to a minimum of 3s so that the fragment doesn't disappear too quickly
                 final int minMillisToAddDevice = 3000;
-                return Delay.delay(new Delay.Run<InitializeResult>() {
+                return Delay.delay(new Delay.Run<AsyncResponse<InitializeResult>>() {
                     @Override
-                    public InitializeResult run() {
+                    public AsyncResponse<InitializeResult> run() {
                         return thiz.initializeApp(gcmToken);
                     }
                 }, minMillisToAddDevice);
             }
 
             @Override
-            protected void onPostExecute(InitializeResult result) {
+            protected void onPostExecute(AsyncResponse<InitializeResult> result) {
                 String message;
                 if(result == null || result.error != null) {
                     message = getResources().getString(R.string.add_device_error);
-                } else if(result.deviceAdded) {
+                } else if(result.payload.deviceAdded) {
                     message = getResources().getString(R.string.add_device_added, Build.MODEL);
                 } else {
                     message = getResources().getString(R.string.add_device_already_added);
@@ -93,7 +94,7 @@ public class AddDeviceFragment extends Fragment {
                 Toast.makeText(thiz.getActivity(), message, Toast.LENGTH_LONG).show();
 
                 if(result != null) {
-                    ((IntroListener) getActivity()).addDeviceComplete(result.hasOtherDevices);
+                    ((IntroListener) getActivity()).addDeviceComplete(result.payload.hasOtherDevices);
                 }
             }
         }.execute();
@@ -125,30 +126,26 @@ public class AddDeviceFragment extends Fragment {
      * Registers the device with the service, and checks if the user has an existing devices besides this one.
      * @param gcmToken This device's GCM token.
      */
-    private InitializeResult initializeApp(final String gcmToken) {
+    private AsyncResponse<InitializeResult> initializeApp(final String gcmToken) {
         final InitializeResult result = new InitializeResult();
 
         // Register this device
-        try {
-            AddDeviceResult addDeviceResult = thiz.squidService.addDevice(Build.MODEL, gcmToken);
-            result.deviceAdded = addDeviceResult.deviceCreated;
-        } catch(Exception e) {
-            result.error = e.toString();
-            return result;
+        AsyncResponse<AddDeviceResult> addDeviceResult = thiz.squidService.addDevice(Build.MODEL, gcmToken);
+        if(addDeviceResult.error != null) {
+            return AsyncResponse.createError(addDeviceResult.error);
         }
+        result.deviceAdded = addDeviceResult.payload.deviceCreated;
 
         // Check if the user has other registered devices
-        try {
-            Collection<DeviceModel> devices = thiz.squidService.getDevices();
-
-            // Size > 1 because this device is also included in the getDevices() response
-            result.hasOtherDevices = devices != null && devices.size() > 1;
-        } catch(Exception e) {
-            result.error = e.toString();
-            return result;
+        AsyncResponse<Collection<DeviceModel>> devices = thiz.squidService.getDevices();
+        if(devices.error != null) {
+            return AsyncResponse.createError(devices.error);
         }
 
-        return result;
+        // Size > 1 because this device is also included in the getDevices() response
+        result.hasOtherDevices = devices != null && devices.payload.size() > 1;
+
+        return AsyncResponse.create(result);
     }
 
     private class InitializeResult {
@@ -161,10 +158,5 @@ public class AddDeviceFragment extends Fragment {
          * True if the user has other devices registered.
          */
         public boolean hasOtherDevices;
-
-        /**
-         * Non-null error message if an error occurred during initialization.
-         */
-        public String error;
     }
 }

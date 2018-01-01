@@ -31,6 +31,8 @@
 
     <string name="share_link_error">A problem occurred while sending to %1$s. Please try again later.</string>
 
+    <string name="sign_in_fail_no_network">You must be connected to the network to sign in.</string>
+    <string name="sign_in_fail_other">Sign in failed.</string>
     <string name="sign_in_title">Sign in to your Google account!</string>
     <string name="sign_in_subtitle">Squid provides a secure experience using Google authentication.</string>
 

@@ -1,5 +1,6 @@
 package com.sirnommington.squid.activity.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.widget.Toast;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.AsyncResponse;
-import com.sirnommington.squid.activity.common.GetDevicesTask;
 import com.sirnommington.squid.activity.common.SquidServiceProvider;
 import com.sirnommington.squid.services.squid.DeviceModel;
 import com.sirnommington.squid.services.squid.SquidService;
@@ -57,7 +57,13 @@ public class DeviceGridFragment extends Fragment implements AdapterView.OnItemCl
      */
     public void getDevices() {
         final SquidService squidService = ((SquidServiceProvider) this.getActivity()).getSquidService();
-        new GetDevicesTask(squidService) {
+
+        new AsyncTask<Void,  Void, AsyncResponse<Collection<DeviceModel>>>() {
+            @Override
+            protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
+                return squidService.getDevices();
+            }
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();

@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.RequestCode;
 import com.sirnommington.squid.activity.common.GoogleSignInProvider;
@@ -56,9 +58,24 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (!result.isSuccess()) {
+            final int errorResourceId = getErrorMessageForStatusCode(result.getStatus().getStatusCode());
+            Toast.makeText(getActivity(), errorResourceId, Toast.LENGTH_LONG).show();
             return;
         }
 
         ((IntroListener)this.getActivity()).signInComplete();
+    }
+
+    /**
+     * Gets the error message resource ID for a GoogleSignInStatusCodes status code.
+     * @param statusCode The GoogleSignInStatusCodes value.
+     */
+    private static int getErrorMessageForStatusCode(int statusCode) {
+        switch(statusCode) {
+            case GoogleSignInStatusCodes.NETWORK_ERROR:
+                return R.string.sign_in_fail_no_network;
+            default:
+                return R.string.sign_in_fail_other;
+        }
     }
 }

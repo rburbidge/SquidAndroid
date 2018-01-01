@@ -94,16 +94,20 @@ public class ShareLinkActivity extends MenuActivity implements OnDeviceClickedLi
      * Sends the URL to the device specified, and then closes the activity.
      */
     private void sendLink(final DeviceModel device) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    squidService.sendUrl(device.id, url);
+            protected Boolean doInBackground(Void... voids) {
+                return squidService.sendUrl(device.id, url);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                super.onPostExecute(success);
+                if (success) {
                     finish();
-                } catch (Exception e) {
+                } else {
                     showError(getResources().getString(R.string.share_link_error, device.name));
                 }
-                return null;
             }
         }.execute();
     }
