@@ -17,7 +17,14 @@ public class HttpResponse<TBody> {
      * Returns true if status code indicates success.
      */
     public boolean isSuccess() {
-        switch(this.statusCode) {
+       return isSuccess(this.statusCode);
+    }
+
+    /**
+     * Returns true if status code indicates success.
+     */
+    public static boolean isSuccess(int statusCode) {
+        switch(statusCode) {
             case 200:
             case 302:
                 return true;

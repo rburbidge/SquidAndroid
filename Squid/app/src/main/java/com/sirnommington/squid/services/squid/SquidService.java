@@ -75,12 +75,12 @@ public class SquidService {
 
     /**
      * Removes a device.
-     * @param deviceId The
-     * @return True if the device was successfully removed.
+     * @param deviceId The ID of the device to be removed.
+     * @return True if the device was successfully removed or did not exist.
      */
     public boolean removeDevice(String deviceId) {
         final HttpResponse response = this.sendRequest("DELETE", "/api/devices/" + deviceId, null, null);
-        return response.statusCode == 200;
+        return response.isSuccess();
     }
 
     /**
@@ -99,7 +99,7 @@ public class SquidService {
                 }
             });
 
-        if(response.statusCode == 200) {
+        if(response.isSuccess()) {
             return AsyncResponse.create(response.body);
         }
 
@@ -188,7 +188,7 @@ public class SquidService {
 
             final int responseCode = conn.getResponseCode();
             Object parsedBody = null;
-            if (responseParser != null && (responseCode == 200 || responseCode == 302)) {
+            if (responseParser != null && HttpResponse.isSuccess(responseCode)) {
                 final String bodyString = readAll(conn.getInputStream());
                 parsedBody = responseParser.parse(bodyString);
             }
