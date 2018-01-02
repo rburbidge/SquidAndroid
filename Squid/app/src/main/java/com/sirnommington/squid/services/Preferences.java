@@ -84,4 +84,11 @@ public class Preferences {
     public void enableDevMode() {
         this.sharedPreferences.edit().putBoolean(IS_DEV_MODE, true).apply();
     }
+
+    /**
+     * Returns true iff app is in dev mode.
+     */
+    public boolean isDevMode() {
+        return this.sharedPreferences.getBoolean(IS_DEV_MODE, false);
+    }
 }

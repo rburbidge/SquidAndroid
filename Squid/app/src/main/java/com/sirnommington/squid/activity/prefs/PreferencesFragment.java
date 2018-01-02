@@ -13,22 +13,45 @@ import com.sirnommington.squid.services.Preferences;
  * The settings fragment. Contains all settings.
  */
 public class PreferencesFragment extends PreferenceFragment {
+    private boolean hasDevOptionsBeenEnabled = false;
+    private Preferences preferences;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
+        this.preferences = new Preferences(getActivity());
+        this.addPreferencesFromResource(R.xml.preferences);
+    }
+
+    private void addDevPreferences() {
+        this.addPreferencesFromResource(R.xml.dev_preferences);
 
         final Activity context = getActivity();
-
         this.findPreference(this.getString(R.string.pref_reset)).setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    new Preferences(context).reset();
-                    Toast.makeText(context, R.string.dev_settings_reset_complete, Toast.LENGTH_LONG).show();
-                    context.finishAffinity();
-                    return true;
-                }
-            });
+                new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        preferences.reset();
+                        Toast.makeText(context, R.string.dev_settings_reset_complete, Toast.LENGTH_LONG).show();
+                        context.finishAffinity();
+                        return true;
+                    }
+                });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Prevent duplicate dev options from being added to the activity
+        if(hasDevOptionsBeenEnabled) {
+            return;
+        }
+
+        // Add dev prefs if enabled
+        if(this.preferences.isDevMode()) {
+            this.addDevPreferences();
+            this.hasDevOptionsBeenEnabled = true;
+        }
     }
 }
