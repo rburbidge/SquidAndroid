@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/dev_settings">
+    
+    <ListPreference
+        android:key="@string/pref_squid_endpoint"
+        android:title="@string/dev_settings_squid_endpoint"
+        android:summary="@string/dev_settings_squid_endpoint_summary"
+        android:entries="@array/squid_endpoints"
+        android:entryValues="@array/squid_endpoints"
+        android:defaultValue="@string/squid_endpoint_default"/>
+    <Preference
+        android:key="@string/pref_reset"
+        android:title="@string/dev_settings_reset"
+        android:summary="@string/dev_settings_reset_summary"/>
+</PreferenceScreen>

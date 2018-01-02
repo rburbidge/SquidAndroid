@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.google.android.gms.fitness.data.Device;
 import com.google.gson.Gson;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.services.squid.DeviceModel;
@@ -13,6 +12,7 @@ import com.sirnommington.squid.services.squid.DeviceModel;
  * Application preferences. A simple wrapper around Android SharedPreferences.
  */
 public class Preferences {
+    private static final String IS_DEV_MODE = "isDevMode";
     private static final String IS_INITIALIZED = "isInitialized";
     private static final String SENT_GCM_TOKEN_TO_SERVER = "sentGcmTokenToServer";
     private static final String THIS_DEVICE= "thisDevice";
@@ -76,5 +76,19 @@ public class Preferences {
         return this.sharedPreferences.getString(
             this.context.getResources().getString(key),
             this.context.getResources().getString(defaultValue));
+    }
+
+    /**
+     * Sets developer mode as enabled.
+     */
+    public void enableDevMode() {
+        this.sharedPreferences.edit().putBoolean(IS_DEV_MODE, true).apply();
+    }
+
+    /**
+     * Returns true iff app is in dev mode.
+     */
+    public boolean isDevMode() {
+        return this.sharedPreferences.getBoolean(IS_DEV_MODE, false);
     }
 }
