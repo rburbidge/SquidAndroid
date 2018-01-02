@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -6,13 +6,23 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:layout_gravity="center_horizontal">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/add_device_in_progress"/>
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="What's the name of this device?"
+            style="@style/IntroTextPrimary"/>
+        <EditText
+            android:id="@+id/device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Device name"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/register_device_button"
+        android:text="@string/next"
+        style="@style/BottomButton"/>
+</RelativeLayout>

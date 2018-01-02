@@ -1,9 +1,9 @@
 package com.sirnommington.squid.activity.intro;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sirnommington.squid.R;
@@ -40,7 +40,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
         this.googleSignIn = new GoogleSignIn(this);
 
         final Fragment fragment = this.getInitialIntroFragment();
-        final FragmentTransaction tx = getFragmentManager().beginTransaction();
+        final FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.add(R.id.intro_content, fragment, fragment.getClass().getSimpleName());
         tx.commit();
     }
@@ -106,7 +106,7 @@ public class IntroActivity extends AppCompatActivity implements IntroListener, G
     }
 
     private void replaceBottomFragment(Fragment fragment) {
-        final FragmentTransaction tx = getFragmentManager().beginTransaction();
+        final FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.setCustomAnimations(R.animator.intro_enter, R.animator.intro_exit);
         tx.replace(R.id.intro_content, fragment, fragment.getClass().getSimpleName());
         tx.commit();
