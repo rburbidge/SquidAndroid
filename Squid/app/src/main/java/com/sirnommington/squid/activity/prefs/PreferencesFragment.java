@@ -51,14 +51,14 @@ public class PreferencesFragment extends PreferenceFragment {
 
         final Activity context = getActivity();
         this.findPreference(this.getString(R.string.pref_reset)).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        preferences.reset();
-                        Toast.makeText(context, R.string.dev_settings_reset_complete, Toast.LENGTH_LONG).show();
-                        context.finishAffinity();
-                        return true;
-                    }
-                });
+            new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    preferences.reset();
+                    Toast.makeText(context, R.string.dev_settings_reset_complete, Toast.LENGTH_LONG).show();
+                    context.finishAffinity();
+                    return true;
+                }
+            });
     }
 }
