@@ -197,6 +197,7 @@ public class AddDeviceFragment extends ProgressFragment {
 
     /**
      * Registers the device with the service, and checks if the user has an existing devices besides this one.
+     * @param deviceName This device's name.
      * @param gcmToken This device's GCM token.
      */
     private AsyncResponse<InitializeResult> initializeApp(final String deviceName, final String gcmToken) {

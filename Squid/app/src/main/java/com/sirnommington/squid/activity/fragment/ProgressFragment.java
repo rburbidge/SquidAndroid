@@ -50,7 +50,6 @@ public abstract class ProgressFragment extends Fragment {
 
     /**
      * Shows or hides the loading indicator.
-     * Requires that loader's ID is R.id.progress, and conent ID is R.id.content.
      * @param isLoading True to show loading, false to hide.
      */
     public void showLoading(boolean isLoading) {
