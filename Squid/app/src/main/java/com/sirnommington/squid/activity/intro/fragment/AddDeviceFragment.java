@@ -132,6 +132,7 @@ public class AddDeviceFragment extends ProgressFragment {
 
     /**
      * Adds this device to the Squid service.
+     * @param deviceName This device's name.
      * @param gcmToken The device's GCM token on which it will be messaged.
      */
     private void registerDeviceImpl(final String deviceName, final String gcmToken) {
