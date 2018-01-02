@@ -11,11 +11,14 @@ import com.sirnommington.squid.services.Preferences;
 
 /**
  * About screen for the app. Shows credits, etc.
+ *
+ * Shows dev options if the user touches the screen {@link #ENABLE_DEV_OPTIONS_TOUCH_COUNT} times.
  */
 public class AboutActivity extends AppCompatActivity {
 
+    private static final int ENABLE_DEV_OPTIONS_TOUCH_COUNT = 5;
+
     private final AboutActivity thiz = this;
-    private final int ENABLE_DEV_OPTIONS_TOUCH_COUNT = 5;
     private int touchCount = 0;
 
     @Override
