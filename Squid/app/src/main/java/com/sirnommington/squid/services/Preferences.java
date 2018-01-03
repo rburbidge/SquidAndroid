@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.sirnommington.squid.R;
-import com.sirnommington.squid.services.squid.DeviceModel;
+import com.sirnommington.squid.services.squid.contracts.Device;
 
 /**
  * Application preferences. A simple wrapper around Android SharedPreferences.
@@ -56,17 +56,17 @@ public class Preferences {
         return getPreference(R.string.pref_squid_endpoint, R.string.squid_endpoint_default);
     }
 
-    public DeviceModel getThisDevice() {
+    public Device getThisDevice() {
         final String jsonString = this.sharedPreferences.getString(THIS_DEVICE, null);
         if(jsonString == null) return null;
 
         final Gson gson = new Gson();
-        return gson.fromJson(jsonString, DeviceModel.class);
+        return gson.fromJson(jsonString, Device.class);
     }
 
-    public void setThisDevice(DeviceModel device) {
+    public void setThisDevice(Device device) {
         final Gson gson = new Gson();
-        this.sharedPreferences.edit().putString(THIS_DEVICE, gson.toJson(device, DeviceModel.class)).apply();
+        this.sharedPreferences.edit().putString(THIS_DEVICE, gson.toJson(device, Device.class)).apply();
     }
 
     /**

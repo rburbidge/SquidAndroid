@@ -17,7 +17,7 @@ import com.sirnommington.squid.activity.fragment.DevicesAdapter;
 import com.sirnommington.squid.activity.fragment.OnDeviceClickedListener;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
-import com.sirnommington.squid.services.squid.DeviceModel;
+import com.sirnommington.squid.services.squid.contracts.Device;
 import com.sirnommington.squid.services.squid.SquidService;
 
 /**
@@ -76,7 +76,7 @@ public class ShareLinkActivity extends MenuActivity implements OnDeviceClickedLi
      * * If device was clicked, sends the URL to the device.
      * * If add device was clicked, opens AddOtherDeviceActivity.
      */
-    public void onDeviceClicked(int viewType, DeviceModel device) {
+    public void onDeviceClicked(int viewType, Device device) {
         switch(viewType) {
             case DevicesAdapter.VIEW_TYPE_DEVICE:
                 this.sendLink(device);
@@ -93,7 +93,7 @@ public class ShareLinkActivity extends MenuActivity implements OnDeviceClickedLi
     /**
      * Sends the URL to the device specified, and then closes the activity.
      */
-    private void sendLink(final DeviceModel device) {
+    private void sendLink(final Device device) {
         new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... voids) {

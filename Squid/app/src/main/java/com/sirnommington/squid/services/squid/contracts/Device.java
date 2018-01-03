@@ -1,4 +1,4 @@
-package com.sirnommington.squid.services.squid;
+package com.sirnommington.squid.services.squid.contracts;
 
 import com.google.gson.Gson;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Device returned by SquidService.
  */
-public class DeviceModel implements Serializable {
+public class Device implements Serializable {
     /**
      * The device unique ID, defined by SquidService.
      */
@@ -21,8 +21,8 @@ public class DeviceModel implements Serializable {
     /**
      * Creates a device from a JSON string.
      */
-    public static DeviceModel from(String s) {
+    public static Device from(String s) {
         Gson gson = new Gson();
-        return gson.fromJson(s, DeviceModel.class);
+        return gson.fromJson(s, Device.class);
     }
 }

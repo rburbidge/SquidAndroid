@@ -1,4 +1,4 @@
-package com.sirnommington.squid.services.squid;
+package com.sirnommington.squid.services.squid.contracts;
 
 /**
  * Request to add a new device.

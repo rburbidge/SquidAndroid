@@ -7,6 +7,10 @@ import com.google.gson.reflect.TypeToken;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.services.common.HttpResponse;
 import com.sirnommington.squid.services.google.GoogleSignIn;
+import com.sirnommington.squid.services.squid.contracts.AddDeviceRequest;
+import com.sirnommington.squid.services.squid.contracts.AddDeviceResult;
+import com.sirnommington.squid.services.squid.contracts.Device;
+import com.sirnommington.squid.services.squid.contracts.SendUrlRequest;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -48,10 +52,10 @@ public class SquidService {
      */
     public AsyncResponse<AddDeviceResult> addDevice(String name, String gcmToken) {
         final AddDeviceRequest addDeviceBody = new AddDeviceRequest(name, gcmToken);
-        final HttpResponse<DeviceModel> response = this.sendRequest("POST", "/api/devices", addDeviceBody, new JsonParser() {
+        final HttpResponse<Device> response = this.sendRequest("POST", "/api/devices", addDeviceBody, new JsonParser() {
             @Override
-            public DeviceModel parse(String jsonString) {
-                return DeviceModel.from(jsonString);
+            public Device parse(String jsonString) {
+                return Device.from(jsonString);
             }
         });
 
@@ -77,13 +81,13 @@ public class SquidService {
      * TODO What does this return if the user doesn't exist or had no devices?
      * @return The devices, or an error.
      */
-    public AsyncResponse<Collection<DeviceModel>> getDevices() {
-        final HttpResponse<Collection<DeviceModel>> response = this.sendRequest("GET", "/api/devices", null,
+    public AsyncResponse<Collection<Device>> getDevices() {
+        final HttpResponse<Collection<Device>> response = this.sendRequest("GET", "/api/devices", null,
             new JsonParser() {
                 @Override
-                public Collection<DeviceModel> parse(String jsonString) {
+                public Collection<Device> parse(String jsonString) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<Collection<DeviceModel>>() {}.getType();
+                    Type type = new TypeToken<Collection<Device>>() {}.getType();
                     return gson.fromJson(jsonString, type);
                 }
             });

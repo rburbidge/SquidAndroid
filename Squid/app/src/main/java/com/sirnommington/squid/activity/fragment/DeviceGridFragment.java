@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.SquidServiceProvider;
-import com.sirnommington.squid.services.squid.DeviceModel;
+import com.sirnommington.squid.services.squid.contracts.Device;
 import com.sirnommington.squid.services.squid.SquidService;
 
 import java.util.Collection;
@@ -56,7 +56,7 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
     public void getDevices() {
         final SquidService squidService = ((SquidServiceProvider) this.getActivity()).getSquidService();
 
-        new AsyncTask<Void,  Void, AsyncResponse<Collection<DeviceModel>>>() {
+        new AsyncTask<Void,  Void, AsyncResponse<Collection<Device>>>() {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -64,12 +64,12 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
             }
 
             @Override
-            protected AsyncResponse<Collection<DeviceModel>> doInBackground(Void... params) {
+            protected AsyncResponse<Collection<Device>> doInBackground(Void... params) {
                 return squidService.getDevices();
             }
 
             @Override
-            protected void onPostExecute(AsyncResponse<Collection<DeviceModel>> response) {
+            protected void onPostExecute(AsyncResponse<Collection<Device>> response) {
                 super.onPostExecute(response);
                 showLoading(false);
 
@@ -88,7 +88,7 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
      */
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final int viewType = this.devicesAdapter.getItemViewType(position);
-        final DeviceModel device = (DeviceModel) this.devicesAdapter.getItem(position);
+        final Device device = (Device) this.devicesAdapter.getItem(position);
         this.deviceClickedListener.onDeviceClicked(viewType, device);
     }
 

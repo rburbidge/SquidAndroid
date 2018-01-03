@@ -1,4 +1,6 @@
-package com.sirnommington.squid.services.squid;
+package com.sirnommington.squid.services.squid.contracts;
+
+import com.sirnommington.squid.services.squid.SquidService;
 
 /**
  * Response from adding a device.
@@ -8,14 +10,14 @@ public class AddDeviceResult {
     /**
      * The device.
      */
-    public final DeviceModel device;
+    public final Device device;
 
     /**
      * True if the device was created, false if it already existed.
      */
     public final boolean deviceCreated;
 
-    public AddDeviceResult(DeviceModel device, boolean deviceAdded) {
+    public AddDeviceResult(Device device, boolean deviceAdded) {
         this.device = device;
         this.deviceCreated = deviceAdded;
     }

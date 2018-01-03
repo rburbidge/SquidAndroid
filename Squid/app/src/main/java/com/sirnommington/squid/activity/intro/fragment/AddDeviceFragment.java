@@ -31,8 +31,8 @@ import com.sirnommington.squid.common.StringUtil;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.gcm.SquidRegistrationIntentService;
 import com.sirnommington.squid.services.google.GoogleSignIn;
-import com.sirnommington.squid.services.squid.AddDeviceResult;
-import com.sirnommington.squid.services.squid.DeviceModel;
+import com.sirnommington.squid.services.squid.contracts.AddDeviceResult;
+import com.sirnommington.squid.services.squid.contracts.Device;
 import com.sirnommington.squid.services.squid.SquidService;
 
 import java.util.Collection;
@@ -212,7 +212,7 @@ public class AddDeviceFragment extends ProgressFragment {
         result.deviceAdded = addDeviceResult.payload.deviceCreated;
 
         // Check if the user has other registered devices
-        AsyncResponse<Collection<DeviceModel>> devices = thiz.squidService.getDevices();
+        AsyncResponse<Collection<Device>> devices = thiz.squidService.getDevices();
         if(devices.error != null) {
             return AsyncResponse.createError(devices.error);
         }
