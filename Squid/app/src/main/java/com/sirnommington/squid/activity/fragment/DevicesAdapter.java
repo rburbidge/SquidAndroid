@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sirnommington.squid.R;
-import com.sirnommington.squid.services.squid.DeviceModel;
+import com.sirnommington.squid.services.squid.contracts.Device;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +28,7 @@ public class DevicesAdapter extends BaseAdapter {
 
     private final String addDeviceTitle;
     private final LayoutInflater inflater;
-    private final ArrayList<DeviceModel> devices;
+    private final ArrayList<Device> devices;
 
     public DevicesAdapter(Context context) {
         this.addDeviceTitle = context.getResources().getString(R.string.add_a_device);
@@ -103,7 +103,7 @@ public class DevicesAdapter extends BaseAdapter {
      * Updates the adapter's set of devices, and notifies all users of the adapter.
      * @param devices The new set of devices.
      */
-    public void setDevices(Collection<DeviceModel> devices) {
+    public void setDevices(Collection<Device> devices) {
         this.devices.clear();
         this.devices.addAll(devices);
         this.notifyDataSetChanged();

@@ -7,9 +7,10 @@ import com.google.gson.reflect.TypeToken;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.services.common.HttpResponse;
 import com.sirnommington.squid.services.google.GoogleSignIn;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.sirnommington.squid.services.squid.contracts.AddDeviceRequest;
+import com.sirnommington.squid.services.squid.contracts.AddDeviceResult;
+import com.sirnommington.squid.services.squid.contracts.Device;
+import com.sirnommington.squid.services.squid.contracts.SendUrlRequest;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -50,19 +51,11 @@ public class SquidService {
      * @return Result indicating added, already existed, etc.
      */
     public AsyncResponse<AddDeviceResult> addDevice(String name, String gcmToken) {
-        final JSONObject body = new JSONObject();
-        try {
-            body.put("name", name);
-            body.put("gcmToken", gcmToken);
-        } catch(JSONException e) {
-            Log.e(TAG, "addDevice(): error creating JSON body: " + e);
-            return AsyncResponse.createError(e);
-        }
-
-        final HttpResponse<DeviceModel> response = this.sendRequest("POST", "/api/devices", body, new JsonParser() {
+        final AddDeviceRequest addDeviceBody = new AddDeviceRequest(name, gcmToken);
+        final HttpResponse<Device> response = this.sendRequest("POST", "/api/devices", addDeviceBody, new JsonParser() {
             @Override
-            public Object parse(String jsonString) throws JSONException {
-                return DeviceModel.from(jsonString);
+            public Device parse(String jsonString) {
+                return Device.from(jsonString);
             }
         });
 
@@ -88,22 +81,22 @@ public class SquidService {
      * TODO What does this return if the user doesn't exist or had no devices?
      * @return The devices, or an error.
      */
-    public AsyncResponse<Collection<DeviceModel>> getDevices() {
-        final HttpResponse<Collection<DeviceModel>> response = this.sendRequest("GET", "/api/devices", null,
+    public AsyncResponse<Collection<Device>> getDevices() {
+        final HttpResponse<Collection<Device>> response = this.sendRequest("GET", "/api/devices", null,
             new JsonParser() {
                 @Override
-                public Object parse(String jsonString) throws JSONException{
+                public Collection<Device> parse(String jsonString) {
                     Gson gson = new Gson();
-                    Type type = new TypeToken<Collection<DeviceModel>>() {}.getType();
+                    Type type = new TypeToken<Collection<Device>>() {}.getType();
                     return gson.fromJson(jsonString, type);
                 }
             });
 
         if(response.isSuccess()) {
             return AsyncResponse.create(response.body);
+        } else {
+            return AsyncResponse.createError(response.statusCode);
         }
-
-        return AsyncResponse.createError(response.statusCode);
     }
 
     /**
@@ -113,16 +106,8 @@ public class SquidService {
      * @return True iff sending the URL succeeded.
      */
     public boolean sendUrl(String deviceId, String url) {
-        JSONObject body;
-        try {
-            body = new JSONObject();
-            body.put("url", url);
-        } catch(JSONException e) {
-            Log.e(TAG, "sendUrl(): error creating JSON body: " + e);
-            return false;
-        }
-
-        final HttpResponse response = this.sendRequest("POST", "/api/devices/" + deviceId + "/commands", body, null);
+        final SendUrlRequest requestBody = new SendUrlRequest(url);
+        final HttpResponse response = this.sendRequest("POST", "/api/devices/" + deviceId + "/commands", requestBody, null);
         return response.isSuccess();
     }
 
@@ -130,13 +115,13 @@ public class SquidService {
      * Helper method for sending HTTP requests.
      * @param requestMethod GET, PUT, etc.
      * @param relativePath The relative path. Must be preceded with a forward slash.
-     * @param requestBody The JSON request body, if any.
+     * @param requestBody The request body, if any.
      * @return The HTTP response.
      */
     private HttpResponse sendRequest(
             final String requestMethod,
             final String relativePath,
-            final JSONObject requestBody,
+            final Object requestBody,
             final JsonParser responseParser) {
         // Bomb out early if we can't get an ID token for authentication
         final String idToken = this.googleSignIn.silentSignIn();
@@ -180,8 +165,11 @@ public class SquidService {
             conn.connect();
 
             if (requestBody != null) {
+                final Gson gson = new Gson();
+                final String bodyJson = gson.toJson(requestBody);
+
                 DataOutputStream output = new DataOutputStream(conn.getOutputStream());
-                output.writeBytes(requestBody.toString());
+                output.writeBytes(bodyJson);
                 output.flush();
                 output.close();
             }
@@ -194,8 +182,6 @@ public class SquidService {
             }
             return new HttpResponse<>(responseCode, parsedBody);
         } catch(IOException e) {
-            return new HttpResponse(500, null);
-        } catch(JSONException e) {
             return new HttpResponse(500, null);
         }
     }
@@ -222,6 +208,6 @@ public class SquidService {
      * @param <T> The type that will be parsed.
      */
     private interface JsonParser<T> {
-        T parse(String jsonString) throws JSONException;
+        T parse(String jsonString);
     }
 }

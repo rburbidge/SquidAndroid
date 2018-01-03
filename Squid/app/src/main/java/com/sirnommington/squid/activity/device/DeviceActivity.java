@@ -14,7 +14,7 @@ import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
-import com.sirnommington.squid.services.squid.DeviceModel;
+import com.sirnommington.squid.services.squid.contracts.Device;
 import com.sirnommington.squid.services.squid.SquidService;
 
 /**
@@ -22,7 +22,7 @@ import com.sirnommington.squid.services.squid.SquidService;
  */
 public class DeviceActivity extends AppCompatActivity implements RemoveConfirmationDialogListener {
 
-    private DeviceModel device;
+    private Device device;
     private SquidService squidService;
 
     /**
@@ -30,13 +30,13 @@ public class DeviceActivity extends AppCompatActivity implements RemoveConfirmat
      * @param context The app context.
      * @param device The device for which the activity is launched.
      */
-    public static Intent createIntent(Context context, DeviceModel device) {
+    public static Intent createIntent(Context context, Device device) {
         final Intent intent = new Intent(context, DeviceActivity.class);
         intent.putExtra(IntentExtras.DEVICE, device);
         return intent;
     }
 
-    private void init(DeviceModel device) {
+    private void init(Device device) {
         this.device = device;
 
         final TextView title = this.findViewById(R.id.title);
@@ -48,7 +48,7 @@ public class DeviceActivity extends AppCompatActivity implements RemoveConfirmat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device);
 
-        final DeviceModel device = (DeviceModel) getIntent().getSerializableExtra(IntentExtras.DEVICE);
+        final Device device = (Device) getIntent().getSerializableExtra(IntentExtras.DEVICE);
         this.init(device);
 
         final Preferences preferences = new Preferences(this);
