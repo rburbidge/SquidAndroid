@@ -10,6 +10,7 @@ import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.contracts.AddDeviceRequest;
 import com.sirnommington.squid.services.squid.contracts.AddDeviceResult;
 import com.sirnommington.squid.services.squid.contracts.Device;
+import com.sirnommington.squid.services.squid.contracts.DeviceType;
 import com.sirnommington.squid.services.squid.contracts.SendUrlRequest;
 
 import java.io.BufferedReader;
@@ -51,7 +52,7 @@ public class SquidService {
      * @return Result indicating added, already existed, etc.
      */
     public AsyncResponse<AddDeviceResult> addDevice(String name, String gcmToken) {
-        final AddDeviceRequest addDeviceBody = new AddDeviceRequest(name, gcmToken);
+        final AddDeviceRequest addDeviceBody = new AddDeviceRequest(name, gcmToken, DeviceType.ANDROID);
         final HttpResponse<Device> response = this.sendRequest("POST", "/api/devices", addDeviceBody, new JsonParser() {
             @Override
             public Device parse(String jsonString) {

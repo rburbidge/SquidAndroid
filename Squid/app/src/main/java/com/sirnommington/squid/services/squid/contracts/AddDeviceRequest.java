@@ -14,8 +14,11 @@ public class AddDeviceRequest {
      */
     public final String gcmToken;
 
-    public AddDeviceRequest(String name, String gcmToken) {
+    public final String type;
+
+    public AddDeviceRequest(String name, String gcmToken, String type) {
         this.name = name;
         this.gcmToken = gcmToken;
+        this.type = type;
     }
 }

@@ -19,6 +19,12 @@ public class Device implements Serializable {
     public String name;
 
     /**
+     * The device type.
+     * @see DeviceType
+     */
+    public String deviceType;
+
+    /**
      * Creates a device from a JSON string.
      */
     public static Device from(String s) {
