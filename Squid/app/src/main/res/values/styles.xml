@@ -34,7 +34,7 @@
     <style name="DeviceImage">
         <item name="android:layout_width">@dimen/device_image_size</item>
         <item name="android:layout_height">@dimen/device_image_size</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:padding">15dp</item>
     </style>
     <style name="DeviceTitle" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:layout_marginTop">10dp</item>

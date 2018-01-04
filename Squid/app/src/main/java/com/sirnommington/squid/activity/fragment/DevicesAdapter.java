@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.services.squid.contracts.Device;
+import com.sirnommington.squid.services.squid.contracts.DeviceType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,8 +83,10 @@ public class DevicesAdapter extends BaseAdapter {
         final int imageResourceId;
         switch(viewType) {
             case VIEW_TYPE_DEVICE:
-                title = this.devices.get(position).name;
-                imageResourceId = R.drawable.ic_phone_android_black_100dp;
+                final Device device = this.devices.get(position);
+
+                title = device.name;
+                imageResourceId = device.getIconId();
                 break;
             case VIEW_TYPE_ADD_DEVICE:
                 title = this.addDeviceTitle;
