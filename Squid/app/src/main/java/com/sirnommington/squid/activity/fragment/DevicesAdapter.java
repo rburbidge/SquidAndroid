@@ -86,7 +86,7 @@ public class DevicesAdapter extends BaseAdapter {
                 final Device device = this.devices.get(position);
 
                 title = device.name;
-                imageResourceId = getIconForDevice(device);
+                imageResourceId = device.getIconId();
                 break;
             case VIEW_TYPE_ADD_DEVICE:
                 title = this.addDeviceTitle;
@@ -100,16 +100,6 @@ public class DevicesAdapter extends BaseAdapter {
         imageView.setImageResource(imageResourceId);
 
         return itemView;
-    }
-
-    private static int getIconForDevice(Device device) {
-        if(device.deviceType.equals(DeviceType.ANDROID)) {
-            return R.drawable.ic_phone_android_black_100dp;
-        } else if(device.deviceType.equals(DeviceType.CHROME)) {
-            return R.drawable.ic_laptop_black_100dp;
-        } else {
-            return R.drawable.ic_laptop_black_100dp;
-        }
     }
 
     /**

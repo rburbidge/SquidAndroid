@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,8 @@ public class DeviceActivity extends AppCompatActivity implements RemoveConfirmat
     private void init(Device device) {
         this.device = device;
 
+        final ImageView imageView = this.findViewById(R.id.icon);
+        imageView.setImageResource(device.getIconId());
         final TextView title = this.findViewById(R.id.title);
         title.setText(device.name);
     }

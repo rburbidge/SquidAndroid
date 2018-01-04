@@ -31,7 +31,7 @@
                 android:background="@color/colorPrimaryDark"/>
         </LinearLayout>
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/icon"
             android:tint="@color/textPrimary"
             android:src="@drawable/ic_phone_android_black_100dp"
             android:background="@drawable/background_device"
