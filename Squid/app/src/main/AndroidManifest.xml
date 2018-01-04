@@ -25,7 +25,9 @@
         <activity
             android:name=".activity.device.DeviceActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".activity.intro.IntroActivity"/>
+        <activity
+            android:name=".activity.intro.IntroActivity"
+            android:theme="@style/IntroActivity"/>
         <activity
             android:name=".activity.intro.InitialActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
