@@ -24,10 +24,10 @@
         </activity>
         <activity
             android:name=".activity.device.DeviceActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/ActionBarTransparentTheme"/>
         <activity
             android:name=".activity.intro.IntroActivity"
-            android:theme="@style/IntroActivity"/>
+            android:theme="@style/ActionBarTransparentTheme"/>
         <activity
             android:name=".activity.intro.InitialActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

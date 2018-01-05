@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.IntentExtras;
+import com.sirnommington.squid.activity.common.MenuActivity;
 import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.google.GoogleSignIn;
 import com.sirnommington.squid.services.squid.contracts.Device;
@@ -21,7 +21,7 @@ import com.sirnommington.squid.services.squid.SquidService;
 /**
  * Shows device details and allows the user to delete the device or test sending a link.
  */
-public class DeviceActivity extends AppCompatActivity implements RemoveConfirmationDialogListener {
+public class DeviceActivity extends MenuActivity implements RemoveConfirmationDialogListener {
 
     private Device device;
     private SquidService squidService;
