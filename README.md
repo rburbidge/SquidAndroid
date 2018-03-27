@@ -5,7 +5,9 @@ The Squid Android app is built using native Android Java.
 1. Clone the repo.
 2. Copy data.xml to ```SquidAndroid\Squid\app\src\main\res\values```
 3. Copy google-services.json to ```SquidAndroid\Squid```
-4. Open in Android Studio, sync gradle, and build the app.
+4. Open in Android Studio
+5. Sync gradle using Tools -> Android -> Sync Project with Gradle Files
+6. Build the app
 
 ### Missing files
 data.xml and google-services.json were intentionally omitted from the repo because they contain secret and/or configuration specific details.
