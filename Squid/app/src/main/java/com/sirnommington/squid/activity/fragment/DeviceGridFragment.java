@@ -22,13 +22,33 @@ import java.util.Collection;
  * Shows a set of devices in a grid, as well as an add device item.
  */
 public class DeviceGridFragment extends ProgressFragment implements AdapterView.OnItemClickListener {
+    private static class Arguments {
+        public static final String SHOW_THIS_DEVICE = "showThisDevice";
+    }
+
     private OnDeviceClickedListener deviceClickedListener;
     private DevicesAdapter devicesAdapter;
+
+    private boolean showThisDevice;
 
     /**
      * Keeps track of whether or not this fragment has loaded devices before.
      */
     private boolean hasLoaded = false;
+
+    public static DeviceGridFragment create(boolean showThisDevice) {
+        DeviceGridFragment fragment = new DeviceGridFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Arguments.SHOW_THIS_DEVICE, showThisDevice);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parentViewGroup, Bundle savedInstanceState) {
+        this.showThisDevice = getArguments().getBoolean(Arguments.SHOW_THIS_DEVICE);
+        return super.onCreateView(inflater, parentViewGroup, savedInstanceState);
+    }
 
     @Override
     public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +100,10 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
                     final Preferences prefs = new Preferences(getActivity());
                     final Device thisDevice = prefs.getThisDevice();
 
-                    final Collection<Device> devices = filterDevices(response.payload, thisDevice);
+                    Collection<Device> devices = response.payload;
+                    if(!showThisDevice) {
+                        devices = filterDevices(response.payload, thisDevice);
+                    }
                     devicesAdapter.setDevices(devices);
                     hasLoaded = true;
                 }
