@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.SquidServiceProvider;
+import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.squid.contracts.Device;
 import com.sirnommington.squid.services.squid.SquidService;
 
@@ -76,11 +77,31 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
                 if(response.error != null) {
                     showError(getResources().getString(R.string.get_devices_error));
                 } else {
-                    devicesAdapter.setDevices(response.payload);
+                    final Preferences prefs = new Preferences(getActivity());
+                    final Device thisDevice = prefs.getThisDevice();
+
+                    final Collection<Device> devices = filterDevices(response.payload, thisDevice);
+                    devicesAdapter.setDevices(devices);
                     hasLoaded = true;
                 }
             }
         }.execute();
+    }
+
+    /**
+     * Filters a device out of the a collection.
+     */
+    private Collection<Device> filterDevices(Collection<Device> devices, Device device) {
+        if(device == null) return devices;
+
+        for(Device currentDevice : devices) {
+            if(device.id.equals(currentDevice.id)) {
+                devices.remove(currentDevice);
+                break;
+            }
+        }
+
+        return devices;
     }
 
     /**
