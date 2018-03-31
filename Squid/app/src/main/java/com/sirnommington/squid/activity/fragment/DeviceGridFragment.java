@@ -37,8 +37,8 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
     private boolean hasLoaded = false;
 
     public static DeviceGridFragment create(boolean showThisDevice) {
-        DeviceGridFragment fragment = new DeviceGridFragment();
-        Bundle bundle = new Bundle();
+        final DeviceGridFragment fragment = new DeviceGridFragment();
+        final Bundle bundle = new Bundle();
         bundle.putBoolean(Arguments.SHOW_THIS_DEVICE, showThisDevice);
         fragment.setArguments(bundle);
         return fragment;
@@ -72,7 +72,6 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
 
     /**
      * Retrieves the user's devices from the server.
-     * TODO Cache the user's devices on the device so that they show up faster.
      */
     public void getDevices() {
         final SquidService squidService = ((SquidServiceProvider) this.getActivity()).getSquidService();
