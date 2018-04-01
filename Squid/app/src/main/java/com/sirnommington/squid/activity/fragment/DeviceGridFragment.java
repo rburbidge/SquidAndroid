@@ -100,10 +100,10 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
                     final Device thisDevice = prefs.getThisDevice();
 
                     Collection<Device> devices = response.payload;
-                    if(!showThisDevice) {
+                    if(!showThisDevice && thisDevice != null) {
                         devices = filterDevices(response.payload, thisDevice);
                     }
-                    devicesAdapter.setDevices(devices);
+                    devicesAdapter.setDevices(devices, thisDevice);
                     hasLoaded = true;
                 }
             }

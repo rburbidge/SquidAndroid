@@ -30,6 +30,7 @@ public class DevicesAdapter extends BaseAdapter {
     private final String addDeviceTitle;
     private final LayoutInflater inflater;
     private final ArrayList<Device> devices;
+    private Device thisDevice;
 
     public DevicesAdapter(Context context) {
         this.addDeviceTitle = context.getResources().getString(R.string.add_a_device);
@@ -78,19 +79,23 @@ public class DevicesAdapter extends BaseAdapter {
         final View itemView = inflater.inflate(R.layout.grid_item_device, parent, false);
         final TextView titleView = itemView.findViewById(R.id.title);
         final ImageView imageView = itemView.findViewById(R.id.image);
+        final View thisDeviceIndicator = itemView.findViewById(R.id.this_device);
 
         final String title;
         final int imageResourceId;
+        final boolean showThisDeviceIndicator;
         switch(viewType) {
             case VIEW_TYPE_DEVICE:
                 final Device device = this.devices.get(position);
 
                 title = device.name;
                 imageResourceId = device.getIconId();
+                showThisDeviceIndicator = device.id == this.thisDevice.id;
                 break;
             case VIEW_TYPE_ADD_DEVICE:
                 title = this.addDeviceTitle;
                 imageResourceId = R.drawable.ic_add_circle_black_100dp;
+                showThisDeviceIndicator = false;
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported view type: " + viewType);
@@ -98,6 +103,7 @@ public class DevicesAdapter extends BaseAdapter {
 
         titleView.setText(title);
         imageView.setImageResource(imageResourceId);
+        thisDeviceIndicator.setVisibility(showThisDeviceIndicator ? View.VISIBLE : View.INVISIBLE);
 
         return itemView;
     }
@@ -105,10 +111,14 @@ public class DevicesAdapter extends BaseAdapter {
     /**
      * Updates the adapter's set of devices, and notifies all users of the adapter.
      * @param devices The new set of devices.
+     * @param thisDevice The current device. Null if this device does not exist.
      */
-    public void setDevices(Collection<Device> devices) {
+    public void setDevices(Collection<Device> devices, Device thisDevice) {
         this.devices.clear();
         this.devices.addAll(devices);
+
+        this.thisDevice = thisDevice;
+
         this.notifyDataSetChanged();
     }
 }
