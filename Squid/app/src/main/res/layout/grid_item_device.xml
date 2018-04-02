@@ -20,14 +20,29 @@
             android:tint="@color/textPrimary"
             tools:src="@drawable/ic_phone_android_black_100dp"/>
 
-        <TextView
-            android:id="@+id/title"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/grid_device_title_padding"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingBottom="@dimen/grid_device_title_padding"
-            android:textColor="@color/textPrimary"
-            tools:text="Nexus 5X"/>
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textPrimary"
+                tools:text="Nexus 5X"/>
+
+            <TextView
+                android:id="@+id/this_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:text="@string/this_device"/>
+        </LinearLayout>
     </RelativeLayout>
 </com.sirnommington.squid.activity.common.SquareLinearLayout>

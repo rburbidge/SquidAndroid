@@ -48,6 +48,7 @@ public class AddDeviceFragment extends ProgressFragment {
     private boolean isReceiverRegistered;
     private BroadcastReceiver registrationBroadcastReceiver;
     private SquidService squidService;
+    private Preferences prefs;
     private EditText deviceName;
     private String gcmToken;
 
@@ -75,7 +76,7 @@ public class AddDeviceFragment extends ProgressFragment {
         });
 
         final GoogleSignIn googleSignIn = ((GoogleSignInProvider) this.getActivity()).getGoogleSignIn();
-        final Preferences prefs = new Preferences(this.getActivity());
+        this.prefs = new Preferences(this.getActivity());
         this.squidService = new SquidService(prefs.getSquidEndpoint(), googleSignIn);
 
         this.initGcmRegistration();
@@ -158,13 +159,16 @@ public class AddDeviceFragment extends ProgressFragment {
             @Override
             protected void onPostExecute(AsyncResponse<InitializeResult> result) {
                 String message;
-                if(result == null || result.error != null) {
+                if(result.error != null) {
                     message = getResources().getString(R.string.add_device_error);
                     showLoading(false);
-                } else if(result.payload.deviceAdded) {
-                    message = getResources().getString(R.string.add_device_added, Build.MODEL);
                 } else {
-                    message = getResources().getString(R.string.add_device_already_added);
+                    thiz.prefs.setThisDevice(result.payload.device);
+                    if (result.payload.deviceAdded) {
+                        message = getResources().getString(R.string.add_device_added, Build.MODEL);
+                    } else {
+                        message = getResources().getString(R.string.add_device_already_added);
+                    }
                 }
                 Toast.makeText(thiz.getActivity(), message, Toast.LENGTH_LONG).show();
 
@@ -210,6 +214,7 @@ public class AddDeviceFragment extends ProgressFragment {
             return AsyncResponse.createError(addDeviceResult.error);
         }
         result.deviceAdded = addDeviceResult.payload.deviceCreated;
+        result.device = addDeviceResult.payload.device;
 
         // Check if the user has other registered devices
         AsyncResponse<Collection<Device>> devices = thiz.squidService.getDevices();
@@ -228,6 +233,11 @@ public class AddDeviceFragment extends ProgressFragment {
          * True if this device was newly registered; false if it was already registered.
          */
         public boolean deviceAdded;
+
+        /**
+         * The device (that was created or already existed).
+         */
+        public Device device;
 
         /**
          * True if the user has other devices registered.

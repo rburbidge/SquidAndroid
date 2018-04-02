@@ -13,6 +13,7 @@ import com.sirnommington.squid.activity.common.ActivityHelper;
 import com.sirnommington.squid.activity.common.AddOtherDeviceActivity;
 import com.sirnommington.squid.activity.common.MenuActivity;
 import com.sirnommington.squid.activity.common.SquidServiceProvider;
+import com.sirnommington.squid.activity.fragment.DeviceGridFragment;
 import com.sirnommington.squid.activity.fragment.DevicesAdapter;
 import com.sirnommington.squid.activity.fragment.OnDeviceClickedListener;
 import com.sirnommington.squid.services.Preferences;
@@ -69,6 +70,10 @@ public class ShareLinkActivity extends MenuActivity implements OnDeviceClickedLi
         this.squidService = new SquidService(preferences.getSquidEndpoint(), this.googleSignIn);
 
         this.setContentView(R.layout.activity_share_link);
+
+        getSupportFragmentManager().beginTransaction()
+            .add(R.id.container, DeviceGridFragment.create(false))
+            .commit();
     }
 
     /**

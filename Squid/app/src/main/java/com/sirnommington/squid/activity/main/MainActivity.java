@@ -10,6 +10,7 @@ import com.sirnommington.squid.activity.common.MenuActivity;
 import com.sirnommington.squid.activity.common.AddOtherDeviceActivity;
 import com.sirnommington.squid.activity.common.SquidServiceProvider;
 import com.sirnommington.squid.activity.device.DeviceActivity;
+import com.sirnommington.squid.activity.fragment.DeviceGridFragment;
 import com.sirnommington.squid.activity.fragment.DevicesAdapter;
 import com.sirnommington.squid.activity.fragment.OnDeviceClickedListener;
 import com.sirnommington.squid.services.Preferences;
@@ -39,6 +40,10 @@ public class MainActivity extends MenuActivity implements OnDeviceClickedListene
         this.squidService = new SquidService(preferences.getSquidEndpoint(), googleSignIn);
 
         this.setContentView(R.layout.activity_main);
+
+        getSupportFragmentManager().beginTransaction()
+            .add(R.id.container, DeviceGridFragment.create(true))
+            .commit();
     }
 
     @Override
@@ -52,7 +57,7 @@ public class MainActivity extends MenuActivity implements OnDeviceClickedListene
                 this.startActivity(AddOtherDeviceActivity.createIntent(this, true));
                 break;
             default:
-                    Log.e(TAG, "OnItemClickListener cannot handle view type: " + viewType);
+                Log.e(TAG, "OnItemClickListener cannot handle view type: " + viewType);
         }
     }
 

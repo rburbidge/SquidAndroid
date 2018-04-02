@@ -12,22 +12,47 @@ import android.widget.Toast;
 import com.sirnommington.squid.R;
 import com.sirnommington.squid.activity.common.AsyncResponse;
 import com.sirnommington.squid.activity.common.SquidServiceProvider;
+import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.squid.contracts.Device;
 import com.sirnommington.squid.services.squid.SquidService;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Shows a set of devices in a grid, as well as an add device item.
  */
 public class DeviceGridFragment extends ProgressFragment implements AdapterView.OnItemClickListener {
+    private static class Arguments {
+        public static final String SHOW_THIS_DEVICE = "showThisDevice";
+    }
+
     private OnDeviceClickedListener deviceClickedListener;
     private DevicesAdapter devicesAdapter;
+
+    private boolean showThisDevice;
 
     /**
      * Keeps track of whether or not this fragment has loaded devices before.
      */
     private boolean hasLoaded = false;
+
+    public static DeviceGridFragment create(boolean showThisDevice) {
+        final DeviceGridFragment fragment = new DeviceGridFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putBoolean(Arguments.SHOW_THIS_DEVICE, showThisDevice);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parentViewGroup, Bundle savedInstanceState) {
+        this.showThisDevice = getArguments().getBoolean(Arguments.SHOW_THIS_DEVICE);
+        return super.onCreateView(inflater, parentViewGroup, savedInstanceState);
+    }
 
     @Override
     public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +76,6 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
 
     /**
      * Retrieves the user's devices from the server.
-     * TODO Cache the user's devices on the device so that they show up faster.
      */
     public void getDevices() {
         final SquidService squidService = ((SquidServiceProvider) this.getActivity()).getSquidService();
@@ -76,11 +100,59 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
                 if(response.error != null) {
                     showError(getResources().getString(R.string.get_devices_error));
                 } else {
-                    devicesAdapter.setDevices(response.payload);
+                    final Preferences prefs = new Preferences(getActivity());
+                    final Device thisDevice = prefs.getThisDevice();
+
+                    Collection<Device> devices = response.payload;
+                    devices = filterDevices(response.payload, thisDevice, showThisDevice);
+                    devicesAdapter.setDevices(devices, thisDevice);
                     hasLoaded = true;
                 }
             }
         }.execute();
+    }
+
+    /**
+     * Filters the devices for display.
+     * @param devices The devices.
+     * @param device The current device.
+     * @param showThisDevice Whether or not to include the current device.
+     */
+    private static Collection<Device> filterDevices(Collection<Device> devices, Device device, boolean showThisDevice) {
+        if(!showThisDevice && device != null) {
+            for (Device currentDevice : devices) {
+                if (device.id.equals(currentDevice.id)) {
+                    devices.remove(currentDevice);
+                    break;
+                }
+            }
+        }
+
+        final List<Device> filteredDevices = new ArrayList<>(devices);
+        Collections.sort(filteredDevices, new DeviceComparator(device));
+        return filteredDevices;
+    }
+
+    private static class DeviceComparator implements Comparator<Device> {
+
+        private final Device thisDevice;
+
+        public DeviceComparator(Device thisDevice) {
+            this.thisDevice = thisDevice;
+        }
+
+        @Override
+        public int compare(Device d1, Device d2) {
+            if(this.thisDevice != null) {
+                if (d1.id.equals(this.thisDevice.id)) {
+                    return -1;
+                }
+                else if(d2.id.equals(thisDevice.id)) {
+                    return 1;
+                }
+            }
+            return d1.name.compareToIgnoreCase(d2.name);
+        }
     }
 
     /**
