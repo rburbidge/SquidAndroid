@@ -1,0 +1,11 @@
+<resources>
+    <string name="chrome_ext_url">https://chrome.google.com/webstore/detail/squid/gipmiglmamlkehhbcicejmfloehgeklk</string>
+    <string name="outh_client_id">670316986609-s1dr1id7jcaeejveo52teqb6adg9ku5k.apps.googleusercontent.com</string>
+    <string name="squid_endpoint_default">https://sirnommington.com</string>
+    <array name="squid_endpoints">
+        <item>https://sirnommington.com</item>
+        <item>https://sirnommington-test.azurewebsites.net</item>
+        <item>https://sirnommington-ppe.azurewebsites.net</item>
+        <item>http://24.35.77.213</item>
+    </array>
+</resources>

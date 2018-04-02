@@ -1,5 +1,4 @@
 *.iml
-google-services.json
 .gradle
 /local.properties
 /.idea/workspace.xml
