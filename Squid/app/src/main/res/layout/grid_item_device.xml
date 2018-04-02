@@ -8,41 +8,39 @@
     android:background="@drawable/border_device"
     tools:context=".activity.share.ShareLinkActivity">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"></FrameLayout>
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="@dimen/grid_device_image_size"
-            android:layout_height="@dimen/grid_device_image_size"
-            android:layout_centerInParent="true"
-            android:tint="@color/textPrimary"
-            tools:src="@drawable/ic_phone_android_black_100dp"/>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:tint="@color/textPrimary"
+        tools:src="@drawable/ic_phone_android_black_100dp"/>
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/grid_device_title_padding"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal">
+            android:textColor="@color/textPrimary"
+            tools:text="Nexus 5X"/>
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textPrimary"
-                tools:text="Nexus 5X"/>
-
-            <TextView
-                android:id="@+id/this_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="@string/this_device"/>
-        </LinearLayout>
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/this_device"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:text="@string/this_device"/>
+    </LinearLayout>
 </com.sirnommington.squid.activity.common.SquareLinearLayout>
