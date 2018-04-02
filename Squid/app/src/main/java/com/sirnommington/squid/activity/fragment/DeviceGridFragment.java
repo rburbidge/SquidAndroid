@@ -16,7 +16,11 @@ import com.sirnommington.squid.services.Preferences;
 import com.sirnommington.squid.services.squid.contracts.Device;
 import com.sirnommington.squid.services.squid.SquidService;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Shows a set of devices in a grid, as well as an add device item.
@@ -100,9 +104,7 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
                     final Device thisDevice = prefs.getThisDevice();
 
                     Collection<Device> devices = response.payload;
-                    if(!showThisDevice && thisDevice != null) {
-                        devices = filterDevices(response.payload, thisDevice);
-                    }
+                    devices = filterDevices(response.payload, thisDevice, showThisDevice);
                     devicesAdapter.setDevices(devices, thisDevice);
                     hasLoaded = true;
                 }
@@ -111,19 +113,46 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
     }
 
     /**
-     * Filters a device out of the a collection.
+     * Filters the devices for display.
+     * @param devices The devices.
+     * @param device The current device.
+     * @param showThisDevice Whether or not to include the current device.
      */
-    private Collection<Device> filterDevices(Collection<Device> devices, Device device) {
-        if(device == null) return devices;
-
-        for(Device currentDevice : devices) {
-            if(device.id.equals(currentDevice.id)) {
-                devices.remove(currentDevice);
-                break;
+    private static Collection<Device> filterDevices(Collection<Device> devices, Device device, boolean showThisDevice) {
+        if(!showThisDevice && device != null) {
+            for (Device currentDevice : devices) {
+                if (device.id.equals(currentDevice.id)) {
+                    devices.remove(currentDevice);
+                    break;
+                }
             }
         }
 
-        return devices;
+        final List<Device> filteredDevices = new ArrayList<>(devices);
+        Collections.sort(filteredDevices, new DeviceComparator(device));
+        return filteredDevices;
+    }
+
+    private static class DeviceComparator implements Comparator<Device> {
+
+        private final Device thisDevice;
+
+        public DeviceComparator(Device thisDevice) {
+            this.thisDevice = thisDevice;
+        }
+
+        @Override
+        public int compare(Device d1, Device d2) {
+            if(this.thisDevice != null) {
+                if (d1.id.equals(this.thisDevice.id)) {
+                    return -1;
+                }
+                else if(d2.id.equals(thisDevice.id)) {
+                    return 1;
+                }
+            }
+            return d1.name.compareToIgnoreCase(d2.name);
+        }
     }
 
     /**
