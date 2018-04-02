@@ -90,7 +90,7 @@ public class DevicesAdapter extends BaseAdapter {
 
                 title = device.name;
                 imageResourceId = device.getIconId();
-                showThisDeviceIndicator = device.id == this.thisDevice.id;
+                showThisDeviceIndicator = device.id.equals(this.thisDevice.id);
                 break;
             case VIEW_TYPE_ADD_DEVICE:
                 title = this.addDeviceTitle;

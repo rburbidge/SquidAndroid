@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
-                tools:text="@string/this_device"/>
+                android:text="@string/this_device"/>
         </LinearLayout>
     </RelativeLayout>
 </com.sirnommington.squid.activity.common.SquareLinearLayout>
