@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:background="@color/colorPrimaryDark">
     <ImageView
-        android:src="@drawable/squid_head"
+        android:src="@drawable/ic_squid_head"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
@@ -16,6 +16,7 @@
         android:id="@+id/intro_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingBottom="20dp">
     </FrameLayout>
 </LinearLayout>
