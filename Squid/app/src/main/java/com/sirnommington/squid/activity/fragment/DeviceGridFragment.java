@@ -103,13 +103,28 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
                     final Preferences prefs = new Preferences(getActivity());
                     final Device thisDevice = prefs.getThisDevice();
 
-                    Collection<Device> devices = response.payload;
-                    devices = filterDevices(response.payload, thisDevice, showThisDevice);
+                    // If the device is not set or the server does not contain this device, then reset the app and close
+                    if(thisDevice == null || getDevice(response.payload, thisDevice) == null) {
+                        prefs.reset();
+                        getActivity().finish();
+                        return;
+                    }
+
+                    final Collection<Device> devices = filterDevices(response.payload, thisDevice, showThisDevice);
                     devicesAdapter.setDevices(devices, thisDevice);
                     hasLoaded = true;
                 }
             }
         }.execute();
+    }
+
+    private static Device getDevice(Collection<Device> devices, Device device) {
+        for(Device current : devices) {
+            if(current.id.equals(device.id)) {
+                return current;
+            }
+        }
+        return null;
     }
 
     /**
@@ -120,12 +135,7 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
      */
     private static Collection<Device> filterDevices(Collection<Device> devices, Device device, boolean showThisDevice) {
         if(!showThisDevice && device != null) {
-            for (Device currentDevice : devices) {
-                if (device.id.equals(currentDevice.id)) {
-                    devices.remove(currentDevice);
-                    break;
-                }
-            }
+            devices.remove(device);
         }
 
         final List<Device> filteredDevices = new ArrayList<>(devices);
