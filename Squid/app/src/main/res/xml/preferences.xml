@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="howTo"
+        android:title="@string/preferences_how_to">
+        <intent android:action="com.sirnommington.squid.activity.prefs.HowToActivity"/>
+    </Preference>
     <SwitchPreference
         android:key="@string/pref_block_notifications"
         android:title="@string/preferences_block_notifications"
