@@ -101,10 +101,12 @@ public class DeviceGridFragment extends ProgressFragment implements AdapterView.
                     showError(getResources().getString(R.string.get_devices_error));
                 } else {
                     final Preferences prefs = new Preferences(getActivity());
-                    final Device thisDevice = prefs.getThisDevice();
+                    Device thisDevice = prefs.getThisDevice();
 
                     // If the device is not set or the server does not contain this device, then reset the app and close
-                    if(thisDevice == null || getDevice(response.payload, thisDevice) == null) {
+                    if(thisDevice == null ||
+                      (thisDevice = getDevice(response.payload, thisDevice)) == null)
+                    {
                         prefs.reset();
                         getActivity().finish();
                         return;
