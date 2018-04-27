@@ -5,11 +5,11 @@
         android:title="@string/preferences_how_to">
         <intent android:action="com.sirnommington.squid.activity.prefs.HowToActivity"/>
     </Preference>
-    <SwitchPreference
+    <!--<SwitchPreference
         android:key="@string/pref_block_notifications"
         android:title="@string/preferences_block_notifications"
         android:summary="@string/preferences_block_notifications_summary"
-        android:defaultValue="false" />
+        android:defaultValue="false" />-->
     <Preference
         android:key="about"
         android:title="@string/preferences_about">
