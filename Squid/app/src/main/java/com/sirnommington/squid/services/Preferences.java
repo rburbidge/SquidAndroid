@@ -29,7 +29,16 @@ public class Preferences {
      * Resets the application to its default settings. Note that this will not reset the user's Google sign-in auth.
      */
     public void reset() {
+        // Maintain endpoint and dev mode settings after reset -- useful during development
+        final String endpoint = this.getSquidEndpoint();
+        final boolean isDevMode = this.isDevMode();
+
         this.sharedPreferences.edit().clear().apply();
+
+        this.setSquidEndpoint(endpoint);
+        if(isDevMode) {
+            this.enableDevMode();
+        }
     }
 
     /**
@@ -54,6 +63,10 @@ public class Preferences {
 
     public String getSquidEndpoint() {
         return getPreference(R.string.pref_squid_endpoint, R.string.squid_endpoint_default);
+    }
+
+    public void setSquidEndpoint(String endpoint) {
+        this.sharedPreferences.edit().putString(this.context.getString(R.string.pref_squid_endpoint), endpoint).apply();
     }
 
     public Device getThisDevice() {
