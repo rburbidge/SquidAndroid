@@ -38,6 +38,7 @@ public class GoogleSignIn {
     private static GoogleApiClient create(FragmentActivity activity) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(activity.getResources().getString(R.string.outh_client_id))
+                .requestEmail()
                 .build();
         return new GoogleApiClient.Builder(activity)
                 .enableAutoManage(activity, new GoogleApiClient.OnConnectionFailedListener() {
