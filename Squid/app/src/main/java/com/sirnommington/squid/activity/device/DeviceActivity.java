@@ -25,6 +25,7 @@ public class DeviceActivity extends MenuActivity implements RemoveConfirmationDi
 
     private Device device;
     private SquidService squidService;
+    private Preferences preferences;
 
     /**
      * Creates an intent to launch this activity for a given device.
@@ -54,7 +55,7 @@ public class DeviceActivity extends MenuActivity implements RemoveConfirmationDi
         final Device device = (Device) getIntent().getSerializableExtra(IntentExtras.DEVICE);
         this.init(device);
 
-        final Preferences preferences = new Preferences(this);
+        this.preferences = new Preferences(this);
         final GoogleSignIn googleSignIn = new GoogleSignIn(this);
         this.squidService = new SquidService(preferences.getSquidEndpoint(), googleSignIn);
 
@@ -119,8 +120,7 @@ public class DeviceActivity extends MenuActivity implements RemoveConfirmationDi
         new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... voids) {
-                // TODO Change the default URL
-                return squidService.sendUrl(device.id, "https://google.com");
+                return squidService.sendUrl(device.id, preferences.getSquidEndpoint() + "/squid/test");
             }
 
             @Override
