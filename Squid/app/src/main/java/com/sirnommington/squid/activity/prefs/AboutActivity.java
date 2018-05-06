@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.sirnommington.squid.R;
+import com.sirnommington.squid.activity.common.WebViewActivity;
 import com.sirnommington.squid.services.Preferences;
 
 /**
@@ -14,21 +15,24 @@ import com.sirnommington.squid.services.Preferences;
  *
  * Shows dev options if the user touches the screen {@link #ENABLE_DEV_OPTIONS_TOUCH_COUNT} times.
  */
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends WebViewActivity {
 
     private static final int ENABLE_DEV_OPTIONS_TOUCH_COUNT = 5;
 
     private final AboutActivity thiz = this;
     private int touchCount = 0;
 
+    public AboutActivity() {
+        super("/squid/about");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_about);
 
         final Preferences preferences = new Preferences(this);
 
-        final View layout = this.findViewById(R.id.about);
+        final View layout = this.getLayout();
         layout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
