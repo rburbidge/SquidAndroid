@@ -39,6 +39,9 @@ public class WebViewActivity extends AppCompatActivity {
         webView.loadUrl(preferences.getSquidEndpoint() + this.squidPath);
     }
 
+    /**
+     * Returns the top-level container for this activity.
+     */
     protected View getLayout() {
         return this.findViewById(R.id.layout);
     }
