@@ -26,8 +26,6 @@
 
     <string name="preferences_about">About</string>
     <string name="preferences_about_dev_mode">Dev mode enabled!</string>
-    <string name="preferences_about_title">Thank you for using Squid!</string>
-    <string name="preferences_about_icons">The app icon was provided by http://game-icons.net under the Creative Commons 3.0 BY license.</string>
     <string name="preferences_how_to">How to use Squid</string>
     <string name="preferences_block_notifications">Block received web pages</string>
     <string name="preferences_block_notifications_summary">Prevent the app from launching the browser when a page is received from another device.</string>
